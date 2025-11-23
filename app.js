@@ -20,11 +20,13 @@ app.set("layout", "./layouts/main");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
 
+const corsOptions = process.env.CORS_OPTIONS?.split(",");
+
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   cors({
-    origin: "https://leviro.net",
+    origin: corsOptions,
     methods: ["GET", "POST"],
   })
 );

@@ -1,0 +1,147 @@
+<div class="max-w-2xl mx-auto">
+  <div
+    class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12"
+  >
+    <div class="text-center mb-10">
+      <div
+        class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6"
+      >
+        <i class="fa-solid fa-cake-candles text-3xl"></i>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">Age Calculator</h1>
+      <p class="text-gray-600">
+        Enter your date of birth to see your exact age.
+      </p>
+    </div>
+
+    <form id="ageForm" class="space-y-6">
+      <div>
+        <label for="dob" class="block text-sm font-medium text-gray-700 mb-2"
+          >Date of Birth</label
+        >
+        <input
+          type="date"
+          id="dob"
+          name="dob"
+          required
+          class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+      >
+        Calculate Age
+      </button>
+    </form>
+
+    <div id="result" class="hidden mt-10 space-y-6 animate-fade-in">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-blue-50 p-4 rounded-xl text-center">
+          <span id="years" class="block text-3xl font-bold text-blue-600"
+            >0</span
+          >
+          <span class="text-sm text-blue-600 font-medium">Years</span>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-xl text-center">
+          <span id="months" class="block text-3xl font-bold text-blue-600"
+            >0</span
+          >
+          <span class="text-sm text-blue-600 font-medium">Months</span>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-xl text-center">
+          <span id="weeks" class="block text-3xl font-bold text-blue-600"
+            >0</span
+          >
+          <span class="text-sm text-blue-600 font-medium">Weeks</span>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-xl text-center">
+          <span id="days" class="block text-3xl font-bold text-blue-600"
+            >0</span
+          >
+          <span class="text-sm text-blue-600 font-medium">Days</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl text-center">
+        <p class="text-gray-600">Your next birthday is in</p>
+        <p
+          id="nextBirthday"
+          class="text-xl font-semibold text-gray-900 mt-1"
+        ></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("ageForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const dobInput = document.getElementById("dob").value;
+    if (!dobInput) return;
+
+    const dob = new Date(dobInput);
+    const now = new Date();
+
+    if (dob > now) {
+      alert("Date of birth cannot be in the future!");
+      return;
+    }
+
+    // Calculate exact age
+    let years = now.getFullYear() - dob.getFullYear();
+    let months = now.getMonth() - dob.getMonth();
+    let days = now.getDate() - dob.getDate();
+
+    if (days < 0) {
+      months--;
+      days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    // Calculate total weeks and remaining days for the weeks display
+    // This is an approximation for the "weeks" box, or we can show total weeks living
+    // The user asked for "age in days, weeks, months and years".
+    // Usually this means: X years, Y months, Z days.
+    // But if they want separate metrics, I'll calculate them as separate total values or breakdown.
+    // Let's stick to the breakdown: Years, Months, Days (remaining).
+    // For weeks, it's a bit ambiguous if it's "total weeks" or "weeks in the remaining month".
+    // Let's show the breakdown: Years, Months, Weeks (of the remaining month), Days.
+
+    // Refined calculation for the boxes:
+    // Years: Total full years
+    // Months: Remaining full months
+    // Weeks: Remaining full weeks
+    // Days: Remaining days
+
+    let remainingDays = days;
+    const weeks = Math.floor(remainingDays / 7);
+    remainingDays = remainingDays % 7;
+
+    document.getElementById("years").textContent = years;
+    document.getElementById("months").textContent = months;
+    document.getElementById("weeks").textContent = weeks;
+    document.getElementById("days").textContent = remainingDays;
+
+    // Next Birthday Calculation
+    const currentYear = now.getFullYear();
+    let nextBirthday = new Date(dobInput);
+    nextBirthday.setFullYear(currentYear);
+
+    if (nextBirthday < now) {
+      nextBirthday.setFullYear(currentYear + 1);
+    }
+
+    const diffTime = Math.abs(nextBirthday - now);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    document.getElementById("nextBirthday").textContent = `${diffDays} days`;
+
+    document.getElementById("result").classList.remove("hidden");
+  });
+</script>

@@ -1,0 +1,388 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="text-center mb-10">
+    <div
+      class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6"
+    >
+      <i class="fa-solid fa-earth-americas text-3xl"></i>
+    </div>
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">World Info</h1>
+    <p class="text-gray-600">
+      Explore detailed information about countries, states, and cities
+      worldwide.
+    </p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex justify-center mb-8">
+    <div class="bg-gray-100 p-1 rounded-xl inline-flex">
+      <button
+        onclick="switchTab('countries')"
+        id="tab-countries"
+        class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all bg-white text-gray-900 shadow-sm"
+      >
+        Countries
+      </button>
+      <button
+        onclick="switchTab('states')"
+        id="tab-states"
+        class="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 transition-all"
+      >
+        States
+      </button>
+      <button
+        onclick="switchTab('cities')"
+        id="tab-cities"
+        class="px-6 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 transition-all"
+      >
+        Cities
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div
+    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+  >
+    <div id="grid-wrapper" class="p-1"></div>
+  </div>
+</div>
+
+<!-- Details Modal -->
+<div
+  id="detailsModal"
+  class="fixed inset-0 z-50 hidden"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <!-- Backdrop -->
+  <div
+    class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm"
+    id="modalBackdrop"
+  ></div>
+
+  <div class="fixed inset-0 z-10 overflow-y-auto">
+    <div
+      class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+    >
+      <div
+        class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl"
+      >
+        <!-- Modal Header -->
+        <div
+          class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-100"
+        >
+          <h3
+            class="text-lg font-semibold leading-6 text-gray-900"
+            id="modalTitle"
+          >
+            Details
+          </h3>
+          <button
+            type="button"
+            id="closeModal"
+            class="text-gray-400 hover:text-gray-500 transition-colors"
+          >
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="px-4 py-5 sm:p-6" id="modalContent">
+          <!-- Content injected via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grid.js CSS & JS -->
+<link
+  href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css"
+  rel="stylesheet"
+/>
+<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+
+<style>
+  /* Custom Grid.js Styles */
+  .gridjs-tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .gridjs-tr:hover td {
+    background-color: #f9fafb;
+  }
+  .gridjs-wrapper {
+    border-radius: 0.75rem;
+  }
+  .gridjs-container {
+    color: #374151;
+  }
+  .gridjs-search-input {
+    border-radius: 0.5rem;
+    border-color: #e5e7eb;
+    padding-left: 1rem;
+  }
+  .gridjs-search-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+</style>
+
+<script>
+  let currentType = "countries";
+  let gridInstance = null;
+
+  const columns = {
+    countries: [
+      {
+        name: "Flag",
+        formatter: (cell) =>
+          gridjs.html(`<span class="text-2xl">${cell}</span>`),
+      },
+      { name: "Name" },
+      { name: "Capital" },
+      { name: "Region" },
+      {
+        name: "Currency",
+        formatter: (cell) => (cell ? `${cell.name} (${cell.code})` : "-"),
+      },
+      { name: "Data", hidden: true },
+    ],
+    states: [
+      { name: "Name" },
+      { name: "Code" },
+      {
+        name: "Country",
+        formatter: (cell) =>
+          gridjs.html(`<span class="mr-2">${cell.emoji}</span>${cell.name}`),
+      },
+      { name: "Type", formatter: (cell) => cell || "-" },
+      { name: "Data", hidden: true },
+    ],
+    cities: [
+      { name: "Name" },
+      { name: "State" },
+      {
+        name: "Country",
+        formatter: (cell) =>
+          gridjs.html(`<span class="mr-2">${cell.emoji}</span>${cell.name}`),
+      },
+      { name: "Coordinates", formatter: (cell) => `${cell.lat}, ${cell.lng}` },
+      { name: "Data", hidden: true },
+    ],
+  };
+
+  function initGrid() {
+    if (gridInstance) {
+      gridInstance.destroy();
+    }
+
+    gridInstance = new gridjs.Grid({
+      columns: columns[currentType],
+      server: {
+        url: `/api/countries?type=${currentType}`,
+        then: (data) => data.data.map((item) => mapData(item, currentType)),
+        total: (data) => data.pagination.total,
+      },
+      pagination: {
+        enabled: true,
+        limit: 10,
+        server: {
+          url: (prev, page, limit) => {
+            const hasQuery = prev.includes("?");
+            return `${prev}${hasQuery ? "&" : "?"}limit=${limit}&page=${
+              page + 1
+            }`;
+          },
+        },
+      },
+      search: {
+        enabled: true,
+        server: {
+          url: (prev, keyword) => {
+            const hasQuery = prev.includes("?");
+            return `${prev}${hasQuery ? "&" : "?"}search=${keyword}`;
+          },
+        },
+      },
+      className: {
+        table: "w-full text-sm text-left text-gray-500",
+        th: "px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50",
+        td: "px-6 py-4 whitespace-nowrap border-b border-gray-100",
+      },
+      style: {
+        table: { "white-space": "nowrap" },
+      },
+    }).render(document.getElementById("grid-wrapper"));
+
+    // Row click event
+    gridInstance.on("rowClick", (...args) => {
+      const rowData = JSON.parse(args[1].cells[args[1].cells.length - 1].data);
+      openModal(rowData);
+    });
+  }
+
+  function mapData(item, type) {
+    if (type === "countries") {
+      return [
+        item.emoji,
+        item.name,
+        item.capital || "-",
+        item.region || "-",
+        { name: item.currency_name, code: item.currency },
+        JSON.stringify(item),
+      ];
+    } else if (type === "states") {
+      return [
+        item.name,
+        item.state_code,
+        { name: item.country_name, emoji: item.country_emoji },
+        item.type || "-",
+        JSON.stringify(item),
+      ];
+    } else {
+      return [
+        item.name,
+        item.state_name || "-",
+        { name: item.country_name, emoji: item.country_emoji },
+        {
+          lat: parseFloat(item.latitude).toFixed(2),
+          lng: parseFloat(item.longitude).toFixed(2),
+        },
+        JSON.stringify(item),
+      ];
+    }
+  }
+
+  window.switchTab = (type) => {
+    currentType = type;
+
+    // Update UI
+    ["countries", "states", "cities"].forEach((t) => {
+      const btn = document.getElementById(`tab-${t}`);
+      if (t === type) {
+        btn.className =
+          "px-6 py-2.5 rounded-lg text-sm font-medium transition-all bg-white text-gray-900 shadow-sm";
+      } else {
+        btn.className =
+          "px-6 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 transition-all";
+      }
+    });
+
+    initGrid();
+  };
+
+  // Modal Logic
+  const modal = document.getElementById("detailsModal");
+  const backdrop = document.getElementById("modalBackdrop");
+  const closeBtn = document.getElementById("closeModal");
+  const modalContent = document.getElementById("modalContent");
+
+  function openModal(data) {
+    let content = "";
+
+    if (currentType === "countries") {
+      content = `
+                <div class="flex flex-col sm:flex-row gap-6 items-start">
+                    <div class="flex-shrink-0 text-center sm:text-left">
+                        <span class="text-8xl block mb-2">${data.emoji}</span>
+                        <h2 class="text-2xl font-bold text-gray-900">${
+                          data.name
+                        }</h2>
+                        <p class="text-gray-500 italic">${data.native || ""}</p>
+                    </div>
+                    <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 w-full">
+                        <div><dt class="text-sm font-medium text-gray-500">Capital</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.capital || "-"
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Region</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.region || "-"
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Subregion</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.subregion || "-"
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Population</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.population
+                            ? parseInt(data.population).toLocaleString()
+                            : "-"
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Currency</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.currency
+                            ? `${data.currency_name} (${data.currency})`
+                            : "-"
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Phone Code</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">+${
+                          data.phonecode
+                        }</dd></div>
+                    </div>
+                </div>
+            `;
+    } else if (currentType === "states") {
+      content = `
+                <div class="space-y-6">
+                    <div class="border-b border-gray-100 pb-4">
+                        <h2 class="text-2xl font-bold text-gray-900">${
+                          data.name
+                        }</h2>
+                        <p class="text-gray-500">State/Region in ${
+                          data.country_emoji
+                        } ${data.country_name}</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div><dt class="text-sm font-medium text-gray-500">State Code</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.state_code
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Type</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.type || "-"
+                        }</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">Coordinates</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.latitude
+                        }, ${data.longitude}</dd></div>
+                    </div>
+                </div>
+            `;
+    } else {
+      content = `
+                <div class="space-y-6">
+                    <div class="border-b border-gray-100 pb-4">
+                        <h2 class="text-2xl font-bold text-gray-900">${
+                          data.name
+                        }</h2>
+                        <p class="text-gray-500">City in ${
+                          data.state_name ? `${data.state_name}, ` : ""
+                        }${data.country_emoji} ${data.country_name}</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div><dt class="text-sm font-medium text-gray-500">Coordinates</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.latitude
+                        }, ${data.longitude}</dd></div>
+                        <div><dt class="text-sm font-medium text-gray-500">WikiData ID</dt><dd class="mt-1 text-sm text-gray-900 font-semibold">${
+                          data.wikiDataId || "-"
+                        }</dd></div>
+                    </div>
+                </div>
+            `;
+    }
+
+    modalContent.innerHTML = content;
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  const closeModal = () => {
+    modal.classList.add("hidden");
+    document.body.style.overflow = "";
+  };
+
+  backdrop.addEventListener("click", closeModal);
+  closeBtn.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+
+  // Initial load
+  initGrid();
+</script>

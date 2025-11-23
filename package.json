@@ -1,0 +1,30 @@
+{
+  "name": "leviro-utils",
+  "version": "1.0.0",
+  "description": "Some utils tools to help you in daily tasks",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./public/css/output.css --watch",
+    "build:css": "tailwindcss -i ./src/input.css -o ./public/css/output.css --minify"
+  },
+  "keywords": [
+    "secret-generator",
+    "country-codes",
+    "currency converter"
+  ],
+  "author": "Abdo Diab",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.17",
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.4.6",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "express-rate-limit": "^8.2.1",
+    "tailwindcss": "^4.1.17"
+  }
+}

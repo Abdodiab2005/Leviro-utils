@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body
+    class="bg-gray-50 text-gray-900 font-sans antialiased flex flex-col min-h-screen"
+  >
+    <%- include('../partials/header') %>
+
+    <main class="grow container mx-auto px-4 py-8"><%- body %></main>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) =>
+              console.log("SW registered:", registration.scope)
+            )
+            .catch((err) => console.log("SW registration failed:", err));
+        });
+      }
+    </script>
+  </body>
+</html>

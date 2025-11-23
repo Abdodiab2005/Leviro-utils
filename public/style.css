@@ -1,0 +1,109 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #0d1117;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+* {
+  user-select: none;
+}
+.container {
+  width: 450px;
+  padding: 20px;
+  background: #161b22;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #0006;
+}
+
+input[type="range"] {
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+textarea {
+  width: -webkit-fill-available;
+  height: 120px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #fff;
+  border-radius: 8px;
+  resize: none;
+}
+
+button {
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 12px;
+  background-color: #0057da;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  background-color: #0e479c;
+}
+
+#copyBtn {
+  width: 100%;
+  margin-top: 5px;
+  font-size: 17px;
+  padding: 8px 15px;
+  background-color: #238636;
+}
+
+#copyBtn:hover {
+  background-color: #216e31;
+}
+
+.alert {
+  position: fixed;
+  top: 20px;
+  right: -300px; /* تبدأ برا الشاشة */
+  background: #ff4444;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  display: block;
+  min-width: 220px;
+  text-align: left;
+  font-size: 16px;
+  z-index: 9999;
+  transition: right 0.4s ease; /* الانيميشن */
+}
+
+.alert.show {
+  right: 20px; /* تدخل الشاشة */
+}
+
+.success {
+  background: #4caf50;
+}
+
+.output {
+  margin-top: 40px;
+}
+
+h3 {
+  margin-bottom: 6px;
+  margin-left: 8px;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  padding: 2px;
+}

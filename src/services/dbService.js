@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import path from "path";
 
-const dbPath = path.join(process.cwd(), "public", "world.sqlite3");
+const dbPath = path.join(process.cwd(), "data", "world.sqlite3");
 const db = new Database(dbPath, { readonly: true });
 
 export const getCurrencies = () => {

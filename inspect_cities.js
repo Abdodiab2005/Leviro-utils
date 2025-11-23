@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-const db = new Database("public/world.sqlite3");
+const db = new Database("data/world.sqlite3");
 
 try {
   const columns = db.prepare("PRAGMA table_info(cities)").all();

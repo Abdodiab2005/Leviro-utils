@@ -4,6 +4,8 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import expressLayouts from "express-ejs-layouts";
 import mainRoutes from "./src/routes/index.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const __dirname = path.resolve();

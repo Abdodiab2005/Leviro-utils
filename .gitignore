@@ -3,3 +3,4 @@ package-lock.json
 public/css/output.css
 .env
 data/world.sqlite3
+public/downloads

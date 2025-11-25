@@ -1,0 +1,115 @@
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Word Counter</h1>
+
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="mb-4 flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-700">Enter Text</h2>
+      <button
+        id="pasteBtn"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 flex items-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          />
+        </svg>
+        Paste
+      </button>
+    </div>
+
+    <textarea
+      id="textInput"
+      rows="10"
+      class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
+      placeholder="Type or paste your text here..."
+    ></textarea>
+
+    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-blue-50 rounded-lg p-4 text-center">
+        <span class="block text-3xl font-bold text-blue-600" id="wordCount"
+          >0</span
+        >
+        <span class="text-gray-600">Words</span>
+      </div>
+      <div class="bg-green-50 rounded-lg p-4 text-center">
+        <span class="block text-3xl font-bold text-green-600" id="charCount"
+          >0</span
+        >
+        <span class="text-gray-600">Characters</span>
+      </div>
+      <div class="bg-purple-50 rounded-lg p-4 text-center">
+        <span
+          class="block text-3xl font-bold text-purple-600"
+          id="sentenceCount"
+          >0</span
+        >
+        <span class="text-gray-600">Sentences</span>
+      </div>
+      <div class="bg-yellow-50 rounded-lg p-4 text-center">
+        <span
+          class="block text-3xl font-bold text-yellow-600"
+          id="paragraphCount"
+          >0</span
+        >
+        <span class="text-gray-600">Paragraphs</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const textInput = document.getElementById("textInput");
+  const pasteBtn = document.getElementById("pasteBtn");
+  const wordCount = document.getElementById("wordCount");
+  const charCount = document.getElementById("charCount");
+  const sentenceCount = document.getElementById("sentenceCount");
+  const paragraphCount = document.getElementById("paragraphCount");
+
+  function updateCounts() {
+    const text = textInput.value;
+
+    // Character count
+    charCount.textContent = text.length;
+
+    // Word count
+    const words = text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+    wordCount.textContent = words.length;
+
+    // Sentence count
+    const sentences = text
+      .split(/[.!?]+/)
+      .filter((sentence) => sentence.trim().length > 0);
+    sentenceCount.textContent = sentences.length;
+
+    // Paragraph count
+    const paragraphs = text
+      .split(/\n+/)
+      .filter((para) => para.trim().length > 0);
+    paragraphCount.textContent = paragraphs.length;
+  }
+
+  textInput.addEventListener("input", updateCounts);
+
+  pasteBtn.addEventListener("click", async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      textInput.value = text;
+      updateCounts();
+    } catch (err) {
+      console.error("Failed to read clipboard contents: ", err);
+      alert("Failed to paste from clipboard. Please allow clipboard access.");
+    }
+  });
+</script>

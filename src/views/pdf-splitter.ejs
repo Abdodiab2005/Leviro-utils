@@ -1,0 +1,162 @@
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">PDF Splitter</h1>
+
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="pdfFile">
+        Upload PDF (Max 10MB)
+      </label>
+      <input
+        type="file"
+        id="pdfFile"
+        accept=".pdf"
+        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+      />
+    </div>
+
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="pages">
+        Page Selection
+      </label>
+      <p class="text-sm text-gray-500 mb-2">
+        Enter page numbers or ranges (e.g., 1, 2, 5-10)
+      </p>
+      <input
+        type="text"
+        id="pages"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        placeholder="e.g., 1, 3-5, 10"
+      />
+    </div>
+
+    <div class="mb-6" id="progressContainer" style="display: none">
+      <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+        <div
+          class="bg-blue-600 h-2.5 rounded-full"
+          style="width: 0%"
+          id="progressBar"
+        ></div>
+      </div>
+      <p class="text-sm text-gray-600 mt-2 text-center" id="progressText">
+        Waiting...
+      </p>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <button
+        id="splitBtn"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="button"
+      >
+        Split PDF
+      </button>
+      <a
+        id="downloadBtn"
+        href="#"
+        class="hidden bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Download Split PDF
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  const splitBtn = document.getElementById("splitBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const progressContainer = document.getElementById("progressContainer");
+  const progressBar = document.getElementById("progressBar");
+  const progressText = document.getElementById("progressText");
+  const pdfFileInput = document.getElementById("pdfFile");
+  const pagesInput = document.getElementById("pages");
+
+  // Add page count display element
+  const fileLabel = document.querySelector('label[for="pdfFile"]');
+  const pageCountSpan = document.createElement("span");
+  pageCountSpan.className = "ml-2 text-sm font-normal text-gray-500";
+  fileLabel.appendChild(pageCountSpan);
+
+  pdfFileInput.addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/pdf") {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        const count = pdfDoc.getPageCount();
+        pageCountSpan.textContent = `(${count} pages)`;
+      } catch (err) {
+        console.error("Error reading PDF:", err);
+        pageCountSpan.textContent = "(Error reading file)";
+      }
+    } else {
+      pageCountSpan.textContent = "";
+    }
+  });
+
+  socket.on("connect", () => {
+    console.log("Connected to socket.io server");
+  });
+
+  socket.on("progress", (data) => {
+    progressBar.style.width = `${data.percent}%`;
+    progressText.textContent = data.message;
+  });
+
+  splitBtn.addEventListener("click", async () => {
+    const file = pdfFileInput.files[0];
+    const pages = pagesInput.value;
+
+    if (!file) {
+      alert("Please select a PDF file.");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File size exceeds 10MB limit.");
+      return;
+    }
+
+    if (!pages) {
+      alert("Please enter page selection.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("pdfFile", file);
+    formData.append("pages", pages);
+    formData.append("socketId", socket.id);
+
+    progressContainer.style.display = "block";
+    splitBtn.disabled = true;
+    downloadBtn.classList.add("hidden");
+    progressBar.style.width = "0%";
+    progressText.textContent = "Uploading...";
+
+    try {
+      const response = await fetch("/api/pdf/split", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        downloadBtn.href = result.downloadUrl;
+        downloadBtn.classList.remove("hidden");
+        progressText.textContent = "Completed!";
+      } else {
+        alert(result.error || "An error occurred.");
+        progressContainer.style.display = "none";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while processing the request.");
+      progressContainer.style.display = "none";
+    } finally {
+      splitBtn.disabled = false;
+    }
+  });
+</script>

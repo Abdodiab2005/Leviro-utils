@@ -51,7 +51,19 @@ app.use((err, req, res, next) => {
   });
 });
 
+import { createServer } from "http";
+import { Server } from "socket.io";
+
+const server = createServer(app);
+const io = new Server(server);
+
+// Make io available in routes
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
+server.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );

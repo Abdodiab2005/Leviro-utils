@@ -1,0 +1,41 @@
+input[type="range"],
+input[type="date"] {
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+textarea {
+  width: -webkit-fill-available;
+  min-height: 120px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+.alert {
+  position: fixed;
+  top: 20px;
+  right: -300px; /* تبدأ برا الشاشة */
+  background: #ff4444;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  display: block;
+  min-width: 220px;
+  text-align: left;
+  font-size: 16px;
+  z-index: 9999;
+  transition: right 0.4s ease; /* الانيميشن */
+}
+
+.alert.show {
+  right: 20px; /* تدخل الشاشة */
+}
+
+.success {
+  background: #4caf50;
+}

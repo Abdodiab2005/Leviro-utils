@@ -1,0 +1,205 @@
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">SEO Meta Tags Generator</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Input Form -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Website Details</h2>
+      <form id="seoForm" class="space-y-4">
+        <div>
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="siteName"
+            >Website Name</label
+          >
+          <input
+            type="text"
+            id="siteName"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="My Website"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="pageTitle"
+            >Page Title</label
+          >
+          <input
+            type="text"
+            id="pageTitle"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Home | My Website"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="description"
+            >Description</label
+          >
+          <textarea
+            id="description"
+            rows="3"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="A brief description of your page content."
+          ></textarea>
+        </div>
+        <div>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="url"
+            >Page URL</label
+          >
+          <input
+            type="url"
+            id="url"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="https://example.com"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="imageUrl"
+            >Image URL (OG/Twitter)</label
+          >
+          <input
+            type="url"
+            id="imageUrl"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+        <div>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="author"
+            >Author</label
+          >
+          <input
+            type="text"
+            id="author"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Your Name"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="twitterHandle"
+            >Twitter Handle</label
+          >
+          <input
+            type="text"
+            id="twitterHandle"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="@username"
+          />
+        </div>
+      </form>
+    </div>
+
+    <!-- Output -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-gray-700">Generated Meta Tags</h2>
+        <button
+          id="copyBtn"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm transition duration-300"
+        >
+          Copy Code
+        </button>
+      </div>
+      <textarea
+        id="output"
+        readonly
+        class="w-full h-[500px] p-4 bg-gray-50 border border-gray-300 rounded-lg font-mono text-sm focus:outline-none resize-none"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+  const inputs = document.querySelectorAll("#seoForm input, #seoForm textarea");
+  const output = document.getElementById("output");
+  const copyBtn = document.getElementById("copyBtn");
+
+  function extractKeywords(text) {
+    if (!text) return "";
+    const stopWords = [
+      "a",
+      "an",
+      "the",
+      "and",
+      "or",
+      "but",
+      "is",
+      "are",
+      "was",
+      "were",
+      "in",
+      "on",
+      "at",
+      "to",
+      "for",
+      "of",
+      "with",
+      "by",
+    ];
+    const words = text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, "")
+      .split(/\s+/);
+    const keywords = words.filter(
+      (word) => word.length > 2 && !stopWords.includes(word)
+    );
+    return [...new Set(keywords)].slice(0, 10).join(", ");
+  }
+
+  function generateTags() {
+    const data = {};
+    inputs.forEach((input) => (data[input.id] = input.value));
+
+    const keywords = extractKeywords(data.description + " " + data.siteName);
+
+    const tags = [
+      `<!-- Primary Meta Tags -->`,
+      `<title>${data.pageTitle}</title>`,
+      `<meta name="title" content="${data.pageTitle}">`,
+      `<meta name="description" content="${data.description}">`,
+      `<meta name="keywords" content="${keywords}">`,
+      `<meta name="author" content="${data.author}">`,
+      ``,
+      `<!-- Open Graph / Facebook -->`,
+      `<meta property="og:type" content="website">`,
+      `<meta property="og:url" content="${data.url}">`,
+      `<meta property="og:title" content="${data.pageTitle}">`,
+      `<meta property="og:description" content="${data.description}">`,
+      `<meta property="og:image" content="${data.imageUrl}">`,
+      ``,
+      `<!-- Twitter -->`,
+      `<meta property="twitter:card" content="summary_large_image">`,
+      `<meta property="twitter:url" content="${data.url}">`,
+      `<meta property="twitter:title" content="${data.pageTitle}">`,
+      `<meta property="twitter:description" content="${data.description}">`,
+      `<meta property="twitter:image" content="${data.imageUrl}">`,
+      data.twitterHandle
+        ? `<meta name="twitter:creator" content="${data.twitterHandle}">`
+        : "",
+    ]
+      .filter((line) => line !== "")
+      .join("\n");
+
+    output.value = tags;
+  }
+
+  inputs.forEach((input) => input.addEventListener("input", generateTags));
+
+  copyBtn.addEventListener("click", () => {
+    output.select();
+    document.execCommand("copy");
+    const originalText = copyBtn.textContent;
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => (copyBtn.textContent = originalText), 2000);
+  });
+
+  // Initial generation
+  generateTags();
+</script>

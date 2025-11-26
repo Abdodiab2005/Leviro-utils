@@ -5,25 +5,34 @@ export const getSecretGenerator = (req, res) => {
     title: "Secret Generator",
     description:
       "Generate secure, random secrets and passwords locally in your browser.",
+    schemaData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Secret Generator",
+      url: "https://leviro.net/services/secret-generator",
+      description:
+        "Generate secure, random secrets and passwords locally in your browser.",
+      applicationCategory: "Utility",
+      operatingSystem: "All",
+    }),
   });
 };
 
 export const generateSecretAPI = async (req, res) => {
   try {
     const { length = 32 } = req.body;
-    const saltRounds = 10;
-    // Generate a random string to hash
-    const randomString =
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15);
-    const hash = await bcrypt.hash(randomString, saltRounds);
 
-    // Return the hash truncated or extended to requested length (though bcrypt hashes are fixed length usually)
-    // The user asked to "generate random secret key" using bcrypt.
-    // Bcrypt hashes are 60 chars. If user wants different length, we might just return the hash.
-    // Let's return the full hash as the secret.
+    // Validate length
+    const secretLength = Math.min(Math.max(parseInt(length), 8), 255);
 
-    res.json({ secret: hash });
+    // Generate random bytes
+    const crypto = await import("crypto");
+    const secret = crypto
+      .randomBytes(Math.ceil(secretLength / 2))
+      .toString("hex")
+      .slice(0, secretLength);
+
+    res.json({ secret });
   } catch (error) {
     console.error("Secret generation error:", error);
     res.status(500).json({ error: "Failed to generate secret" });

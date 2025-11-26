@@ -9,6 +9,16 @@ export const getWorldInfo = (req, res) => {
     title: "World Info",
     description:
       "Explore detailed information about countries, states, and cities worldwide.",
+    schemaData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "World Info",
+      url: "https://leviro.net/services/world-info",
+      description:
+        "Explore detailed information about countries, states, and cities worldwide.",
+      applicationCategory: "Utility",
+      operatingSystem: "All",
+    }),
   });
 };
 

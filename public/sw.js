@@ -1,4 +1,4 @@
-const CACHE_NAME = "leviro-utils-v1";
+const CACHE_NAME = "leviro-utils-v2";
 const ASSETS = [
   "/",
   "/css/output.css",
@@ -6,6 +6,15 @@ const ASSETS = [
   "/services/age-calculator",
   "/services/currency-converter",
   "/services/secret-generator",
+  "/services/password-generator",
+  "/services/qr-generator",
+  "/services/json-formatter",
+  "/services/image-converter",
+  "/services/word-counter",
+  "/services/pdf-splitter",
+  "/services/pwa-generator",
+  "/services/seo-generator",
+  "/services/world-info",
 ];
 
 self.addEventListener("install", (event) => {

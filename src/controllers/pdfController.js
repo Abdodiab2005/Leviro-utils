@@ -14,6 +14,15 @@ export const getPdfSplitter = (req, res) => {
   res.render("pdf-splitter", {
     title: "PDF Splitter",
     description: "Split PDF files by page ranges.",
+    schemaData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "PDF Splitter",
+      url: "https://leviro.net/services/pdf-splitter",
+      description: "Split PDF files by page ranges.",
+      applicationCategory: "Utility",
+      operatingSystem: "All",
+    }),
   });
 };
 

@@ -15,6 +15,16 @@ export const getPwaGenerator = (req, res) => {
   res.render("pwa-generator", {
     title: "PWA Asset Generator",
     description: "Generate PWA assets, manifest, and more from a single logo.",
+    schemaData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "PWA Asset Generator",
+      url: "https://leviro.net/services/pwa-generator",
+      description:
+        "Generate PWA assets, manifest, and more from a single logo.",
+      applicationCategory: "Utility",
+      operatingSystem: "All",
+    }),
   });
 };
 

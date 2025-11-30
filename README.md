@@ -24,6 +24,9 @@ Calculate your exact age with precision down to days. Get detailed breakdowns in
 - Next birthday countdown
 - Zodiac sign information
 
+### 🔗 Demo
+You can try it from here 👉 [🔗 Demo](https://utils.leviro.net)
+
 ### 💱 Currency Converter
 Real-time currency conversion powered by the latest exchange rates:
 - Support for 150+ world currencies
@@ -216,9 +219,6 @@ This project is licensed under the **ISC License** - see the [LICENSE](LICENSE) 
 ## 🙏 Acknowledgments
 
 - Currency exchange rates provided by [Exchange Rate API](https://exchangerate-api.com/)
-- Country data sourced from [REST Countries](https://restcountries.com/)
-- Icons and UI components from TailwindCSS ecosystem
-- Flag emojis for enhanced UX
 
 ## 📊 Project Stats
 

@@ -24,7 +24,7 @@
 <meta property="twitter:image" content="/icons/icon-512x512.png" />
 
 <script type="application/ld+json">
-  <%= schemaData %>
+  <%= typeof schemaData !== 'undefined' ? schemaData : '' %>
 </script>
 
 <link rel="stylesheet" href="/css/output.css" />

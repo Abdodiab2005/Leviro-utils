@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 // Configure Multer for memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit
 }).single("pdfFile");
 
 export const getPdfSplitter = (req, res) => {

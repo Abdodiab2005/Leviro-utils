@@ -28,6 +28,14 @@
     const STORAGE_KEY = "leviro-dt-banner-dismissed";
     if (sessionStorage.getItem(STORAGE_KEY) === "1") return;
 
+    // Skip detection on non-desktop devices: mobile browsers and installed PWAs
+    // report outer/inner dimensions inconsistently, which would falsely flag
+    // DevTools as open. DevTools is a desktop-only concern in practice.
+    const mql = (q) => window.matchMedia && window.matchMedia(q).matches;
+    const isTouchOnly = mql("(hover: none)") || mql("(pointer: coarse)");
+    const isStandalone = mql("(display-mode: standalone)") || window.navigator.standalone === true;
+    if (isTouchOnly || isStandalone) return;
+
     let shown = false;
     function show() {
       if (shown) return;
@@ -40,13 +48,17 @@
       sessionStorage.setItem(STORAGE_KEY, "1");
     });
 
+    // Heuristic 1: outer/inner size delta - reliable only when DevTools
+    // is docked inside the window. We require a sizeable delta to avoid
+    // tripping on browser scrollbars or zoom levels.
     function checkSize() {
-      const threshold = 160;
+      const threshold = 200;
       const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
       const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
       if (widthDiff > threshold || heightDiff > threshold) show();
     }
 
+    // Heuristic 2: a getter that fires when DevTools renders a logged object
     const trap = {};
     Object.defineProperty(trap, "id", {
       get() { show(); return "leviro-utils"; },

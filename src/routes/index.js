@@ -37,6 +37,15 @@ import {
   getJwtDecoder,
   getRegexTester,
   getCssMinifier,
+  getHtmlViewer,
+  getHtmlToMarkdown,
+  getMarkdownToHtml,
+  getMarkdownToWhatsapp,
+  getBmiCalculator,
+  getTipCalculator,
+  getUnitConverter,
+  getLoanCalculator,
+  getDiscountCalculator,
 } from "../controllers/utilsController.js";
 import {
   apiLimiter,
@@ -103,6 +112,19 @@ router.get("/services/timestamp-converter", getTimestampConverter);
 router.get("/services/jwt-decoder", getJwtDecoder);
 router.get("/services/regex-tester", getRegexTester);
 router.get("/services/css-minifier", getCssMinifier);
+
+// HTML / Markdown converters
+router.get("/services/html-viewer", getHtmlViewer);
+router.get("/services/html-to-markdown", getHtmlToMarkdown);
+router.get("/services/markdown-to-html", getMarkdownToHtml);
+router.get("/services/markdown-to-whatsapp", getMarkdownToWhatsapp);
+
+// Daily life calculators
+router.get("/services/bmi-calculator", getBmiCalculator);
+router.get("/services/tip-calculator", getTipCalculator);
+router.get("/services/unit-converter", getUnitConverter);
+router.get("/services/loan-calculator", getLoanCalculator);
+router.get("/services/discount-calculator", getDiscountCalculator);
 
 // API Routes - each gets a tailored rate limit
 router.get("/api/currencies", apiLimiter, getCurrenciesAPI);

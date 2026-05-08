@@ -1,0 +1,89 @@
+<div class="max-w-7xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Markdown to HTML Converter',
+    subtitle: 'Convert Markdown to clean, semantic HTML you can paste anywhere. Supports tables, images, code blocks, task lists, and inline HTML.',
+    icon: 'fa-solid fa-code',
+    color: 'bg-rose-100 text-rose-600'
+  }) %>
+
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-2">
+        <label class="text-sm font-semibold text-gray-700">Markdown input</label>
+        <button id="m2h-clear" class="text-sm text-gray-500"><i class="fa-regular fa-trash-can mr-1"></i>Clear</button>
+      </div>
+      <textarea id="m2h-in" rows="20" class="w-full p-4 border border-gray-200 rounded-xl font-mono text-sm flex-1" spellcheck="false"></textarea>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-2">
+        <div class="flex gap-2 bg-gray-100 p-1 rounded-lg">
+          <button data-view="source" class="m2h-tab px-3 py-1 rounded-md bg-white shadow text-sm font-medium">Source</button>
+          <button data-view="preview" class="m2h-tab px-3 py-1 rounded-md text-sm font-medium text-gray-600">Preview</button>
+        </div>
+        <button id="m2h-copy" class="text-sm text-rose-600"><i class="fa-regular fa-copy mr-1"></i>Copy HTML</button>
+      </div>
+      <textarea id="m2h-source" rows="20" readonly class="w-full p-4 border border-gray-200 rounded-xl bg-gray-50 font-mono text-xs flex-1"></textarea>
+      <article id="m2h-preview" class="md-rendered hidden p-4 border border-gray-200 rounded-xl bg-gray-50 flex-1 overflow-auto"></article>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mt-4 flex flex-wrap gap-4 text-sm">
+    <label class="flex items-center gap-2"><input type="checkbox" id="m2h-breaks" checked class="w-4 h-4">Treat newlines as &lt;br&gt;</label>
+    <label class="flex items-center gap-2"><input type="checkbox" id="m2h-pretty" checked class="w-4 h-4">Pretty-print HTML</label>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" crossorigin="anonymous" defer></script>
+<script>
+  (function () {
+    const input = document.getElementById("m2h-in");
+    const source = document.getElementById("m2h-source");
+    const preview = document.getElementById("m2h-preview");
+    const breaks = document.getElementById("m2h-breaks");
+    const pretty = document.getElementById("m2h-pretty");
+    const tabs = document.querySelectorAll(".m2h-tab");
+    const initial = "# Sample\n\nThis is **bold** and *italic*.\n\n## List\n\n- One\n- Two\n- Three\n\n## Table\n\n| Col A | Col B |\n|-------|-------|\n| 1     | 2     |\n| 3     | 4     |\n\n```js\nconsole.log('hello');\n```";
+
+    function format(html) {
+      if (!pretty.checked) return html;
+      // Lightweight pretty-printer: insert newlines around block-level tags
+      return html
+        .replace(/(<\/(?:p|h\d|ul|ol|li|table|thead|tbody|tr|pre|blockquote|div)>)/g, "$1\n")
+        .replace(/(<(?:p|h\d|ul|ol|li|table|thead|tbody|tr|pre|blockquote|div|img|hr)\b[^>]*>)/g, "$1")
+        .replace(/\n{3,}/g, "\n\n").trim();
+    }
+
+    function convert() {
+      if (typeof marked === "undefined") { setTimeout(convert, 100); return; }
+      marked.setOptions({ gfm: true, breaks: breaks.checked, mangle: false });
+      const html = marked.parse(input.value || "");
+      source.value = format(html);
+      preview.innerHTML = html;
+    }
+
+    tabs.forEach((b) => b.addEventListener("click", () => {
+      tabs.forEach((x) => {
+        const active = x === b;
+        x.classList.toggle("bg-white", active);
+        x.classList.toggle("shadow", active);
+        x.classList.toggle("text-gray-600", !active);
+      });
+      const showSource = b.dataset.view === "source";
+      source.classList.toggle("hidden", !showSource);
+      preview.classList.toggle("hidden", showSource);
+    }));
+
+    [input, breaks, pretty].forEach((el) => el.addEventListener("input", convert));
+    document.getElementById("m2h-copy").addEventListener("click", async () => {
+      if (source.value) await navigator.clipboard.writeText(source.value);
+    });
+    document.getElementById("m2h-clear").addEventListener("click", () => {
+      input.value = "";
+      convert();
+    });
+
+    input.value = initial;
+    window.addEventListener("load", convert);
+    convert();
+  })();
+</script>

@@ -1,0 +1,77 @@
+<div class="max-w-2xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Discount Calculator',
+    subtitle: 'Calculate sale prices, savings, and final costs from any percentage off. Optionally apply a tax on top of the discounted price.',
+    icon: 'fa-solid fa-tags',
+    color: 'bg-red-100 text-red-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div class="grid sm:grid-cols-2 gap-4">
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">Original price</span>
+        <input id="d-orig" type="number" min="0" step="0.01" value="100" class="w-full p-3 border border-gray-200 rounded-xl mt-1">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">Discount (%)</span>
+        <input id="d-pct" type="number" min="0" max="100" step="0.01" value="20" class="w-full p-3 border border-gray-200 rounded-xl mt-1">
+      </label>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+      <% [10, 15, 20, 25, 50].forEach((v) => { %>
+        <button data-d="<%= v %>" class="d-preset px-2 py-2 bg-gray-100 hover:bg-red-100 hover:text-red-700 rounded-lg text-sm font-medium"><%= v %>% off</button>
+      <% }); %>
+    </div>
+
+    <label class="flex items-center gap-3 text-sm">
+      <input id="d-tax-toggle" type="checkbox" class="w-4 h-4 text-red-600 rounded">
+      <span class="text-gray-700">Add sales tax</span>
+      <input id="d-tax" type="number" min="0" step="0.01" value="0" class="w-24 p-2 border border-gray-200 rounded-lg ml-auto">
+      <span class="text-gray-500">%</span>
+    </label>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-gray-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-gray-500 uppercase">You save</div>
+        <div id="d-save" class="text-2xl font-bold text-green-600">$0.00</div>
+      </div>
+      <div class="bg-red-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-red-600 uppercase">Final price</div>
+        <div id="d-final" class="text-2xl font-extrabold text-red-700">$0.00</div>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-gray-500 uppercase">Tax added</div>
+        <div id="d-taxout" class="text-2xl font-bold text-gray-800">$0.00</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function compute() {
+      const orig = Math.max(0, +$("d-orig").value || 0);
+      const pct = Math.max(0, Math.min(100, +$("d-pct").value || 0));
+      const taxOn = $("d-tax-toggle").checked;
+      const taxPct = Math.max(0, +$("d-tax").value || 0);
+      const saved = orig * (pct / 100);
+      const after = orig - saved;
+      const tax = taxOn ? after * (taxPct / 100) : 0;
+      const final = after + tax;
+      $("d-save").textContent = fmt(saved);
+      $("d-final").textContent = fmt(final);
+      $("d-taxout").textContent = fmt(tax);
+    }
+
+    document.querySelectorAll(".d-preset").forEach((b) => b.addEventListener("click", () => {
+      $("d-pct").value = b.dataset.d;
+      compute();
+    }));
+    ["d-orig", "d-pct", "d-tax", "d-tax-toggle"].forEach((id) => $(id).addEventListener("input", compute));
+    compute();
+  })();
+</script>

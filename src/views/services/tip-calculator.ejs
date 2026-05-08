@@ -1,0 +1,81 @@
+<div class="max-w-2xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Tip Calculator & Bill Splitter',
+    subtitle: 'Calculate the tip on a bill and split it evenly across any number of people - perfect for restaurants, group outings, and trips.',
+    icon: 'fa-solid fa-hand-holding-dollar',
+    color: 'bg-emerald-100 text-emerald-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <label class="block">
+      <span class="text-sm font-medium text-gray-700">Bill amount</span>
+      <div class="relative mt-1">
+        <span class="absolute left-3 top-3 text-gray-400">$</span>
+        <input id="tip-bill" type="number" min="0" step="0.01" value="50" class="w-full p-3 pl-7 border border-gray-200 rounded-xl text-lg">
+      </div>
+    </label>
+
+    <div>
+      <span class="text-sm font-medium text-gray-700">Tip percentage: <span id="tip-pct-val" class="font-bold text-emerald-600">15</span>%</span>
+      <input id="tip-pct" type="range" min="0" max="50" value="15" class="w-full mt-2 accent-emerald-600">
+      <div class="grid grid-cols-5 gap-2 mt-2">
+        <% [10, 12, 15, 18, 20].forEach((v) => { %>
+          <button data-pct="<%= v %>" class="tip-preset px-2 py-2 bg-gray-100 hover:bg-emerald-100 hover:text-emerald-700 rounded-lg text-sm font-medium"><%= v %>%</button>
+        <% }); %>
+      </div>
+    </div>
+
+    <label class="block">
+      <span class="text-sm font-medium text-gray-700">Split between people</span>
+      <input id="tip-people" type="number" min="1" max="50" value="2" class="w-full p-3 border border-gray-200 rounded-xl mt-1">
+    </label>
+
+    <label class="flex items-center gap-2 text-sm text-gray-700">
+      <input id="tip-round" type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
+      Round each person's share to the nearest dollar
+    </label>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-gray-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-gray-500 uppercase">Tip total</div>
+        <div id="tip-total" class="text-2xl font-bold text-gray-800">$0.00</div>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-gray-500 uppercase">Bill + tip</div>
+        <div id="tip-grand" class="text-2xl font-bold text-gray-800">$0.00</div>
+      </div>
+      <div class="bg-emerald-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-emerald-600 uppercase">Per person</div>
+        <div id="tip-each" class="text-2xl font-extrabold text-emerald-700">$0.00</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => "$" + n.toFixed(2);
+
+    function compute() {
+      const bill = Math.max(0, +$("tip-bill").value || 0);
+      const pct = Math.max(0, +$("tip-pct").value || 0);
+      const people = Math.max(1, +$("tip-people").value || 1);
+      $("tip-pct-val").textContent = pct;
+      const tip = bill * (pct / 100);
+      const grand = bill + tip;
+      let each = grand / people;
+      if ($("tip-round").checked) each = Math.ceil(each);
+      $("tip-total").textContent = fmt(tip);
+      $("tip-grand").textContent = fmt(grand);
+      $("tip-each").textContent = fmt(each);
+    }
+
+    document.querySelectorAll(".tip-preset").forEach((b) => b.addEventListener("click", () => {
+      $("tip-pct").value = b.dataset.pct;
+      compute();
+    }));
+    ["tip-bill", "tip-pct", "tip-people", "tip-round"].forEach((id) => $(id).addEventListener("input", compute));
+    compute();
+  })();
+</script>

@@ -127,3 +127,86 @@ export const getCssMinifier = renderTool("services/css-minifier", {
   keywords:
     "css minifier, css beautifier, css formatter, minify css online, compress css, beautify css",
 });
+
+// HTML / Markdown converters
+export const getHtmlViewer = renderTool("services/html-viewer", {
+  title: "HTML Viewer & Live Preview",
+  slug: "html-viewer",
+  description:
+    "Paste HTML and see it rendered live in a sandboxed iframe. Toggle scripts on/off, edit, and preview emails or components instantly.",
+  keywords:
+    "html viewer, html preview, render html online, html sandbox, live html editor",
+});
+
+export const getHtmlToMarkdown = renderTool("services/html-to-markdown", {
+  title: "HTML to Markdown Converter",
+  slug: "html-to-markdown",
+  description:
+    "Convert HTML into clean Markdown with full GitHub-flavored support: tables, code blocks, lists, and inline formatting.",
+  keywords:
+    "html to markdown, html to md, convert html to markdown online, html2md, gfm converter",
+});
+
+export const getMarkdownToHtml = renderTool("services/markdown-to-html", {
+  title: "Markdown to HTML Converter",
+  slug: "markdown-to-html",
+  description:
+    "Turn Markdown into clean, ready-to-paste HTML. Live preview with optional pretty-printing of the output source.",
+  keywords:
+    "markdown to html, md to html, convert markdown online, markdown converter, gfm to html",
+});
+
+export const getMarkdownToWhatsapp = renderTool("services/markdown-to-whatsapp", {
+  title: "Markdown to WhatsApp Formatter",
+  slug: "markdown-to-whatsapp",
+  description:
+    "Paste Markdown and get text formatted for WhatsApp: **bold** becomes *bold*, *italic* becomes _italic_, headings flatten, tables and HTML are stripped.",
+  keywords:
+    "markdown to whatsapp, whatsapp formatter, convert markdown for whatsapp, whatsapp bold italic, md to whatsapp",
+});
+
+// Daily life calculators
+export const getBmiCalculator = renderTool("services/bmi-calculator", {
+  title: "BMI Calculator",
+  slug: "bmi-calculator",
+  description:
+    "Calculate Body Mass Index (BMI) in metric or imperial units and see your WHO category instantly. Free and runs entirely in your browser.",
+  keywords:
+    "bmi calculator, body mass index, calculate bmi, bmi metric imperial, healthy weight calculator",
+});
+
+export const getTipCalculator = renderTool("services/tip-calculator", {
+  title: "Tip Calculator & Bill Splitter",
+  slug: "tip-calculator",
+  description:
+    "Quickly compute the tip on any bill and split it across multiple people. Choose preset percentages or set a custom rate.",
+  keywords:
+    "tip calculator, bill splitter, restaurant tip calculator, split bill, gratuity calculator",
+});
+
+export const getUnitConverter = renderTool("services/unit-converter", {
+  title: "Unit Converter (Length, Weight, Temperature & More)",
+  slug: "unit-converter",
+  description:
+    "Convert length, weight, temperature, volume, area, speed, and time between metric and imperial units with live two-way conversion.",
+  keywords:
+    "unit converter, length converter, weight converter, temperature converter, metric imperial, volume converter",
+});
+
+export const getLoanCalculator = renderTool("services/loan-calculator", {
+  title: "Loan & EMI Calculator",
+  slug: "loan-calculator",
+  description:
+    "Estimate monthly payments, total interest, and amortization schedule for any loan or mortgage. Adjust amount, rate, and term live.",
+  keywords:
+    "loan calculator, emi calculator, mortgage calculator, monthly payment calculator, amortization, interest calculator",
+});
+
+export const getDiscountCalculator = renderTool("services/discount-calculator", {
+  title: "Discount & Sale Price Calculator",
+  slug: "discount-calculator",
+  description:
+    "Find the final price after a discount, calculate savings, and optionally add sales tax. Quick presets for 10/15/20/25/50% off.",
+  keywords:
+    "discount calculator, sale price calculator, percent off calculator, savings calculator, tax calculator",
+});

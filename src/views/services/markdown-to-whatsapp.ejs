@@ -1,0 +1,138 @@
+<div class="max-w-7xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Markdown to WhatsApp Converter',
+    subtitle: 'Paste Markdown and get text formatted for WhatsApp. Headings flatten to bold, **bold** becomes *bold*, *italic* becomes _italic_, tables and HTML are stripped.',
+    icon: 'fa-brands fa-whatsapp',
+    color: 'bg-green-100 text-green-600'
+  }) %>
+
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-2">
+        <label class="text-sm font-semibold text-gray-700">Markdown input</label>
+        <button id="wa-clear" class="text-sm text-gray-500"><i class="fa-regular fa-trash-can mr-1"></i>Clear</button>
+      </div>
+      <textarea id="wa-in" rows="20" class="w-full p-4 border border-gray-200 rounded-xl font-mono text-sm flex-1" spellcheck="false"></textarea>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col">
+      <div class="flex justify-between items-center mb-2">
+        <label class="text-sm font-semibold text-gray-700">WhatsApp-ready text</label>
+        <button id="wa-copy" class="text-sm text-green-600"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+      </div>
+      <textarea id="wa-out" rows="20" readonly class="w-full p-4 border border-gray-200 rounded-xl bg-gray-50 font-mono text-sm flex-1"></textarea>
+    </div>
+  </div>
+
+  <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-6 text-sm text-gray-700">
+    <h2 class="text-lg font-bold text-gray-900 mb-3">What WhatsApp supports</h2>
+    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+      <div><code class="bg-gray-100 px-1 rounded">*Bold*</code> &rarr; <strong>Bold</strong></div>
+      <div><code class="bg-gray-100 px-1 rounded">_Italic_</code> &rarr; <em>Italic</em></div>
+      <div><code class="bg-gray-100 px-1 rounded">~Strike~</code> &rarr; <s>Strike</s></div>
+      <div><code class="bg-gray-100 px-1 rounded">`code`</code> &rarr; <code>code</code></div>
+      <div><code class="bg-gray-100 px-1 rounded">```block```</code> &rarr; multi-line code</div>
+      <div><code class="bg-gray-100 px-1 rounded">- item</code> &rarr; bulleted list</div>
+    </div>
+    <p class="mt-3 text-gray-600">Markdown features that WhatsApp <strong>doesn't</strong> support are stripped or flattened: headings (<code>#</code>), tables, images, links (kept as <em>text (url)</em>), inline HTML/divs, and horizontal rules.</p>
+  </section>
+</div>
+
+<script>
+  (function () {
+    const input = document.getElementById("wa-in");
+    const out = document.getElementById("wa-out");
+    const initial = "# Welcome to the team!\n\n## Today's agenda\n\n1. **Kickoff** at 10:00 AM\n2. *Quick* product demo\n3. ~~Lunch~~ Working lunch :)\n\n### Resources\n\n- Read the [docs](https://example.com/docs)\n- Check the `setup.md` file\n- Review the budget table:\n\n| Item | Cost |\n|------|------|\n| Tea  | $3   |\n| Cake | $7   |\n\n<div class=\"note\">This div will be stripped for WhatsApp.</div>\n\n```js\nconsole.log('hello WhatsApp');\n```\n\n> Be kind. Always.";
+
+    const BOLD = "", ITAL = "", STRIKE = "", CODEI = "", CODEB = "";
+
+
+    function convert(md) {
+      if (!md) return "";
+      let s = md;
+
+      // 1. Pull out fenced and inline code so we don't transform their contents
+      const codeBlocks = [];
+      s = s.replace(/```([\s\S]*?)```/g, (_, body) => {
+        codeBlocks.push(body);
+        return CODEB + (codeBlocks.length - 1) + CODEB;
+      });
+      const inlineCodes = [];
+      s = s.replace(/`([^`\n]+)`/g, (_, body) => {
+        inlineCodes.push(body);
+        return CODEI + (inlineCodes.length - 1) + CODEI;
+      });
+
+      // 2. Strip HTML tags (divs, spans, etc.) - keep their text content
+      s = s.replace(/<\/?[a-zA-Z][^>]*>/g, "");
+
+      // 3. Strip images entirely (WhatsApp can't embed)
+      s = s.replace(/!\[[^\]]*]\([^)]*\)/g, "");
+
+      // 4. Links: [text](url) -> text (url)
+      s = s.replace(/\[([^\]]+)]\(([^)]+)\)/g, (_, text, url) => `${text} (${url})`);
+
+      // 5. Drop tables: any line with leading | or a separator row.
+      s = s.split("\n").filter((line) => {
+        const t = line.trim();
+        if (!t) return true;
+        if (/^\|.*\|$/.test(t)) return false;
+        if (/^:?-{2,}:?(\s*\|\s*:?-{2,}:?)+$/.test(t)) return false;
+        return true;
+      }).join("\n");
+
+      // 6. Strip horizontal rules
+      s = s.replace(/^\s*(?:---+|\*\*\*+|___+)\s*$/gm, "");
+
+      // 7. Headings: '# Title' -> '*Title*' (bold). Use placeholder for safety.
+      s = s.replace(/^\s{0,3}#{1,6}\s+(.*?)\s*#*\s*$/gm, (_, title) => `${BOLD}${title.trim()}${BOLD}`);
+
+      // 8. Blockquotes: '> text' -> '> text' (WhatsApp shows it as plain text)
+      // Leave as-is; just unwrap leading '> ' so it reads naturally
+      s = s.replace(/^\s*>\s?/gm, "");
+
+      // 9. Bold: **x** or __x__ -> placeholder so we don't double-process
+      s = s.replace(/\*\*([^*\n][^*\n]*?)\*\*/g, (_, body) => `${BOLD}${body}${BOLD}`);
+      s = s.replace(/__([^_\n][^_\n]*?)__/g, (_, body) => `${BOLD}${body}${BOLD}`);
+
+      // 10. Italic: *x* or _x_ -> placeholder.
+      // Note: avoid matching across newlines or empty bodies; require non-space adjacency.
+      s = s.replace(/(^|[^*\w])\*([^\s*][^*\n]*?[^\s*]|[^\s*])\*(?!\w)/g, (_, pre, body) => `${pre}${ITAL}${body}${ITAL}`);
+      s = s.replace(/(^|[^_\w])_([^\s_][^_\n]*?[^\s_]|[^\s_])_(?!\w)/g, (_, pre, body) => `${pre}${ITAL}${body}${ITAL}`);
+
+      // 11. Strikethrough: ~~text~~ -> placeholder (WA uses single ~)
+      s = s.replace(/~~([^~\n]+?)~~/g, (_, body) => `${STRIKE}${body}${STRIKE}`);
+
+      // 12. Ordered lists: keep "1. " etc. WhatsApp keeps them as plain text.
+      // Unordered lists with *, + -> '- ' (WhatsApp accepts '- ')
+      s = s.replace(/^(\s*)[*+]\s+/gm, "$1- ");
+
+      // 13. Task list checkboxes [ ] / [x] -> Unicode boxes
+      s = s.replace(/^(\s*-\s+)\[\s\]\s+/gm, "$1☐ ");
+      s = s.replace(/^(\s*-\s+)\[xX]\s+/gm, "$1☑ ");
+
+      // 14. Convert placeholders back to WhatsApp markers
+      s = s.split(BOLD).map((part, i) => i % 2 === 1 ? `*${part}*` : part).join("");
+      s = s.split(ITAL).map((part, i) => i % 2 === 1 ? `_${part}_` : part).join("");
+      s = s.split(STRIKE).map((part, i) => i % 2 === 1 ? `~${part}~` : part).join("");
+
+      // 15. Restore code
+      s = s.replace(new RegExp(CODEI + "(\\d+)" + CODEI, "g"), (_, idx) => "`" + inlineCodes[+idx] + "`");
+      s = s.replace(new RegExp(CODEB + "(\\d+)" + CODEB, "g"), (_, idx) => "```" + codeBlocks[+idx] + "```");
+
+      // 16. Collapse 3+ blank lines into 2
+      s = s.replace(/\n{3,}/g, "\n\n").trim();
+
+      return s;
+    }
+
+    function run() { out.value = convert(input.value); }
+    input.addEventListener("input", run);
+    document.getElementById("wa-copy").addEventListener("click", async () => {
+      if (out.value) await navigator.clipboard.writeText(out.value);
+    });
+    document.getElementById("wa-clear").addEventListener("click", () => { input.value = ""; run(); });
+
+    input.value = initial;
+    run();
+  })();
+</script>

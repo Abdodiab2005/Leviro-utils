@@ -16,11 +16,33 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
-            .register("/sw.js")
-            .then((registration) =>
-              console.log("SW registered:", registration.scope)
-            )
-            .catch((err) => console.log("SW registration failed:", err));
+            .register("/sw.js", { updateViaCache: "none" })
+            .then((registration) => {
+              // Check for updates whenever the tab becomes visible again
+              document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "visible") registration.update();
+              });
+
+              // If a new SW takes over, refresh once so users see the update
+              let refreshed = false;
+              navigator.serviceWorker.addEventListener("controllerchange", () => {
+                if (refreshed) return;
+                refreshed = true;
+                window.location.reload();
+              });
+
+              // When a new worker finishes installing, ask it to activate now
+              registration.addEventListener("updatefound", () => {
+                const sw = registration.installing;
+                if (!sw) return;
+                sw.addEventListener("statechange", () => {
+                  if (sw.state === "installed" && navigator.serviceWorker.controller) {
+                    sw.postMessage("SKIP_WAITING");
+                  }
+                });
+              });
+            })
+            .catch((err) => console.warn("SW registration failed:", err));
         });
       }
     </script>

@@ -3,19 +3,22 @@ import path from "path";
 import fs from "fs";
 
 export const getImageConverter = (req, res) => {
+  const description =
+    "Convert images between JPG, PNG, WebP, and AVIF formats with adjustable quality and resizing. Fast, free, and private - your images are removed after conversion.";
   res.render("services/image-converter", {
-    title: "Image Converter",
-    description:
-      "Convert images between different formats (JPG, PNG, WEBP, AVIF) with quality control.",
+    title: "Image Converter (JPG, PNG, WebP, AVIF)",
+    description,
+    keywords:
+      "image converter, jpg to png, png to webp, image format converter, convert image online, webp converter, avif converter, compress image",
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Image Converter",
       url: "https://leviro.net/services/image-converter",
-      description:
-        "Convert images between different formats (JPG, PNG, WEBP, AVIF) with quality control.",
-      applicationCategory: "Utility",
+      description,
+      applicationCategory: "Multimedia",
       operatingSystem: "All",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
   });
 };

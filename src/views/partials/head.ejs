@@ -1,27 +1,38 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title><%= title %> | Leviro Utils</title>
+<title><%= title %> | Leviro Utils &mdash; Free Online Tools</title>
 <meta name="description" content="<%= description %>" />
 <meta
   name="keywords"
-  content="age calculator, currency converter, secret generator, password generator, world info, country data, developer tools, utility apps"
+  content="<%= typeof keywords !== 'undefined' ? keywords : 'free online tools, developer tools, age calculator, currency converter, password generator, qr generator, json formatter, image converter, base64 encoder, hash generator, uuid generator, regex tester, jwt decoder, lorem ipsum, color converter, markdown preview, timestamp converter, css minifier, url encoder' %>"
 />
 <meta name="author" content="Leviro Utils" />
 <meta name="theme-color" content="#4f46e5" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="googlebot" content="index, follow" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href="<%= canonicalUrl %>" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://leviro.net/" />
+<meta property="og:site_name" content="Leviro Utils" />
+<meta property="og:url" content="<%= canonicalUrl %>" />
 <meta property="og:title" content="<%= title %> | Leviro Utils" />
 <meta property="og:description" content="<%= description %>" />
-<meta property="og:image" content="/icons/icon-512x512.png" />
+<meta property="og:image" content="<%= siteUrl %>/icons/icon-512x512.png" />
+<meta property="og:locale" content="en_US" />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://leviro.net/" />
-<meta property="twitter:title" content="<%= title %> | Leviro Utils" />
-<meta property="twitter:description" content="<%= description %>" />
-<meta property="twitter:image" content="/icons/icon-512x512.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="<%= canonicalUrl %>" />
+<meta name="twitter:title" content="<%= title %> | Leviro Utils" />
+<meta name="twitter:description" content="<%= description %>" />
+<meta name="twitter:image" content="<%= siteUrl %>/icons/icon-512x512.png" />
+
+<!-- Performance hints -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
 <script type="application/ld+json">
   <%- typeof schemaData !== 'undefined' ? schemaData : '' %>
@@ -31,6 +42,10 @@
 <link rel="stylesheet" href="/css/style.css" />
 
 <link rel="manifest" href="/manifest.json" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"

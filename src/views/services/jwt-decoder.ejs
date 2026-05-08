@@ -1,0 +1,77 @@
+<div class="max-w-4xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'JWT Decoder & Inspector',
+    subtitle: 'Paste a JSON Web Token to inspect its header, payload, and signature. Tokens are decoded entirely in your browser - nothing leaves your device.',
+    icon: 'fa-solid fa-shield-halved',
+    color: 'bg-sky-100 text-sky-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div>
+      <label class="text-sm font-medium text-gray-700 mb-2 block">JWT Token</label>
+      <textarea id="jwt-in" rows="6" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        class="w-full p-4 border border-gray-200 rounded-xl font-mono text-xs"></textarea>
+    </div>
+    <div id="jwt-error" class="hidden p-3 bg-red-50 text-red-700 rounded-xl text-sm"></div>
+    <div class="grid md:grid-cols-3 gap-4">
+      <div>
+        <label class="text-xs font-bold text-red-600 uppercase tracking-wide">Header</label>
+        <pre id="jwt-header" class="bg-red-50 p-3 rounded-xl text-xs font-mono overflow-auto max-h-60"></pre>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-purple-600 uppercase tracking-wide">Payload</label>
+        <pre id="jwt-payload" class="bg-purple-50 p-3 rounded-xl text-xs font-mono overflow-auto max-h-60"></pre>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-sky-600 uppercase tracking-wide">Signature</label>
+        <pre id="jwt-sig" class="bg-sky-50 p-3 rounded-xl text-xs font-mono overflow-auto max-h-60 break-all"></pre>
+      </div>
+    </div>
+    <div id="jwt-claims" class="hidden bg-gray-50 p-4 rounded-xl text-sm space-y-1"></div>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById("jwt-in");
+  const headerEl = document.getElementById("jwt-header");
+  const payloadEl = document.getElementById("jwt-payload");
+  const sigEl = document.getElementById("jwt-sig");
+  const errEl = document.getElementById("jwt-error");
+  const claimsEl = document.getElementById("jwt-claims");
+
+  function b64urlDecode(str) {
+    str = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (str.length % 4) str += "=";
+    return decodeURIComponent(escape(atob(str)));
+  }
+
+  function decode() {
+    errEl.classList.add("hidden");
+    claimsEl.classList.add("hidden");
+    headerEl.textContent = ""; payloadEl.textContent = ""; sigEl.textContent = "";
+    const v = input.value.trim();
+    if (!v) return;
+    const parts = v.split(".");
+    if (parts.length !== 3) { errEl.textContent = "Invalid JWT - expected 3 parts separated by dots."; errEl.classList.remove("hidden"); return; }
+    try {
+      const h = JSON.parse(b64urlDecode(parts[0]));
+      const p = JSON.parse(b64urlDecode(parts[1]));
+      headerEl.textContent = JSON.stringify(h, null, 2);
+      payloadEl.textContent = JSON.stringify(p, null, 2);
+      sigEl.textContent = parts[2];
+      const claims = [];
+      const fmt = (t) => new Date(t * 1000).toLocaleString();
+      if (p.iat) claims.push(`<div><b>Issued at:</b> ${fmt(p.iat)}</div>`);
+      if (p.exp) claims.push(`<div><b>Expires:</b> ${fmt(p.exp)} ${p.exp * 1000 < Date.now() ? '<span class="text-red-600">(expired)</span>' : '<span class="text-green-600">(valid)</span>'}</div>`);
+      if (p.nbf) claims.push(`<div><b>Not before:</b> ${fmt(p.nbf)}</div>`);
+      if (p.iss) claims.push(`<div><b>Issuer:</b> ${p.iss}</div>`);
+      if (p.sub) claims.push(`<div><b>Subject:</b> ${p.sub}</div>`);
+      if (p.aud) claims.push(`<div><b>Audience:</b> ${p.aud}</div>`);
+      if (claims.length) { claimsEl.innerHTML = claims.join(""); claimsEl.classList.remove("hidden"); }
+    } catch (e) {
+      errEl.textContent = "Failed to decode: " + e.message;
+      errEl.classList.remove("hidden");
+    }
+  }
+  input.addEventListener("input", decode);
+</script>

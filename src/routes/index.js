@@ -28,25 +28,44 @@ import {
   getImageConverter,
   convertImageAPI,
 } from "../controllers/imageController.js";
+import {
+  getBase64Tool,
+  getUrlEncoder,
+  getHashGenerator,
+  getColorConverter,
+  getLoremIpsum,
+  getUuidGenerator,
+  getMarkdownPreview,
+  getCaseConverter,
+  getTimestampConverter,
+  getJwtDecoder,
+  getRegexTester,
+  getCssMinifier,
+} from "../controllers/utilsController.js";
 import multer from "multer";
 
 const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 
 router.get("/", (req, res) => {
+  const description =
+    "Free online tools for developers and everyday tasks: password generator, JSON formatter, image converter, QR code maker, JWT decoder, regex tester, hash generator, Base64 encoder, color converter and more. No signup, all in your browser.";
   res.render("index", {
-    title: "Home",
-    description:
-      "A collection of useful tools including Age Calculator, Currency Converter, and Secret Generator.",
+    title: "Free Online Tools",
+    description,
+    keywords:
+      "free online tools, developer tools, daily utility tools, json formatter, image converter, qr generator, password generator, age calculator, currency converter, base64, jwt decoder, regex tester, hash generator, uuid, lorem ipsum, color picker, markdown preview, css minifier, timestamp converter",
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      name: "Home",
+      "@type": "WebSite",
+      name: "Leviro Utils",
       url: "https://leviro.net/",
-      description:
-        "A collection of useful tools including Age Calculator, Currency Converter, and Secret Generator.",
-      applicationCategory: "Utility",
-      operatingSystem: "All",
+      description,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://leviro.net/?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
     }),
   });
 });
@@ -61,6 +80,20 @@ router.get("/services/password-generator", getPasswordGenerator);
 router.get("/services/qr-generator", getQrGenerator);
 router.get("/services/json-formatter", getJsonFormatter);
 router.get("/services/image-converter", getImageConverter);
+
+// New utility tools
+router.get("/services/base64", getBase64Tool);
+router.get("/services/url-encoder", getUrlEncoder);
+router.get("/services/hash-generator", getHashGenerator);
+router.get("/services/color-converter", getColorConverter);
+router.get("/services/lorem-ipsum", getLoremIpsum);
+router.get("/services/uuid-generator", getUuidGenerator);
+router.get("/services/markdown-preview", getMarkdownPreview);
+router.get("/services/case-converter", getCaseConverter);
+router.get("/services/timestamp-converter", getTimestampConverter);
+router.get("/services/jwt-decoder", getJwtDecoder);
+router.get("/services/regex-tester", getRegexTester);
+router.get("/services/css-minifier", getCssMinifier);
 
 // API Routes
 router.get("/api/currencies", getCurrenciesAPI);

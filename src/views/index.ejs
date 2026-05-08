@@ -4,346 +4,174 @@
     <h1
       class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 tracking-tight"
     >
-      Tools for Everyone
+      Free Online Tools for Everyone
     </h1>
     <p
-      class="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
+      class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
     >
-      A collection of simple, powerful, and beautiful tools to make your daily
-      tasks easier.
+      A growing collection of fast, beautiful, privacy-friendly utilities for
+      developers, designers, and everyday tasks - all in one place, no signup,
+      no ads.
     </p>
-    <div class="flex flex-col md:flex-row justify-center gap-4 pt-4">
+    <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
       <a
-        href="#services"
+        href="#tools"
         class="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
       >
-        Explore Tools
+        Explore <%= toolCount = 22 %>+ Tools
       </a>
       <a
         href="https://github.com/Abdodiab2005/leviro-utils"
         target="_blank"
+        rel="noopener"
         class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-full border border-indigo-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm hover:shadow-md"
       >
-        View on GitHub
+        <i class="fa-brands fa-github mr-1"></i> View on GitHub
       </a>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-3 pt-6 text-sm">
+      <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full"><i class="fa-solid fa-bolt mr-1"></i> Lightning fast</span>
+      <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full"><i class="fa-solid fa-lock mr-1"></i> Privacy-first</span>
+      <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full"><i class="fa-solid fa-mobile-screen mr-1"></i> Works offline</span>
+      <span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full"><i class="fa-solid fa-circle-dollar-to-slot mr-1"></i> 100% Free</span>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <section id="services" class="grid md:grid-cols-3 gap-8">
-    <!-- Age Calculator Card -->
-    <a
-      href="/services/age-calculator"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-blue-100 to-blue-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-        </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors"
-        >
-          Age Calculator
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Calculate your exact age in years, months, weeks, and days with
-          precision.
-        </p>
-      </div>
-    </a>
+  <!-- Tools Section -->
+  <section id="tools" class="space-y-12">
+    <%
+      const cardClass = "group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-200 relative overflow-hidden";
+      const iconWrap = (color) => `w-12 h-12 ${color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`;
 
-    <!-- Currency Converter Card -->
-    <a
-      href="/services/currency-converter"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-green-100 to-green-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-money-bill-transfer text-2xl"></i>
-        </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors"
-        >
-          Currency Converter
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Convert between currencies instantly using real-time exchange rates.
-        </p>
-      </div>
-    </a>
+      const categories = [
+        {
+          name: "Developer Tools",
+          icon: "fa-solid fa-code",
+          desc: "Speed up daily coding with formatters, encoders, and debuggers.",
+          tools: [
+            { href: "/services/json-formatter", icon: "fa-solid fa-code", color: "bg-yellow-100 text-yellow-600", title: "JSON Formatter", desc: "Validate, format, and minify JSON data instantly." },
+            { href: "/services/base64", icon: "fa-solid fa-file-code", color: "bg-emerald-100 text-emerald-600", title: "Base64 Encoder", desc: "Encode and decode Base64 strings entirely in your browser." },
+            { href: "/services/url-encoder", icon: "fa-solid fa-link", color: "bg-cyan-100 text-cyan-600", title: "URL Encoder", desc: "Percent-encode and decode URL strings and query parameters." },
+            { href: "/services/hash-generator", icon: "fa-solid fa-fingerprint", color: "bg-rose-100 text-rose-600", title: "Hash Generator", desc: "Generate SHA-256, SHA-512, SHA-1, and MD5 checksums." },
+            { href: "/services/jwt-decoder", icon: "fa-solid fa-shield-halved", color: "bg-sky-100 text-sky-600", title: "JWT Decoder", desc: "Inspect JSON Web Tokens and read their claims locally." },
+            { href: "/services/regex-tester", icon: "fa-solid fa-asterisk", color: "bg-lime-100 text-lime-700", title: "Regex Tester", desc: "Test regular expressions with live match highlighting." },
+            { href: "/services/uuid-generator", icon: "fa-solid fa-id-badge", color: "bg-violet-100 text-violet-600", title: "UUID Generator", desc: "Bulk-generate cryptographically random UUID v4 IDs." },
+            { href: "/services/timestamp-converter", icon: "fa-solid fa-clock", color: "bg-orange-100 text-orange-600", title: "Timestamp Converter", desc: "Convert between Unix timestamps and human-readable dates." },
+            { href: "/services/css-minifier", icon: "fa-brands fa-css3-alt", color: "bg-blue-100 text-blue-600", title: "CSS Minifier", desc: "Minify CSS to reduce size or beautify it for readability." },
+          ],
+        },
+        {
+          name: "Text & Writing",
+          icon: "fa-solid fa-pen-nib",
+          desc: "Tools for writers, editors, and content creators.",
+          tools: [
+            { href: "/services/word-counter", icon: "fa-solid fa-file-word", color: "bg-blue-100 text-blue-600", title: "Word Counter", desc: "Count words, characters, sentences, and reading time." },
+            { href: "/services/case-converter", icon: "fa-solid fa-text-height", color: "bg-teal-100 text-teal-600", title: "Case Converter", desc: "Switch between UPPER, lower, Title, camel, snake, kebab cases." },
+            { href: "/services/lorem-ipsum", icon: "fa-solid fa-align-left", color: "bg-amber-100 text-amber-600", title: "Lorem Ipsum", desc: "Generate placeholder text by paragraph, sentence, or word." },
+            { href: "/services/markdown-preview", icon: "fa-brands fa-markdown", color: "bg-slate-100 text-slate-700", title: "Markdown Preview", desc: "Live Markdown editor with rendered HTML preview." },
+          ],
+        },
+        {
+          name: "Generators",
+          icon: "fa-solid fa-wand-magic-sparkles",
+          desc: "Create secure secrets, codes, manifests, and more.",
+          tools: [
+            { href: "/services/password-generator", icon: "fa-solid fa-key", color: "bg-indigo-100 text-indigo-600", title: "Password Generator", desc: "Create strong, random passwords with custom rules." },
+            { href: "/services/secret-generator", icon: "fa-solid fa-user-secret", color: "bg-purple-100 text-purple-600", title: "Secret Generator", desc: "Generate secure random secrets for apps and APIs." },
+            { href: "/services/qr-generator", icon: "fa-solid fa-qrcode", color: "bg-blue-100 text-blue-600", title: "QR Generator", desc: "Generate customizable QR codes for any URL or text." },
+            { href: "/services/pwa-generator", icon: "fa-solid fa-mobile-screen", color: "bg-yellow-100 text-yellow-600", title: "PWA Generator", desc: "Generate icons and manifest for Progressive Web Apps." },
+            { href: "/services/seo-generator", icon: "fa-solid fa-magnifying-glass-chart", color: "bg-pink-100 text-pink-600", title: "SEO Generator", desc: "Build optimized meta tags and Open Graph data." },
+          ],
+        },
+        {
+          name: "Files & Media",
+          icon: "fa-solid fa-photo-film",
+          desc: "Convert images, split PDFs, and pick colors.",
+          tools: [
+            { href: "/services/image-converter", icon: "fa-solid fa-image", color: "bg-pink-100 text-pink-600", title: "Image Converter", desc: "Convert images between PNG, JPG, WebP with quality control." },
+            { href: "/services/pdf-splitter", icon: "fa-solid fa-file-pdf", color: "bg-red-100 text-red-600", title: "PDF Splitter", desc: "Split PDFs by page ranges and download custom selections." },
+            { href: "/services/color-converter", icon: "fa-solid fa-palette", color: "bg-fuchsia-100 text-fuchsia-600", title: "Color Converter", desc: "Pick colors and convert HEX, RGB, RGBA, HSL formats." },
+          ],
+        },
+        {
+          name: "Daily Life",
+          icon: "fa-solid fa-calendar-check",
+          desc: "Helpful calculators and reference tools for everyday use.",
+          tools: [
+            { href: "/services/age-calculator", icon: "fa-solid fa-cake-candles", color: "bg-blue-100 text-blue-600", title: "Age Calculator", desc: "Calculate exact age in years, months, weeks, and days." },
+            { href: "/services/currency-converter", icon: "fa-solid fa-money-bill-transfer", color: "bg-green-100 text-green-600", title: "Currency Converter", desc: "Convert currencies with up-to-date exchange rates." },
+            { href: "/services/world-info", icon: "fa-solid fa-earth-americas", color: "bg-indigo-100 text-indigo-600", title: "World Info", desc: "Browse countries, states, and cities with rich data." },
+          ],
+        },
+      ];
+    %>
 
-    <!-- Secret Generator Card -->
-    <a
-      href="/services/secret-generator"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-purple-100 to-purple-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-user-secret text-2xl"></i>
+    <% categories.forEach((cat) => { %>
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 border-b border-gray-200 pb-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <i class="<%= cat.icon %>"></i>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900"><%= cat.name %></h2>
+            <p class="text-sm text-gray-500"><%= cat.desc %></p>
+          </div>
         </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors"
-        >
-          Secret Generator
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Generate secure, random secrets and passwords for your applications.
-        </p>
-      </div>
-    </a>
 
-    <!-- World Info Card -->
-    <a
-      href="/services/world-info"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-indigo-100 to-indigo-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-earth-americas text-2xl"></i>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <% cat.tools.forEach((t) => { %>
+            <a href="<%= t.href %>" class="<%= cardClass %>">
+              <div class="<%= iconWrap(t.color) %>">
+                <i class="<%= t.icon %> text-xl"></i>
+              </div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                <%= t.title %>
+              </h3>
+              <p class="text-sm text-gray-600 leading-relaxed"><%= t.desc %></p>
+            </a>
+          <% }); %>
         </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors"
-        >
-          World Info
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Explore detailed information about countries, states, and cities
-          worldwide.
-        </p>
       </div>
-    </a>
+    <% }); %>
+  </section>
 
-    <!-- Word Counter Card -->
-    <a
-      href="/services/word-counter"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-blue-100 to-blue-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-file-word text-2xl"></i>
-        </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors"
-        >
-          Word Counter
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Count words, characters, and analyze text statistics instantly.
+  <!-- Why use Leviro Utils -->
+  <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Leviro Utils?</h2>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Leviro Utils brings together the most useful online tools for developers and
+          everyday tasks in one clean, distraction-free hub. Every tool is engineered
+          to be quick to use, accurate, and respectful of your privacy - most run
+          entirely on your device.
         </p>
+        <ul class="space-y-2 text-gray-700">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> Free forever, no signup or paywall.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> Mobile-friendly and installable as a PWA.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> Most tools work offline once visited.</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> Open source on GitHub - audit the code yourself.</li>
+        </ul>
       </div>
-    </a>
-
-    <!-- PDF Splitter Card -->
-    <a
-      href="/services/pdf-splitter"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-red-100 to-red-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-red-100 text-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-file-pdf text-2xl"></i>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-indigo-50 p-6 rounded-2xl text-center">
+          <div class="text-4xl font-bold text-indigo-600">22+</div>
+          <div class="text-sm text-gray-600 mt-1">Tools available</div>
         </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors"
-        >
-          PDF Splitter
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Split PDF files by page ranges and download custom selections.
-        </p>
-      </div>
-    </a>
-
-    <!-- PWA Generator Card -->
-    <a
-      href="/services/pwa-generator"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-yellow-100 to-yellow-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-mobile-screen text-2xl"></i>
+        <div class="bg-emerald-50 p-6 rounded-2xl text-center">
+          <div class="text-4xl font-bold text-emerald-600">100%</div>
+          <div class="text-sm text-gray-600 mt-1">Free to use</div>
         </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-yellow-600 transition-colors"
-        >
-          PWA Generator
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Generate app icons, manifest, and assets for your Progressive Web App.
-        </p>
-      </div>
-    </a>
-
-    <!-- SEO Generator Card -->
-    <a
-      href="/services/seo-generator"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-pink-100 to-pink-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-magnifying-glass-chart text-2xl"></i>
+        <div class="bg-purple-50 p-6 rounded-2xl text-center">
+          <div class="text-4xl font-bold text-purple-600">0</div>
+          <div class="text-sm text-gray-600 mt-1">Ads or trackers</div>
         </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-pink-600 transition-colors"
-        >
-          SEO Generator
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Create optimized meta tags and boost your website's search engine
-          ranking.
-        </p>
-      </div>
-    </a>
-
-    <!-- Password Generator Card -->
-    <a
-      href="/services/password-generator"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-indigo-100 to-indigo-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-key text-2xl"></i>
+        <div class="bg-amber-50 p-6 rounded-2xl text-center">
+          <div class="text-4xl font-bold text-amber-600">PWA</div>
+          <div class="text-sm text-gray-600 mt-1">Installable</div>
         </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors"
-        >
-          Password Generator
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Create strong, secure passwords instantly with custom settings.
-        </p>
       </div>
-    </a>
-
-    <!-- QR Generator Card -->
-    <a
-      href="/services/qr-generator"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-blue-100 to-blue-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-qrcode text-2xl"></i>
-        </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors"
-        >
-          QR Generator
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Generate customizable QR codes for URLs, text, and more.
-        </p>
-      </div>
-    </a>
-
-    <!-- JSON Formatter Card -->
-    <a
-      href="/services/json-formatter"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-yellow-100 to-yellow-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-code text-2xl"></i>
-        </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-yellow-600 transition-colors"
-        >
-          JSON Formatter
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Validate, format, and minify your JSON data instantly.
-        </p>
-      </div>
-    </a>
-
-    <!-- Image Converter Card -->
-    <a
-      href="/services/image-converter"
-      class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 relative overflow-hidden"
-    >
-      <div
-        class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-linear-to-br from-pink-100 to-pink-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500"
-      ></div>
-      <div class="relative z-10">
-        <div
-          class="w-14 h-14 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-        >
-          <i class="fa-solid fa-image text-2xl"></i>
-        </div>
-        <h3
-          class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-pink-600 transition-colors"
-        >
-          Image Converter
-        </h3>
-        <p class="text-gray-600 leading-relaxed">
-          Convert images between different formats with quality control.
-        </p>
-      </div>
-    </a>
+    </div>
+  </section>
 </div>

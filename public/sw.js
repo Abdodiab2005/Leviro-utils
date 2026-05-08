@@ -1,5 +1,5 @@
 // Bump this version on every release so old caches are evicted
-const VERSION = "v5";
+const VERSION = "v6";
 const STATIC_CACHE = `leviro-static-${VERSION}`;
 const RUNTIME_CACHE = `leviro-runtime-${VERSION}`;
 

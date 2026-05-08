@@ -1,117 +1,78 @@
-<footer class="bg-gray-900 text-white py-10 mt-auto">
+<footer class="bg-gray-900 text-white py-12 mt-auto">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Top Grid -->
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-10 pb-10 border-b border-gray-800"
-    >
-      <!-- About -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Leviro Utils</h3>
-        <p class="text-gray-400 text-sm leading-relaxed">
-          A collection of useful developer and daily utility tools. Built with
-          performance and usability in mind.
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-8 pb-10 border-b border-gray-800">
+      <div class="md:col-span-2">
+        <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-indigo-400"></i> Leviro Utils
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          A growing collection of free, fast, and privacy-first online tools for
+          developers and daily use. Built with performance in mind, works offline,
+          and never tracks you.
         </p>
-      </div>
-
-      <!-- Services (Split into 2 Columns) -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Services</h3>
-        <div class="grid grid-cols-2 gap-3 text-sm text-gray-400">
-          <ul class="space-y-2">
-            <li>
-              <a href="/services/age-calculator" class="hover:text-white"
-                >Age Calculator</a
-              >
-            </li>
-            <li>
-              <a href="/services/currency-converter" class="hover:text-white"
-                >Currency Converter</a
-              >
-            </li>
-            <li>
-              <a href="/services/secret-generator" class="hover:text-white"
-                >Secret Generator</a
-              >
-            </li>
-            <li>
-              <a href="/services/world-info" class="hover:text-white"
-                >World Info</a
-              >
-            </li>
-            <li>
-              <a href="/services/word-counter" class="hover:text-white"
-                >Word Counter</a
-              >
-            </li>
-            <li>
-              <a href="/services/pdf-splitter" class="hover:text-white"
-                >PDF Splitter</a
-              >
-            </li>
-          </ul>
-
-          <ul class="space-y-2">
-            <li>
-              <a href="/services/pwa-generator" class="hover:text-white"
-                >PWA Generator</a
-              >
-            </li>
-            <li>
-              <a href="/services/seo-generator" class="hover:text-white"
-                >SEO Generator</a
-              >
-            </li>
-            <li>
-              <a href="/services/password-generator" class="hover:text-white"
-                >Password Generator</a
-              >
-            </li>
-            <li>
-              <a href="/services/qr-generator" class="hover:text-white"
-                >QR Generator</a
-              >
-            </li>
-            <li>
-              <a href="/services/json-formatter" class="hover:text-white"
-                >JSON Formatter</a
-              >
-            </li>
-            <li>
-              <a href="/services/image-converter" class="hover:text-white"
-                >Image Converter</a
-              >
-            </li>
-          </ul>
+        <div class="flex gap-4">
+          <a href="https://whatsapp.com/channel/0029Vb5TAXQ17EmrK30p5h1g" aria-label="WhatsApp" class="text-gray-400 hover:text-white"><i class="fa-brands fa-whatsapp text-xl"></i></a>
+          <a href="https://t.me/leviro_insights" aria-label="Telegram" class="text-gray-400 hover:text-white"><i class="fa-brands fa-telegram text-xl"></i></a>
+          <a href="https://github.com/Abdodiab2005/leviro-utils" aria-label="GitHub" class="text-gray-400 hover:text-white"><i class="fa-brands fa-github text-xl"></i></a>
         </div>
       </div>
-    </div>
-    <!-- Social Links at Bottom -->
-    <div class="flex justify-center mt-6 mb-8 space-x-6">
-      <a
-        href="https://whatsapp.com/channel/0029Vb5TAXQ17EmrK30p5h1g"
-        class="text-gray-400 hover:text-white"
-      >
-        <i class="fa-brands fa-whatsapp text-2xl"></i>
-      </a>
-      <a
-        href="https://t.me/leviro_insights"
-        class="text-gray-400 hover:text-white"
-      >
-        <i class="fa-brands fa-telegram text-2xl"></i>
-      </a>
-      <a
-        href="https://github.com/Abdodiab2005/leviro-utils"
-        class="text-gray-400 hover:text-white"
-      >
-        <i class="fa-brands fa-github text-xl"></i>
-      </a>
+
+      <div>
+        <h4 class="text-sm font-bold text-white mb-3">Developer</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="/services/json-formatter" class="hover:text-white">JSON Formatter</a></li>
+          <li><a href="/services/base64" class="hover:text-white">Base64 Encoder</a></li>
+          <li><a href="/services/url-encoder" class="hover:text-white">URL Encoder</a></li>
+          <li><a href="/services/hash-generator" class="hover:text-white">Hash Generator</a></li>
+          <li><a href="/services/jwt-decoder" class="hover:text-white">JWT Decoder</a></li>
+          <li><a href="/services/regex-tester" class="hover:text-white">Regex Tester</a></li>
+          <li><a href="/services/uuid-generator" class="hover:text-white">UUID Generator</a></li>
+          <li><a href="/services/timestamp-converter" class="hover:text-white">Timestamp Converter</a></li>
+          <li><a href="/services/css-minifier" class="hover:text-white">CSS Minifier</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-bold text-white mb-3">Text & Writing</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="/services/word-counter" class="hover:text-white">Word Counter</a></li>
+          <li><a href="/services/case-converter" class="hover:text-white">Case Converter</a></li>
+          <li><a href="/services/lorem-ipsum" class="hover:text-white">Lorem Ipsum</a></li>
+          <li><a href="/services/markdown-preview" class="hover:text-white">Markdown Preview</a></li>
+        </ul>
+        <h4 class="text-sm font-bold text-white mt-6 mb-3">Files & Media</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="/services/image-converter" class="hover:text-white">Image Converter</a></li>
+          <li><a href="/services/pdf-splitter" class="hover:text-white">PDF Splitter</a></li>
+          <li><a href="/services/color-converter" class="hover:text-white">Color Converter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-bold text-white mb-3">Generators</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="/services/password-generator" class="hover:text-white">Password Generator</a></li>
+          <li><a href="/services/secret-generator" class="hover:text-white">Secret Generator</a></li>
+          <li><a href="/services/qr-generator" class="hover:text-white">QR Generator</a></li>
+          <li><a href="/services/pwa-generator" class="hover:text-white">PWA Generator</a></li>
+          <li><a href="/services/seo-generator" class="hover:text-white">SEO Generator</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-bold text-white mb-3">Daily Life</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="/services/age-calculator" class="hover:text-white">Age Calculator</a></li>
+          <li><a href="/services/currency-converter" class="hover:text-white">Currency Converter</a></li>
+          <li><a href="/services/world-info" class="hover:text-white">World Info</a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Bottom -->
-    <div class="text-center">
+    <div class="text-center pt-6">
       <p class="text-gray-500 text-sm">
-        &copy; <%= new Date().getFullYear() %> Leviro Utils. All rights
-        reserved.
+        &copy; <%= new Date().getFullYear() %> Leviro Utils. All rights reserved.
+        Made with <i class="fa-solid fa-heart text-red-500"></i> for developers.
       </p>
     </div>
   </div>

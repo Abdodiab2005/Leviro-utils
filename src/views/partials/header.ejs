@@ -4,15 +4,32 @@
       <a
         href="/"
         class="text-2xl font-bold text-indigo-600 flex items-center gap-2"
+        aria-label="Leviro Utils home"
       >
         <i class="fa-solid fa-layer-group text-3xl"></i>
         Leviro Utils
       </a>
 
-      <!-- Mobile Menu Button -->
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
+        <a href="/#tools" class="hover:text-indigo-600 transition">All Tools</a>
+        <a href="/services/json-formatter" class="hover:text-indigo-600 transition">Developer</a>
+        <a href="/services/word-counter" class="hover:text-indigo-600 transition">Text</a>
+        <a href="/services/password-generator" class="hover:text-indigo-600 transition">Generators</a>
+        <a href="/services/image-converter" class="hover:text-indigo-600 transition">Files</a>
+        <a
+          href="https://github.com/Abdodiab2005/leviro-utils"
+          target="_blank"
+          rel="noopener"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+        >
+          <i class="fa-brands fa-github mr-1"></i> GitHub
+        </a>
+      </div>
+
       <button
         id="mobile-menu-btn"
-        class="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
+        aria-label="Toggle menu"
+        class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
       >
         <i class="fa-solid fa-bars text-2xl"></i>
       </button>
@@ -22,166 +39,95 @@
   <!-- Mobile Menu -->
   <div
     id="mobile-menu"
-    class="fixed inset-0 z-40 bg-white transform translate-x-full transition-transform duration-300 ease-in-out"
+    class="md:hidden fixed inset-0 z-40 bg-white transform translate-x-full transition-transform duration-300 ease-in-out"
     style="top: 73px"
   >
-    <div
-      class="flex flex-col p-6 space-y-4 border-t border-gray-100 overflow-y-auto h-full"
-    >
-      <a
-        href="/services/age-calculator"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-cake-candles"></i>
+    <div class="flex flex-col p-6 space-y-6 overflow-y-auto h-full pb-20">
+
+      <%
+        const navGroups = [
+          {
+            label: "Developer Tools",
+            items: [
+              { href: "/services/json-formatter", icon: "fa-solid fa-code", color: "bg-yellow-100 text-yellow-600", name: "JSON Formatter" },
+              { href: "/services/base64", icon: "fa-solid fa-file-code", color: "bg-emerald-100 text-emerald-600", name: "Base64 Encoder" },
+              { href: "/services/url-encoder", icon: "fa-solid fa-link", color: "bg-cyan-100 text-cyan-600", name: "URL Encoder" },
+              { href: "/services/hash-generator", icon: "fa-solid fa-fingerprint", color: "bg-rose-100 text-rose-600", name: "Hash Generator" },
+              { href: "/services/jwt-decoder", icon: "fa-solid fa-shield-halved", color: "bg-sky-100 text-sky-600", name: "JWT Decoder" },
+              { href: "/services/regex-tester", icon: "fa-solid fa-asterisk", color: "bg-lime-100 text-lime-700", name: "Regex Tester" },
+              { href: "/services/uuid-generator", icon: "fa-solid fa-id-badge", color: "bg-violet-100 text-violet-600", name: "UUID Generator" },
+              { href: "/services/timestamp-converter", icon: "fa-solid fa-clock", color: "bg-orange-100 text-orange-600", name: "Timestamp Converter" },
+              { href: "/services/css-minifier", icon: "fa-brands fa-css3-alt", color: "bg-blue-100 text-blue-600", name: "CSS Minifier" },
+            ],
+          },
+          {
+            label: "Text & Writing",
+            items: [
+              { href: "/services/word-counter", icon: "fa-solid fa-file-word", color: "bg-blue-100 text-blue-600", name: "Word Counter" },
+              { href: "/services/case-converter", icon: "fa-solid fa-text-height", color: "bg-teal-100 text-teal-600", name: "Case Converter" },
+              { href: "/services/lorem-ipsum", icon: "fa-solid fa-align-left", color: "bg-amber-100 text-amber-600", name: "Lorem Ipsum" },
+              { href: "/services/markdown-preview", icon: "fa-brands fa-markdown", color: "bg-slate-100 text-slate-700", name: "Markdown Preview" },
+            ],
+          },
+          {
+            label: "Generators",
+            items: [
+              { href: "/services/password-generator", icon: "fa-solid fa-key", color: "bg-indigo-100 text-indigo-600", name: "Password Generator" },
+              { href: "/services/secret-generator", icon: "fa-solid fa-user-secret", color: "bg-purple-100 text-purple-600", name: "Secret Generator" },
+              { href: "/services/qr-generator", icon: "fa-solid fa-qrcode", color: "bg-blue-100 text-blue-600", name: "QR Generator" },
+              { href: "/services/pwa-generator", icon: "fa-solid fa-mobile-screen", color: "bg-yellow-100 text-yellow-600", name: "PWA Generator" },
+              { href: "/services/seo-generator", icon: "fa-solid fa-magnifying-glass-chart", color: "bg-pink-100 text-pink-600", name: "SEO Generator" },
+            ],
+          },
+          {
+            label: "Files & Media",
+            items: [
+              { href: "/services/image-converter", icon: "fa-solid fa-image", color: "bg-pink-100 text-pink-600", name: "Image Converter" },
+              { href: "/services/pdf-splitter", icon: "fa-solid fa-file-pdf", color: "bg-red-100 text-red-600", name: "PDF Splitter" },
+              { href: "/services/color-converter", icon: "fa-solid fa-palette", color: "bg-fuchsia-100 text-fuchsia-600", name: "Color Converter" },
+            ],
+          },
+          {
+            label: "Daily Life",
+            items: [
+              { href: "/services/age-calculator", icon: "fa-solid fa-cake-candles", color: "bg-blue-100 text-blue-600", name: "Age Calculator" },
+              { href: "/services/currency-converter", icon: "fa-solid fa-money-bill-transfer", color: "bg-green-100 text-green-600", name: "Currency Converter" },
+              { href: "/services/world-info", icon: "fa-solid fa-earth-americas", color: "bg-indigo-100 text-indigo-600", name: "World Info" },
+            ],
+          },
+        ];
+      %>
+
+      <% navGroups.forEach((g) => { %>
+        <div>
+          <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 px-3"><%= g.label %></h4>
+          <% g.items.forEach((it) => { %>
+            <a href="<%= it.href %>" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors">
+              <div class="w-10 h-10 rounded-lg <%= it.color %> flex items-center justify-center">
+                <i class="<%= it.icon %>"></i>
+              </div>
+              <%= it.name %>
+            </a>
+          <% }); %>
         </div>
-        Age Calculator
-      </a>
-      <a
-        href="/services/currency-converter"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-money-bill-transfer"></i>
-        </div>
-        Currency Converter
-      </a>
-      <a
-        href="/services/secret-generator"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-user-secret"></i>
-        </div>
-        Secret Generator
-      </a>
-      <a
-        href="/services/world-info"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-earth-americas"></i>
-        </div>
-        World Info
-      </a>
-      <a
-        href="/services/word-counter"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-file-word"></i>
-        </div>
-        Word Counter
-      </a>
-      <a
-        href="/services/pdf-splitter"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-file-pdf"></i>
-        </div>
-        PDF Splitter
-      </a>
-      <a
-        href="/services/pwa-generator"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-mobile-screen"></i>
-        </div>
-        PWA Generator
-      </a>
-      <a
-        href="/services/seo-generator"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-magnifying-glass-chart"></i>
-        </div>
-        SEO Generator
-      </a>
-      <a
-        href="/services/password-generator"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-key"></i>
-        </div>
-        Password Generator
-      </a>
-      <a
-        href="/services/qr-generator"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-qrcode"></i>
-        </div>
-        QR Generator
-      </a>
-      <a
-        href="/services/json-formatter"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-code"></i>
-        </div>
-        JSON Formatter
-      </a>
-      <a
-        href="/services/image-converter"
-        class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors"
-      >
-        <div
-          class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center"
-        >
-          <i class="fa-solid fa-image"></i>
-        </div>
-        Image Converter
-      </a>
+      <% }); %>
     </div>
   </div>
 </header>
 
 <script>
-  const btn = document.getElementById("mobile-menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  const icon = btn.querySelector("i");
-  let isOpen = false;
-
-  btn.addEventListener("click", () => {
-    isOpen = !isOpen;
-    if (isOpen) {
-      menu.classList.remove("translate-x-full");
-      icon.classList.remove("fa-bars");
-      icon.classList.add("fa-xmark");
-      document.body.style.overflow = "hidden";
-    } else {
-      menu.classList.add("translate-x-full");
-      icon.classList.remove("fa-xmark");
-      icon.classList.add("fa-bars");
-      document.body.style.overflow = "";
-    }
-  });
+  (function () {
+    const btn = document.getElementById("mobile-menu-btn");
+    const menu = document.getElementById("mobile-menu");
+    if (!btn || !menu) return;
+    const icon = btn.querySelector("i");
+    let isOpen = false;
+    btn.addEventListener("click", () => {
+      isOpen = !isOpen;
+      menu.classList.toggle("translate-x-full", !isOpen);
+      icon.classList.toggle("fa-bars", !isOpen);
+      icon.classList.toggle("fa-xmark", isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    });
+  })();
 </script>

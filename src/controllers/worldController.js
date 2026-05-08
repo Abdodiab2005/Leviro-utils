@@ -5,19 +5,22 @@ import {
 } from "../services/worldService.js";
 
 export const getWorldInfo = (req, res) => {
+  const description =
+    "Browse detailed information about every country, state, and city in the world: capital, currency, calling code, time zone, region, languages, and more.";
   res.render("services/world-info", {
-    title: "World Info",
-    description:
-      "Explore detailed information about countries, states, and cities worldwide.",
+    title: "World Info - Countries, States & Cities",
+    description,
+    keywords:
+      "country information, world countries data, calling codes, country capital, currency by country, states list, cities list, country search",
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "World Info",
       url: "https://leviro.net/services/world-info",
-      description:
-        "Explore detailed information about countries, states, and cities worldwide.",
-      applicationCategory: "Utility",
+      description,
+      applicationCategory: "Reference",
       operatingSystem: "All",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
   });
 };

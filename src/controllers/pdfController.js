@@ -11,17 +11,22 @@ const upload = multer({
 }).single("pdfFile");
 
 export const getPdfSplitter = (req, res) => {
+  const description =
+    "Split a PDF file into multiple smaller PDFs by selecting custom page ranges. Free, fast, and secure - your file is processed and removed automatically.";
   res.render("pdf-splitter", {
-    title: "PDF Splitter",
-    description: "Split PDF files by page ranges.",
+    title: "PDF Splitter - Split PDF by Page Range",
+    description,
+    keywords:
+      "pdf splitter, split pdf online, extract pages from pdf, pdf page extractor, divide pdf, split pdf by range",
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "PDF Splitter",
       url: "https://leviro.net/services/pdf-splitter",
-      description: "Split PDF files by page ranges.",
-      applicationCategory: "Utility",
+      description,
+      applicationCategory: "BusinessApplication",
       operatingSystem: "All",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
   });
 };

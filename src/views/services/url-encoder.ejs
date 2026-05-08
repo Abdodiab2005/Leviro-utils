@@ -1,0 +1,72 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'URL Encoder & Decoder',
+    subtitle: 'Convert text to URL-safe percent-encoded strings or decode them back. Useful for query params, redirect URIs, and form data.',
+    icon: 'fa-solid fa-link',
+    color: 'bg-cyan-100 text-cyan-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div class="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit mx-auto">
+      <button data-mode="encode" class="mode-btn px-4 py-2 rounded-lg bg-white shadow font-medium">Encode</button>
+      <button data-mode="decode" class="mode-btn px-4 py-2 rounded-lg font-medium text-gray-600">Decode</button>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Input</label>
+      <textarea id="url-input" rows="5" placeholder="https://example.com/?q=hello world"
+        class="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 font-mono text-sm"></textarea>
+    </div>
+
+    <div>
+      <div class="flex justify-between items-center mb-2">
+        <label class="block text-sm font-medium text-gray-700">Output</label>
+        <button id="url-copy" class="text-sm text-cyan-600 hover:text-cyan-700 font-medium">
+          <i class="fa-regular fa-copy mr-1"></i>Copy
+        </button>
+      </div>
+      <textarea id="url-output" rows="5" readonly
+        class="w-full p-4 border border-gray-200 rounded-xl bg-gray-50 font-mono text-sm"></textarea>
+    </div>
+
+    <label class="flex items-center gap-2 text-sm text-gray-700">
+      <input type="checkbox" id="component-mode" class="w-4 h-4 text-cyan-600 rounded">
+      <span>Use <code>encodeURIComponent</code> (encodes <code>?</code>, <code>&amp;</code>, <code>=</code>)</span>
+    </label>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById("url-input");
+  const output = document.getElementById("url-output");
+  const componentMode = document.getElementById("component-mode");
+  const buttons = document.querySelectorAll(".mode-btn");
+  let mode = "encode";
+
+  buttons.forEach((b) => b.addEventListener("click", () => {
+    mode = b.dataset.mode;
+    buttons.forEach((x) => {
+      x.classList.toggle("bg-white", x === b);
+      x.classList.toggle("shadow", x === b);
+      x.classList.toggle("text-gray-600", x !== b);
+    });
+    run();
+  }));
+
+  function run() {
+    const v = input.value;
+    if (!v) { output.value = ""; return; }
+    try {
+      if (mode === "encode") {
+        output.value = componentMode.checked ? encodeURIComponent(v) : encodeURI(v);
+      } else {
+        output.value = componentMode.checked ? decodeURIComponent(v) : decodeURI(v);
+      }
+    } catch (e) { output.value = "Invalid input"; }
+  }
+
+  [input, componentMode].forEach((el) => el.addEventListener("input", run));
+  document.getElementById("url-copy").addEventListener("click", async () => {
+    if (output.value) await navigator.clipboard.writeText(output.value);
+  });
+</script>

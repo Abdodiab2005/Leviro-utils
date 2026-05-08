@@ -25,9 +25,37 @@ app.set("views", path.join(__dirname, "src/views"));
 app.set("trust proxy", 1);
 
 const corsOptions = process.env.CORS_OPTIONS?.split(",");
+const SITE_URL = process.env.SITE_URL || "https://leviro.net";
 
 // Middleware
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith("sw.js") || filePath.endsWith("manifest.json")) {
+        // Service worker / manifest must always revalidate so updates land
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      } else if (/\.(?:png|jpg|jpeg|svg|webp|ico|woff2?)$/i.test(filePath)) {
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      } else if (/\.(?:css|js)$/i.test(filePath)) {
+        // CSS/JS aren't fingerprinted yet, so revalidate on each load
+        res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+      }
+    },
+  })
+);
+
+// SEO defaults: expose siteUrl + canonicalUrl to every view
+app.use((req, res, next) => {
+  res.locals.siteUrl = SITE_URL;
+  res.locals.canonicalUrl = `${SITE_URL}${req.path === "/" ? "/" : req.path.replace(/\/$/, "")}`;
+  next();
+});
+
+// HTML responses should never be stale-cached by browsers
+app.use((req, res, next) => {
+  res.setHeader("Cache-Control", "no-cache");
+  next();
+});
 app.use(
   cors({
     origin: corsOptions,

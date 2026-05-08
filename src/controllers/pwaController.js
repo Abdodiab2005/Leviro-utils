@@ -12,17 +12,21 @@ const upload = multer({
 }).single("logo");
 
 export const getPwaGenerator = (req, res) => {
+  const description =
+    "Generate a complete Progressive Web App package from a single logo: app icons in every size, favicons, manifest.json, and service worker template.";
   res.render("pwa-generator", {
-    title: "PWA Asset Generator",
-    description: "Generate PWA assets, manifest, and more from a single logo.",
+    title: "PWA Asset & Manifest Generator",
+    description,
+    keywords:
+      "pwa generator, pwa manifest generator, app icon generator, favicon generator, progressive web app icons, manifest.json generator",
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "PWA Asset Generator",
       url: "https://leviro.net/services/pwa-generator",
-      description:
-        "Generate PWA assets, manifest, and more from a single logo.",
-      applicationCategory: "Utility",
+      description,
+      applicationCategory: "DeveloperApplication",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       operatingSystem: "All",
     }),
   });

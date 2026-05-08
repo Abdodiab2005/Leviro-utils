@@ -1,0 +1,61 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Text Case Converter',
+    subtitle: 'Quickly transform text into UPPERCASE, lowercase, Title Case, Sentence case, camelCase, snake_case, kebab-case and more.',
+    icon: 'fa-solid fa-text-height',
+    color: 'bg-teal-100 text-teal-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div>
+      <label class="text-sm font-medium text-gray-700 mb-2 block">Your text</label>
+      <textarea id="cc-in" rows="6" placeholder="Type or paste anything..."
+        class="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 text-sm"></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="cc-buttons"></div>
+
+    <div>
+      <div class="flex justify-between items-center mb-2">
+        <label class="text-sm font-medium text-gray-700">Output</label>
+        <button id="cc-copy" class="text-sm text-teal-600"><i class="fa-regular fa-copy mr-1"></i>Copy</button>
+      </div>
+      <textarea id="cc-out" rows="6" readonly class="w-full p-4 border border-gray-200 rounded-xl bg-gray-50 text-sm"></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+  const conversions = {
+    "UPPERCASE": (s) => s.toUpperCase(),
+    "lowercase": (s) => s.toLowerCase(),
+    "Title Case": (s) => s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
+    "Sentence case": (s) => s.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, (c) => c.toUpperCase()),
+    "camelCase": (s) => words(s).map((w, i) => i === 0 ? w.toLowerCase() : cap(w)).join(""),
+    "PascalCase": (s) => words(s).map(cap).join(""),
+    "snake_case": (s) => words(s).map((w) => w.toLowerCase()).join("_"),
+    "kebab-case": (s) => words(s).map((w) => w.toLowerCase()).join("-"),
+    "CONSTANT_CASE": (s) => words(s).map((w) => w.toUpperCase()).join("_"),
+    "Inverse cAsE": (s) => s.split("").map((c) => c === c.toLowerCase() ? c.toUpperCase() : c.toLowerCase()).join(""),
+    "Reverse": (s) => s.split("").reverse().join(""),
+    "Trim spaces": (s) => s.replace(/\s+/g, " ").trim(),
+  };
+  function words(s) { return s.match(/[A-Za-z0-9]+/g) || []; }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
+
+  const wrap = document.getElementById("cc-buttons");
+  const input = document.getElementById("cc-in");
+  const output = document.getElementById("cc-out");
+
+  Object.keys(conversions).forEach((name) => {
+    const b = document.createElement("button");
+    b.className = "px-3 py-2 bg-gray-100 hover:bg-teal-100 hover:text-teal-700 text-gray-700 rounded-lg text-sm font-medium transition";
+    b.textContent = name;
+    b.addEventListener("click", () => { output.value = conversions[name](input.value); });
+    wrap.appendChild(b);
+  });
+
+  document.getElementById("cc-copy").addEventListener("click", async () => {
+    if (output.value) await navigator.clipboard.writeText(output.value);
+  });
+</script>

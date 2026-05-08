@@ -1,0 +1,50 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'UUID & GUID Generator',
+    subtitle: 'Generate cryptographically random UUID v4 / GUID identifiers in bulk - useful for primary keys, request IDs, and distributed systems.',
+    icon: 'fa-solid fa-id-badge',
+    color: 'bg-violet-100 text-violet-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div class="flex flex-col sm:flex-row gap-4">
+      <input id="uuid-count" type="number" min="1" max="500" value="10"
+        class="w-full sm:w-32 p-3 border border-gray-200 rounded-xl"/>
+      <button id="uuid-gen" class="flex-1 py-3 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl">
+        Generate UUIDs
+      </button>
+      <button id="uuid-copy" class="px-4 py-3 border border-violet-600 text-violet-600 hover:bg-violet-50 rounded-xl font-semibold">
+        <i class="fa-regular fa-copy mr-1"></i> Copy All
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+      <label class="flex items-center gap-2"><input type="checkbox" id="upper"> Uppercase</label>
+      <label class="flex items-center gap-2"><input type="checkbox" id="braces"> Wrap in <code>{ }</code></label>
+      <label class="flex items-center gap-2"><input type="checkbox" id="nodash"> No dashes</label>
+    </div>
+
+    <textarea id="uuid-out" rows="12" readonly
+      class="w-full p-4 border border-gray-200 rounded-xl bg-gray-50 font-mono text-sm"></textarea>
+  </div>
+</div>
+
+<script>
+  const out = document.getElementById("uuid-out");
+  const make = () => crypto.randomUUID();
+  function format(id) {
+    if (document.getElementById("nodash").checked) id = id.replace(/-/g, "");
+    if (document.getElementById("upper").checked) id = id.toUpperCase();
+    if (document.getElementById("braces").checked) id = `{${id}}`;
+    return id;
+  }
+  function gen() {
+    const n = Math.max(1, Math.min(500, +document.getElementById("uuid-count").value || 1));
+    out.value = Array.from({length: n}, () => format(make())).join("\n");
+  }
+  document.getElementById("uuid-gen").addEventListener("click", gen);
+  document.getElementById("uuid-copy").addEventListener("click", async () => {
+    if (out.value) await navigator.clipboard.writeText(out.value);
+  });
+  gen();
+</script>

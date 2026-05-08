@@ -1,0 +1,89 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Unix Timestamp Converter',
+    subtitle: 'Convert between Unix epoch timestamps (seconds or milliseconds) and human-readable dates with full timezone support.',
+    icon: 'fa-solid fa-clock',
+    color: 'bg-orange-100 text-orange-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div class="bg-orange-50 p-4 rounded-xl text-center">
+      <div class="text-xs text-orange-700 uppercase tracking-wide mb-1">Current Unix time</div>
+      <div id="ts-now" class="text-2xl font-mono font-bold text-orange-800"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="space-y-3">
+        <h3 class="font-semibold text-gray-800">Timestamp &rarr; Date</h3>
+        <input id="ts-input" type="text" placeholder="1700000000"
+          class="w-full p-3 border border-gray-200 rounded-xl font-mono"/>
+        <select id="ts-unit" class="w-full p-3 border border-gray-200 rounded-xl">
+          <option value="s">Seconds</option>
+          <option value="ms">Milliseconds</option>
+        </select>
+        <div class="bg-gray-50 p-3 rounded-xl space-y-1 text-sm">
+          <div><span class="font-semibold">UTC:</span> <span id="ts-utc"></span></div>
+          <div><span class="font-semibold">Local:</span> <span id="ts-local"></span></div>
+          <div><span class="font-semibold">ISO:</span> <span id="ts-iso" class="font-mono text-xs"></span></div>
+          <div><span class="font-semibold">Relative:</span> <span id="ts-rel"></span></div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="font-semibold text-gray-800">Date &rarr; Timestamp</h3>
+        <input id="dt-input" type="datetime-local" class="w-full p-3 border border-gray-200 rounded-xl"/>
+        <div class="bg-gray-50 p-3 rounded-xl space-y-1 text-sm">
+          <div><span class="font-semibold">Seconds:</span> <span id="dt-s" class="font-mono"></span></div>
+          <div><span class="font-semibold">Milliseconds:</span> <span id="dt-ms" class="font-mono"></span></div>
+          <div><span class="font-semibold">ISO:</span> <span id="dt-iso" class="font-mono text-xs"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const now = document.getElementById("ts-now");
+  setInterval(() => { now.textContent = Math.floor(Date.now() / 1000); }, 1000);
+  now.textContent = Math.floor(Date.now() / 1000);
+
+  function rel(d) {
+    const s = (Date.now() - d.getTime()) / 1000;
+    const abs = Math.abs(s);
+    const past = s > 0;
+    const fmt = (n, u) => `${Math.floor(n)} ${u}${Math.floor(n) !== 1 ? "s" : ""} ${past ? "ago" : "from now"}`;
+    if (abs < 60) return fmt(abs, "second");
+    if (abs < 3600) return fmt(abs / 60, "minute");
+    if (abs < 86400) return fmt(abs / 3600, "hour");
+    if (abs < 2592000) return fmt(abs / 86400, "day");
+    if (abs < 31536000) return fmt(abs / 2592000, "month");
+    return fmt(abs / 31536000, "year");
+  }
+
+  function fromTs() {
+    const v = document.getElementById("ts-input").value.trim();
+    const unit = document.getElementById("ts-unit").value;
+    if (!v || !/^\d+$/.test(v)) return;
+    const ms = unit === "s" ? +v * 1000 : +v;
+    const d = new Date(ms);
+    document.getElementById("ts-utc").textContent = d.toUTCString();
+    document.getElementById("ts-local").textContent = d.toLocaleString();
+    document.getElementById("ts-iso").textContent = d.toISOString();
+    document.getElementById("ts-rel").textContent = rel(d);
+  }
+
+  function fromDt() {
+    const v = document.getElementById("dt-input").value;
+    if (!v) return;
+    const d = new Date(v);
+    document.getElementById("dt-s").textContent = Math.floor(d.getTime() / 1000);
+    document.getElementById("dt-ms").textContent = d.getTime();
+    document.getElementById("dt-iso").textContent = d.toISOString();
+  }
+
+  document.getElementById("ts-input").addEventListener("input", fromTs);
+  document.getElementById("ts-unit").addEventListener("change", fromTs);
+  document.getElementById("dt-input").addEventListener("input", fromDt);
+  document.getElementById("ts-input").value = Math.floor(Date.now() / 1000);
+  fromTs();
+</script>

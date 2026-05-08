@@ -1,0 +1,85 @@
+<div class="max-w-4xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Regex Tester & Debugger',
+    subtitle: 'Test JavaScript regular expressions against sample text. See live match highlights, capture groups, and supported flags.',
+    icon: 'fa-solid fa-asterisk',
+    color: 'bg-lime-100 text-lime-700'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div>
+      <label class="text-sm font-medium text-gray-700 mb-2 block">Regular expression</label>
+      <div class="flex gap-2">
+        <span class="text-xl text-gray-400 self-center">/</span>
+        <input id="rx-pattern" placeholder="\\b\\w+\\b" class="flex-1 p-3 border border-gray-200 rounded-xl font-mono text-sm"/>
+        <span class="text-xl text-gray-400 self-center">/</span>
+        <input id="rx-flags" placeholder="gi" value="g" class="w-24 p-3 border border-gray-200 rounded-xl font-mono text-sm"/>
+      </div>
+      <p class="text-xs text-gray-500 mt-1">Flags: <code>g</code> global, <code>i</code> ignore case, <code>m</code> multiline, <code>s</code> dot all, <code>u</code> unicode, <code>y</code> sticky.</p>
+    </div>
+
+    <div>
+      <label class="text-sm font-medium text-gray-700 mb-2 block">Test text</label>
+      <textarea id="rx-text" rows="6" placeholder="Paste text to test against..."
+        class="w-full p-4 border border-gray-200 rounded-xl font-mono text-sm"></textarea>
+    </div>
+
+    <div>
+      <label class="text-sm font-medium text-gray-700 mb-2 block">Highlighted matches</label>
+      <div id="rx-highlight" class="p-4 border border-gray-200 rounded-xl bg-gray-50 font-mono text-sm whitespace-pre-wrap min-h-[100px]"></div>
+    </div>
+
+    <div id="rx-info" class="text-sm text-gray-700"></div>
+    <div id="rx-error" class="hidden p-3 bg-red-50 text-red-700 rounded-xl text-sm"></div>
+  </div>
+</div>
+
+<script>
+  const pat = document.getElementById("rx-pattern");
+  const flg = document.getElementById("rx-flags");
+  const txt = document.getElementById("rx-text");
+  const hl = document.getElementById("rx-highlight");
+  const info = document.getElementById("rx-info");
+  const err = document.getElementById("rx-error");
+
+  function escapeHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+  function run() {
+    err.classList.add("hidden");
+    info.textContent = "";
+    if (!pat.value) { hl.textContent = txt.value; return; }
+    let re;
+    try {
+      let f = flg.value;
+      if (!f.includes("g")) f += "g";
+      re = new RegExp(pat.value, f);
+    } catch (e) {
+      err.textContent = "Invalid regex: " + e.message;
+      err.classList.remove("hidden");
+      hl.textContent = txt.value;
+      return;
+    }
+    const text = txt.value;
+    let result = "", last = 0, matches = 0;
+    const allMatches = [];
+    text.replace(re, (m, ...args) => {
+      const offset = args[args.length - 2];
+      result += escapeHtml(text.slice(last, offset)) + `<mark class="bg-yellow-200">${escapeHtml(m)}</mark>`;
+      last = offset + m.length;
+      matches++;
+      allMatches.push({ match: m, index: offset, groups: args.slice(0, -2) });
+      return m;
+    });
+    result += escapeHtml(text.slice(last));
+    hl.innerHTML = result || "<span class='text-gray-400'>No text yet</span>";
+    info.innerHTML = `<b>${matches}</b> match${matches === 1 ? "" : "es"}`;
+    if (allMatches.length && allMatches[0].groups.length) {
+      info.innerHTML += ` &middot; first match groups: <code class="bg-gray-100 px-1 rounded">${escapeHtml(JSON.stringify(allMatches[0].groups))}</code>`;
+    }
+  }
+
+  [pat, flg, txt].forEach((el) => el.addEventListener("input", run));
+  pat.value = "\\b\\w+\\b";
+  txt.value = "Test your regex against this sample text!";
+  run();
+</script>

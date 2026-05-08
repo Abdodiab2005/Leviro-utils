@@ -1,0 +1,224 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Date & Time Duration Calculator',
+    subtitle: 'Pick (or type) a start and end date/time and see the exact duration between them - in days, weeks, hours, and minutes.',
+    icon: 'fa-solid fa-stopwatch',
+    color: 'bg-indigo-100 text-indigo-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div class="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit mx-auto">
+      <button data-mode="datetime" class="dur-mode px-4 py-2 rounded-lg bg-white shadow font-medium">Date &amp; time</button>
+      <button data-mode="time" class="dur-mode px-4 py-2 rounded-lg font-medium text-gray-600">Time only</button>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">From</span>
+        <input id="dur-from" type="datetime-local" class="w-full mt-1 p-3 border border-gray-200 rounded-xl font-mono"/>
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">To</span>
+        <input id="dur-to" type="datetime-local" class="w-full mt-1 p-3 border border-gray-200 rounded-xl font-mono"/>
+      </label>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <button id="dur-now-from" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 rounded-lg text-sm">Set "From" to now</button>
+      <button id="dur-now-to" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 rounded-lg text-sm">Set "To" to now</button>
+      <button id="dur-swap" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 rounded-lg text-sm">
+        <i class="fa-solid fa-arrow-right-arrow-left mr-1"></i> Swap
+      </button>
+    </div>
+
+    <div id="dur-error" class="hidden p-3 bg-red-50 text-red-700 rounded-xl text-sm"></div>
+
+    <div class="bg-indigo-50 p-6 rounded-xl text-center">
+      <div class="text-xs text-indigo-700 uppercase tracking-wide mb-1">Total duration</div>
+      <div id="dur-readable" class="text-2xl md:text-3xl font-extrabold text-indigo-800">--</div>
+      <div id="dur-direction" class="mt-1 text-sm text-indigo-600"></div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Years</div>
+        <div id="dur-y" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Months</div>
+        <div id="dur-mo" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Days</div>
+        <div id="dur-d" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">HH:MM:SS</div>
+        <div id="dur-hms" class="text-lg font-bold text-gray-800 font-mono">00:00:00</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Total weeks</div>
+        <div id="dur-tw" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Total days</div>
+        <div id="dur-td" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Total hours</div>
+        <div id="dur-th" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+      <div class="bg-gray-50 p-3 rounded-xl">
+        <div class="text-xs text-gray-500 uppercase">Total minutes</div>
+        <div id="dur-tm" class="text-lg font-bold text-gray-800">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const fromEl = $("dur-from");
+    const toEl = $("dur-to");
+    const error = $("dur-error");
+    let mode = "datetime";
+
+    function nowLocalDateTime() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function nowTime() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function setMode(next) {
+      mode = next;
+      document.querySelectorAll(".dur-mode").forEach((b) => {
+        const active = b.dataset.mode === next;
+        b.classList.toggle("bg-white", active);
+        b.classList.toggle("shadow", active);
+        b.classList.toggle("text-gray-600", !active);
+      });
+      if (next === "time") {
+        fromEl.type = "time";
+        toEl.type = "time";
+        fromEl.value = nowTime();
+        toEl.value = nowTime();
+      } else {
+        fromEl.type = "datetime-local";
+        toEl.type = "datetime-local";
+        fromEl.value = nowLocalDateTime();
+        toEl.value = nowLocalDateTime();
+      }
+      compute();
+    }
+
+    function parseInput(value) {
+      if (!value) return null;
+      if (mode === "time") {
+        const [h, m] = value.split(":").map(Number);
+        if (Number.isNaN(h) || Number.isNaN(m)) return null;
+        const today = new Date();
+        return new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, 0);
+      }
+      const d = new Date(value);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function diffYMD(from, to) {
+      let y = to.getFullYear() - from.getFullYear();
+      let mo = to.getMonth() - from.getMonth();
+      let d = to.getDate() - from.getDate();
+      if (d < 0) {
+        mo--;
+        d += new Date(to.getFullYear(), to.getMonth(), 0).getDate();
+      }
+      if (mo < 0) {
+        y--;
+        mo += 12;
+      }
+      return { y, mo, d };
+    }
+
+    function compute() {
+      error.classList.add("hidden");
+      const fromV = parseInput(fromEl.value);
+      const toV = parseInput(toEl.value);
+      if (!fromV || !toV) {
+        $("dur-readable").textContent = "--";
+        $("dur-direction").textContent = "";
+        return;
+      }
+
+      const reverse = toV < fromV;
+      const a = reverse ? toV : fromV;
+      const b = reverse ? fromV : toV;
+      const totalMs = b - a;
+      const totalSec = Math.floor(totalMs / 1000);
+      const totalMin = Math.floor(totalSec / 60);
+      const totalHr = Math.floor(totalMin / 60);
+      const totalDay = Math.floor(totalHr / 24);
+      const totalWk = Math.floor(totalDay / 7);
+
+      const { y, mo, d } = mode === "datetime" ? diffYMD(a, b) : { y: 0, mo: 0, d: 0 };
+      const remHr = totalHr % 24;
+      const remMin = totalMin % 60;
+      const remSec = totalSec % 60;
+      const pad = (n) => String(n).padStart(2, "0");
+
+      $("dur-y").textContent = y;
+      $("dur-mo").textContent = mo;
+      $("dur-d").textContent = mode === "datetime" ? d : 0;
+      $("dur-hms").textContent = `${pad(remHr)}:${pad(remMin)}:${pad(remSec)}`;
+      $("dur-tw").textContent = totalWk.toLocaleString();
+      $("dur-td").textContent = totalDay.toLocaleString();
+      $("dur-th").textContent = totalHr.toLocaleString();
+      $("dur-tm").textContent = totalMin.toLocaleString();
+
+      const parts = [];
+      if (mode === "datetime") {
+        if (y) parts.push(`${y} year${y === 1 ? "" : "s"}`);
+        if (mo) parts.push(`${mo} month${mo === 1 ? "" : "s"}`);
+        if (d) parts.push(`${d} day${d === 1 ? "" : "s"}`);
+      }
+      if (remHr) parts.push(`${remHr} hour${remHr === 1 ? "" : "s"}`);
+      if (remMin) parts.push(`${remMin} minute${remMin === 1 ? "" : "s"}`);
+      if (!parts.length) parts.push("0 minutes");
+      $("dur-readable").textContent = parts.join(", ");
+      $("dur-direction").textContent = reverse
+        ? "(end is before start - showing absolute duration)"
+        : "";
+    }
+
+    document.querySelectorAll(".dur-mode").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
+    [fromEl, toEl].forEach((el) => el.addEventListener("input", compute));
+    $("dur-now-from").addEventListener("click", () => {
+      fromEl.value = mode === "time" ? nowTime() : nowLocalDateTime();
+      compute();
+    });
+    $("dur-now-to").addEventListener("click", () => {
+      toEl.value = mode === "time" ? nowTime() : nowLocalDateTime();
+      compute();
+    });
+    $("dur-swap").addEventListener("click", () => {
+      const tmp = fromEl.value;
+      fromEl.value = toEl.value;
+      toEl.value = tmp;
+      compute();
+    });
+
+    setMode("datetime");
+    // Default: 1 hour ago -> now so the result is non-zero on load
+    const past = new Date(Date.now() - 3600 * 1000);
+    const pad = (n) => String(n).padStart(2, "0");
+    fromEl.value = `${past.getFullYear()}-${pad(past.getMonth() + 1)}-${pad(past.getDate())}T${pad(past.getHours())}:${pad(past.getMinutes())}`;
+    compute();
+  })();
+</script>

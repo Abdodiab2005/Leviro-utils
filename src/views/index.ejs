@@ -1,32 +1,19 @@
 <div class="space-y-16">
-  <!-- Hero Section -->
   <section class="text-center space-y-6 py-12 md:py-20">
-    <h1
-      class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 tracking-tight"
-    >
+    <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 tracking-tight">
       Free Online Tools for Everyone
     </h1>
-    <p
-      class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-    >
+    <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
       A growing collection of fast, beautiful, privacy-friendly utilities for
       developers, designers, and everyday tasks - all in one place, no signup,
       no ads.
     </p>
     <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-      <a
-        href="#tools"
-        class="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-      >
-        Explore <%= toolCount = 31 %>+ Tools
+      <a href="#tools" class="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+        Explore <%= totalToolCount %>+ Tools
       </a>
-      <a
-        href="https://github.com/Abdodiab2005/leviro-utils"
-        target="_blank"
-        rel="noopener"
-        class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-full border border-indigo-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm hover:shadow-md"
-      >
-        <i class="fa-brands fa-github mr-1"></i> View on GitHub
+      <a href="/categories" class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-full border border-indigo-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm hover:shadow-md">
+        <i class="fa-solid fa-layer-group mr-1"></i> Browse categories
       </a>
     </div>
 
@@ -38,100 +25,28 @@
     </div>
   </section>
 
-  <!-- Tools Section -->
   <section id="tools" class="space-y-12">
-    <%
-      const cardClass = "group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-200 relative overflow-hidden";
-      const iconWrap = (color) => `w-12 h-12 ${color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`;
-
-      const categories = [
-        {
-          name: "Developer Tools",
-          icon: "fa-solid fa-code",
-          desc: "Speed up daily coding with formatters, encoders, and debuggers.",
-          tools: [
-            { href: "/services/json-formatter", icon: "fa-solid fa-code", color: "bg-yellow-100 text-yellow-600", title: "JSON Formatter", desc: "Validate, format, and minify JSON data instantly." },
-            { href: "/services/base64", icon: "fa-solid fa-file-code", color: "bg-emerald-100 text-emerald-600", title: "Base64 Encoder", desc: "Encode and decode Base64 strings entirely in your browser." },
-            { href: "/services/url-encoder", icon: "fa-solid fa-link", color: "bg-cyan-100 text-cyan-600", title: "URL Encoder", desc: "Percent-encode and decode URL strings and query parameters." },
-            { href: "/services/hash-generator", icon: "fa-solid fa-fingerprint", color: "bg-rose-100 text-rose-600", title: "Hash Generator", desc: "Generate SHA-256, SHA-512, SHA-1, and MD5 checksums." },
-            { href: "/services/jwt-decoder", icon: "fa-solid fa-shield-halved", color: "bg-sky-100 text-sky-600", title: "JWT Decoder", desc: "Inspect JSON Web Tokens and read their claims locally." },
-            { href: "/services/regex-tester", icon: "fa-solid fa-asterisk", color: "bg-lime-100 text-lime-700", title: "Regex Tester", desc: "Test regular expressions with live match highlighting." },
-            { href: "/services/uuid-generator", icon: "fa-solid fa-id-badge", color: "bg-violet-100 text-violet-600", title: "UUID Generator", desc: "Bulk-generate cryptographically random UUID v4 IDs." },
-            { href: "/services/timestamp-converter", icon: "fa-solid fa-clock", color: "bg-orange-100 text-orange-600", title: "Timestamp Converter", desc: "Convert between Unix timestamps and human-readable dates." },
-            { href: "/services/css-minifier", icon: "fa-brands fa-css3-alt", color: "bg-blue-100 text-blue-600", title: "CSS Minifier", desc: "Minify CSS to reduce size or beautify it for readability." },
-            { href: "/services/html-viewer", icon: "fa-brands fa-html5", color: "bg-orange-100 text-orange-600", title: "HTML Viewer", desc: "Render and preview HTML live in a sandboxed iframe." },
-          ],
-        },
-        {
-          name: "Text & Writing",
-          icon: "fa-solid fa-pen-nib",
-          desc: "Tools for writers, editors, and content creators.",
-          tools: [
-            { href: "/services/word-counter", icon: "fa-solid fa-file-word", color: "bg-blue-100 text-blue-600", title: "Word Counter", desc: "Count words, characters, sentences, and reading time." },
-            { href: "/services/case-converter", icon: "fa-solid fa-text-height", color: "bg-teal-100 text-teal-600", title: "Case Converter", desc: "Switch between UPPER, lower, Title, camel, snake, kebab cases." },
-            { href: "/services/lorem-ipsum", icon: "fa-solid fa-align-left", color: "bg-amber-100 text-amber-600", title: "Lorem Ipsum", desc: "Generate placeholder text by paragraph, sentence, or word." },
-            { href: "/services/markdown-preview", icon: "fa-brands fa-markdown", color: "bg-slate-100 text-slate-700", title: "Markdown Preview", desc: "Live Markdown editor with tables, images, and inline HTML." },
-            { href: "/services/markdown-to-html", icon: "fa-solid fa-code", color: "bg-rose-100 text-rose-600", title: "Markdown to HTML", desc: "Convert Markdown to clean HTML source you can paste anywhere." },
-            { href: "/services/html-to-markdown", icon: "fa-solid fa-arrow-right-arrow-left", color: "bg-emerald-100 text-emerald-600", title: "HTML to Markdown", desc: "Turn HTML back into clean GitHub-flavored Markdown." },
-            { href: "/services/markdown-to-whatsapp", icon: "fa-brands fa-whatsapp", color: "bg-green-100 text-green-600", title: "MD to WhatsApp", desc: "Format Markdown for WhatsApp - bold, italics, lists, and code." },
-          ],
-        },
-        {
-          name: "Generators",
-          icon: "fa-solid fa-wand-magic-sparkles",
-          desc: "Create secure secrets, codes, manifests, and more.",
-          tools: [
-            { href: "/services/password-generator", icon: "fa-solid fa-key", color: "bg-indigo-100 text-indigo-600", title: "Password Generator", desc: "Create strong, random passwords with custom rules." },
-            { href: "/services/secret-generator", icon: "fa-solid fa-user-secret", color: "bg-purple-100 text-purple-600", title: "Secret Generator", desc: "Generate secure random secrets for apps and APIs." },
-            { href: "/services/qr-generator", icon: "fa-solid fa-qrcode", color: "bg-blue-100 text-blue-600", title: "QR Generator", desc: "Generate customizable QR codes for any URL or text." },
-            { href: "/services/pwa-generator", icon: "fa-solid fa-mobile-screen", color: "bg-yellow-100 text-yellow-600", title: "PWA Generator", desc: "Generate icons and manifest for Progressive Web Apps." },
-            { href: "/services/seo-generator", icon: "fa-solid fa-magnifying-glass-chart", color: "bg-pink-100 text-pink-600", title: "SEO Generator", desc: "Build optimized meta tags and Open Graph data." },
-          ],
-        },
-        {
-          name: "Files & Media",
-          icon: "fa-solid fa-photo-film",
-          desc: "Convert images, split PDFs, and pick colors.",
-          tools: [
-            { href: "/services/image-converter", icon: "fa-solid fa-image", color: "bg-pink-100 text-pink-600", title: "Image Converter", desc: "Convert images between PNG, JPG, WebP with quality control." },
-            { href: "/services/pdf-splitter", icon: "fa-solid fa-file-pdf", color: "bg-red-100 text-red-600", title: "PDF Splitter", desc: "Split PDFs by page ranges and download custom selections." },
-            { href: "/services/color-converter", icon: "fa-solid fa-palette", color: "bg-fuchsia-100 text-fuchsia-600", title: "Color Converter", desc: "Pick colors and convert HEX, RGB, RGBA, HSL formats." },
-          ],
-        },
-        {
-          name: "Daily Life",
-          icon: "fa-solid fa-calendar-check",
-          desc: "Helpful calculators and reference tools for everyday use.",
-          tools: [
-            { href: "/services/age-calculator", icon: "fa-solid fa-cake-candles", color: "bg-blue-100 text-blue-600", title: "Age Calculator", desc: "Calculate exact age in years, months, weeks, and days." },
-            { href: "/services/bmi-calculator", icon: "fa-solid fa-weight-scale", color: "bg-pink-100 text-pink-600", title: "BMI Calculator", desc: "Compute Body Mass Index in metric or imperial units." },
-            { href: "/services/tip-calculator", icon: "fa-solid fa-hand-holding-dollar", color: "bg-emerald-100 text-emerald-600", title: "Tip Calculator", desc: "Calculate tips and split bills evenly between people." },
-            { href: "/services/unit-converter", icon: "fa-solid fa-ruler-combined", color: "bg-blue-100 text-blue-600", title: "Unit Converter", desc: "Convert length, weight, temperature, volume, and more." },
-            { href: "/services/loan-calculator", icon: "fa-solid fa-sack-dollar", color: "bg-yellow-100 text-yellow-700", title: "Loan / EMI Calculator", desc: "Estimate monthly payments, interest, and amortization." },
-            { href: "/services/discount-calculator", icon: "fa-solid fa-tags", color: "bg-red-100 text-red-600", title: "Discount Calculator", desc: "Find sale prices, savings, and tax-inclusive totals." },
-            { href: "/services/currency-converter", icon: "fa-solid fa-money-bill-transfer", color: "bg-green-100 text-green-600", title: "Currency Converter", desc: "Convert currencies with up-to-date exchange rates." },
-            { href: "/services/world-info", icon: "fa-solid fa-earth-americas", color: "bg-indigo-100 text-indigo-600", title: "World Info", desc: "Browse countries, states, and cities with rich data." },
-          ],
-        },
-      ];
-    %>
-
-    <% categories.forEach((cat) => { %>
+    <% categoriesData.forEach((cat) => { %>
       <div class="space-y-6">
-        <div class="flex items-center gap-3 border-b border-gray-200 pb-3">
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-            <i class="<%= cat.icon %>"></i>
+        <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <i class="<%= cat.icon %>"></i>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900"><%= cat.name %></h2>
+              <p class="text-sm text-gray-500"><%= cat.description %></p>
+            </div>
           </div>
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900"><%= cat.name %></h2>
-            <p class="text-sm text-gray-500"><%= cat.desc %></p>
-          </div>
+          <a href="/categories/<%= cat.slug %>" class="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            View all <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <% cat.tools.forEach((t) => { %>
-            <a href="<%= t.href %>" class="<%= cardClass %>">
-              <div class="<%= iconWrap(t.color) %>">
+            <a href="<%= t.href %>" class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-200 relative overflow-hidden">
+              <div class="w-12 h-12 <%= t.color %> rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <i class="<%= t.icon %> text-xl"></i>
               </div>
               <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
@@ -145,7 +60,6 @@
     <% }); %>
   </section>
 
-  <!-- Why use Leviro Utils -->
   <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
     <div class="grid md:grid-cols-2 gap-8 items-center">
       <div>
@@ -165,7 +79,7 @@
       </div>
       <div class="grid grid-cols-2 gap-4">
         <div class="bg-indigo-50 p-6 rounded-2xl text-center">
-          <div class="text-4xl font-bold text-indigo-600">31+</div>
+          <div class="text-4xl font-bold text-indigo-600"><%= totalToolCount %>+</div>
           <div class="text-sm text-gray-600 mt-1">Tools available</div>
         </div>
         <div class="bg-emerald-50 p-6 rounded-2xl text-center">

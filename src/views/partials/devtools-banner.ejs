@@ -1,27 +1,19 @@
-<!--
-  Best-effort DevTools detection. Browsers don't expose a real API for this,
-  so we use two well-known heuristics:
-    1) Inspecting an object whose toString getter fires only when it's
-       expanded in the console (DevTools open).
-    2) Comparing window.outer* vs window.inner* dimensions, which differ
-       when the DevTools panel is docked inside the window.
-  If either signal flips on, we show a dismissible banner explaining why
-  cache behavior may look odd while DevTools is open.
--->
 <div id="dt-banner"
-  class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] hidden max-w-md w-[calc(100%-2rem)] bg-amber-50 border border-amber-300 text-amber-900 rounded-xl shadow-lg p-4 text-sm">
-  <div class="flex items-start gap-3">
-    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl mt-0.5"></i>
+  class="hidden bg-amber-50 border-b border-amber-300 text-amber-900"
+  role="status"
+  aria-live="polite">
+  <div class="container mx-auto px-4 py-3 flex items-start gap-3 text-sm">
+    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mt-0.5"></i>
     <div class="flex-1">
-      <p class="font-semibold mb-1">Heads up: DevTools is open</p>
+      <p class="font-semibold">Heads up: DevTools is open</p>
       <p class="text-amber-800 leading-relaxed">
         With "Disable cache" on in the Network tab, every page will skip the
-        service worker cache, costing you offline support. The app may also
+        service worker cache - costing you offline support. The app may also
         auto-reload more aggressively when an update arrives. Close DevTools
         for the smoothest experience.
       </p>
     </div>
-    <button id="dt-dismiss" class="text-amber-700 hover:text-amber-900 p-1" aria-label="Dismiss">
+    <button id="dt-dismiss" class="text-amber-700 hover:text-amber-900 p-1 shrink-0" aria-label="Dismiss">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
@@ -48,7 +40,6 @@
       sessionStorage.setItem(STORAGE_KEY, "1");
     });
 
-    // Heuristic 1: window-size delta (only reliable when docked).
     function checkSize() {
       const threshold = 160;
       const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
@@ -56,8 +47,6 @@
       if (widthDiff > threshold || heightDiff > threshold) show();
     }
 
-    // Heuristic 2: getter-trap. Logging this object only forces toString()
-    // when DevTools actually inspects it.
     const trap = {};
     Object.defineProperty(trap, "id", {
       get() { show(); return "leviro-utils"; },
@@ -65,7 +54,6 @@
 
     function probe() {
       checkSize();
-      // Triggers the trap when console panel is open
       console.log("%c", "color: transparent", trap);
       console.clear?.();
     }

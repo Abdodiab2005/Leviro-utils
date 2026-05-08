@@ -46,6 +46,7 @@ import {
   getUnitConverter,
   getLoanCalculator,
   getDiscountCalculator,
+  getDurationCalculator,
 } from "../controllers/utilsController.js";
 import {
   apiLimiter,
@@ -54,6 +55,11 @@ import {
   pdfLimiter,
   pwaLimiter,
 } from "../middleware/rateLimiters.js";
+import {
+  listCategories,
+  showCategory,
+} from "../controllers/categoryController.js";
+import { categories, totalToolCount } from "../data/categories.js";
 import multer from "multer";
 
 const upload = multer({
@@ -70,6 +76,8 @@ router.get("/", (req, res) => {
     description,
     keywords:
       "free online tools, developer tools, daily utility tools, json formatter, image converter, qr generator, password generator, age calculator, currency converter, base64, jwt decoder, regex tester, hash generator, uuid, lorem ipsum, color picker, markdown preview, css minifier, timestamp converter",
+    categoriesData: categories,
+    totalToolCount,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -84,6 +92,10 @@ router.get("/", (req, res) => {
     }),
   });
 });
+
+// Category pages
+router.get("/categories", listCategories);
+router.get("/categories/:slug", showCategory);
 
 // Tool pages (HTML shells - tools themselves run client-side)
 router.get("/services/age-calculator", getAgeCalculator);
@@ -125,6 +137,7 @@ router.get("/services/tip-calculator", getTipCalculator);
 router.get("/services/unit-converter", getUnitConverter);
 router.get("/services/loan-calculator", getLoanCalculator);
 router.get("/services/discount-calculator", getDiscountCalculator);
+router.get("/services/duration-calculator", getDurationCalculator);
 
 // API Routes - each gets a tailored rate limit
 router.get("/api/currencies", apiLimiter, getCurrenciesAPI);

@@ -160,7 +160,7 @@ export const getMarkdownToWhatsapp = renderTool("services/markdown-to-whatsapp",
   title: "Markdown to WhatsApp Formatter",
   slug: "markdown-to-whatsapp",
   description:
-    "Paste Markdown and get text formatted for WhatsApp: **bold** becomes *bold*, *italic* becomes _italic_, headings flatten, tables and HTML are stripped.",
+    "Paste Markdown and get text formatted for WhatsApp: **bold** becomes *bold*, *italic* becomes _italic_, headings flatten, links collapse to bare URLs, tables and HTML are stripped.",
   keywords:
     "markdown to whatsapp, whatsapp formatter, convert markdown for whatsapp, whatsapp bold italic, md to whatsapp",
 });
@@ -209,4 +209,13 @@ export const getDiscountCalculator = renderTool("services/discount-calculator", 
     "Find the final price after a discount, calculate savings, and optionally add sales tax. Quick presets for 10/15/20/25/50% off.",
   keywords:
     "discount calculator, sale price calculator, percent off calculator, savings calculator, tax calculator",
+});
+
+export const getDurationCalculator = renderTool("services/duration-calculator", {
+  title: "Date & Time Duration Calculator",
+  slug: "duration-calculator",
+  description:
+    "Calculate the time between two dates or two times: years, months, days, hours, and minutes. Type values directly or pick from a calendar.",
+  keywords:
+    "duration calculator, time between dates, hours between two times, date difference, time difference calculator, days between dates",
 });

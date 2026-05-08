@@ -33,7 +33,7 @@
       <div><code class="bg-gray-100 px-1 rounded">```block```</code> &rarr; multi-line code</div>
       <div><code class="bg-gray-100 px-1 rounded">- item</code> &rarr; bulleted list</div>
     </div>
-    <p class="mt-3 text-gray-600">Markdown features that WhatsApp <strong>doesn't</strong> support are stripped or flattened: headings (<code>#</code>), tables, images, links (kept as <em>text (url)</em>), inline HTML/divs, and horizontal rules.</p>
+    <p class="mt-3 text-gray-600">Markdown features WhatsApp <strong>doesn't</strong> support are stripped or flattened: headings (<code>#</code>) become bold, tables / images / inline HTML / horizontal rules are removed, and links collapse to the bare URL (<code>[text](url)</code> &rarr; <code>url</code>) so WhatsApp auto-links them.</p>
   </section>
 </div>
 
@@ -68,8 +68,16 @@
       // 3. Strip images entirely (WhatsApp can't embed)
       s = s.replace(/!\[[^\]]*]\([^)]*\)/g, "");
 
-      // 4. Links: [text](url) -> text (url)
-      s = s.replace(/\[([^\]]+)]\(([^)]+)\)/g, (_, text, url) => `${text} (${url})`);
+      // 4. Links: WhatsApp auto-links bare URLs, so output the URL only
+      // (no text/url duplication and no markdown brackets).
+      // [text](url) -> url
+      s = s.replace(/\[([^\]]+)]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_, _text, url) => url);
+      // <https://example.com> -> https://example.com
+      s = s.replace(/<((?:https?|mailto):[^>\s]+)>/g, "$1");
+      // Reference-style [text][ref] - drop the ref bracket and keep the text;
+      // bare reference labels [ref]: url at the bottom are stripped.
+      s = s.replace(/^\s*\[[^\]]+]:\s*\S+.*$/gm, "");
+      s = s.replace(/\[([^\]]+)]\[[^\]]*]/g, "$1");
 
       // 5. Drop tables: any line with leading | or a separator row.
       s = s.split("\n").filter((line) => {

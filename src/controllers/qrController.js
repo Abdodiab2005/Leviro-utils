@@ -1,5 +1,3 @@
-import QRCode from "qrcode";
-
 export const getQrGenerator = (req, res) => {
   const description =
     "Generate high-quality, customizable QR codes for URLs, Wi-Fi, contacts, and any text. Choose colors, error correction, and download as PNG instantly.";
@@ -19,37 +17,4 @@ export const getQrGenerator = (req, res) => {
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
   });
-};
-
-export const generateQrAPI = async (req, res) => {
-  try {
-    const {
-      text,
-      darkColor = "#000000",
-      lightColor = "#ffffff",
-      width = 300,
-      margin = 4,
-    } = req.body;
-
-    if (!text) {
-      return res.status(400).json({ error: "Text or URL is required" });
-    }
-
-    const options = {
-      color: {
-        dark: darkColor,
-        light: lightColor,
-      },
-      width: parseInt(width),
-      margin: parseInt(margin),
-      errorCorrectionLevel: "H",
-    };
-
-    const qrDataUrl = await QRCode.toDataURL(text, options);
-
-    res.json({ qrDataUrl });
-  } catch (error) {
-    console.error("QR generation error:", error);
-    res.status(500).json({ error: "Failed to generate QR code" });
-  }
 };

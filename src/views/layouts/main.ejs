@@ -12,26 +12,37 @@
 
     <%- include('../partials/footer') %>
 
+    <!-- Update-available toast (shown briefly before SW-triggered reload) -->
+    <div id="leviro-update-toast"
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-[70] hidden bg-indigo-600 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+      <i class="fa-solid fa-arrows-rotate mr-2"></i>
+      A new version is available - refreshing...
+    </div>
+
+    <%- include('../partials/devtools-banner') %>
+
     <script>
-      if ("serviceWorker" in navigator) {
+      (function () {
+        if (!("serviceWorker" in navigator)) return;
+        const toast = document.getElementById("leviro-update-toast");
+
         window.addEventListener("load", () => {
           navigator.serviceWorker
             .register("/sw.js", { updateViaCache: "none" })
             .then((registration) => {
-              // Check for updates whenever the tab becomes visible again
               document.addEventListener("visibilitychange", () => {
                 if (document.visibilityState === "visible") registration.update();
               });
 
-              // If a new SW takes over, refresh once so users see the update
               let refreshed = false;
               navigator.serviceWorker.addEventListener("controllerchange", () => {
                 if (refreshed) return;
                 refreshed = true;
-                window.location.reload();
+                if (toast) toast.classList.remove("hidden");
+                // Small delay so the user actually sees the toast
+                setTimeout(() => window.location.reload(), 900);
               });
 
-              // When a new worker finishes installing, ask it to activate now
               registration.addEventListener("updatefound", () => {
                 const sw = registration.installing;
                 if (!sw) return;
@@ -44,7 +55,7 @@
             })
             .catch((err) => console.warn("SW registration failed:", err));
         });
-      }
+      })();
     </script>
   </body>
 </html>

@@ -1,0 +1,100 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Loan & EMI Calculator',
+    subtitle: 'Estimate your monthly payment, total interest, and total cost for a loan or mortgage. Adjust amount, rate, and term to see results live.',
+    icon: 'fa-solid fa-sack-dollar',
+    color: 'bg-yellow-100 text-yellow-700'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div class="grid sm:grid-cols-3 gap-4">
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">Loan amount</span>
+        <input id="loan-p" type="number" min="0" step="any" value="200000" class="w-full p-3 border border-gray-200 rounded-xl mt-1">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">Annual rate (%)</span>
+        <input id="loan-r" type="number" min="0" step="0.01" value="6.5" class="w-full p-3 border border-gray-200 rounded-xl mt-1">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium text-gray-700">Term (years)</span>
+        <input id="loan-y" type="number" min="1" max="50" value="30" class="w-full p-3 border border-gray-200 rounded-xl mt-1">
+      </label>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-yellow-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-yellow-700 uppercase tracking-wide">Monthly payment</div>
+        <div id="loan-emi" class="text-2xl font-extrabold text-yellow-800">$0</div>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-gray-500 uppercase tracking-wide">Total interest</div>
+        <div id="loan-interest" class="text-2xl font-bold text-gray-800">$0</div>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-xl text-center">
+        <div class="text-xs text-gray-500 uppercase tracking-wide">Total paid</div>
+        <div id="loan-total" class="text-2xl font-bold text-gray-800">$0</div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">First 12 months</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-100 text-gray-700">
+              <th class="p-2 text-left">Month</th>
+              <th class="p-2 text-right">Principal</th>
+              <th class="p-2 text-right">Interest</th>
+              <th class="p-2 text-right">Balance</th>
+            </tr>
+          </thead>
+          <tbody id="loan-schedule"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => "$" + n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    const fmt2 = (n) => "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    function compute() {
+      const P = +$("loan-p").value || 0;
+      const annual = +$("loan-r").value || 0;
+      const years = +$("loan-y").value || 0;
+      const n = years * 12;
+      const r = annual / 100 / 12;
+      let emi = 0;
+      if (P > 0 && n > 0) {
+        emi = r === 0 ? P / n : (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+      }
+      const total = emi * n;
+      const interest = total - P;
+      $("loan-emi").textContent = fmt(emi);
+      $("loan-interest").textContent = fmt(interest);
+      $("loan-total").textContent = fmt(total);
+
+      let balance = P;
+      const rows = [];
+      for (let m = 1; m <= Math.min(12, n); m++) {
+        const interestM = balance * r;
+        const principalM = emi - interestM;
+        balance -= principalM;
+        rows.push(`<tr class="border-b border-gray-100">
+          <td class="p-2">${m}</td>
+          <td class="p-2 text-right">${fmt2(principalM)}</td>
+          <td class="p-2 text-right">${fmt2(interestM)}</td>
+          <td class="p-2 text-right">${fmt2(Math.max(0, balance))}</td>
+        </tr>`);
+      }
+      $("loan-schedule").innerHTML = rows.join("");
+    }
+
+    ["loan-p", "loan-r", "loan-y"].forEach((id) => $(id).addEventListener("input", compute));
+    compute();
+  })();
+</script>

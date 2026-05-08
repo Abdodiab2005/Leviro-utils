@@ -1,91 +1,68 @@
-<div class="max-w-6xl mx-auto">
+<div class="max-w-7xl mx-auto">
   <%- include('../partials/tool-header', {
     heading: 'Markdown Previewer',
-    subtitle: 'Write Markdown on the left, see the rendered HTML on the right in real time. Supports headings, lists, code, links, and tables.',
+    subtitle: 'Live Markdown editor with full GitHub-flavored support: tables, images, raw HTML, divs, task lists, code blocks, and more.',
     icon: 'fa-brands fa-markdown',
     color: 'bg-slate-100 text-slate-700'
   }) %>
 
   <div class="grid lg:grid-cols-2 gap-4">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col">
       <div class="flex justify-between items-center mb-2">
-        <label class="text-sm font-semibold text-gray-700">Markdown</label>
-        <button id="md-copy" class="text-sm text-slate-700"><i class="fa-regular fa-copy mr-1"></i>Copy HTML</button>
+        <label class="text-sm font-semibold text-gray-700" for="md-in">Markdown</label>
+        <div class="flex gap-3 text-sm">
+          <button id="md-clear" class="text-gray-500 hover:text-gray-700"><i class="fa-regular fa-trash-can mr-1"></i>Clear</button>
+          <button id="md-copy" class="text-slate-700 hover:text-slate-900"><i class="fa-regular fa-copy mr-1"></i>Copy HTML</button>
+        </div>
       </div>
-      <textarea id="md-in" rows="20" class="w-full p-4 border border-gray-200 rounded-xl font-mono text-sm" placeholder="# Hello World"></textarea>
+      <textarea id="md-in" rows="22" class="w-full p-4 border border-gray-200 rounded-xl font-mono text-sm flex-1" placeholder="# Hello world"></textarea>
     </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex flex-col">
       <label class="block text-sm font-semibold text-gray-700 mb-2">Preview</label>
-      <article id="md-out" class="md-rendered max-w-none p-4 border border-gray-100 rounded-xl bg-gray-50 min-h-[480px]"></article>
+      <article id="md-out" class="md-rendered max-w-none p-4 border border-gray-100 rounded-xl bg-gray-50 min-h-[480px] flex-1 overflow-auto"></article>
     </div>
   </div>
+
+  <section class="mt-10 text-gray-700 text-sm leading-relaxed">
+    <h2 class="text-xl font-bold text-gray-900 mb-2">Supported features</h2>
+    <p>Powered by <a href="https://marked.js.org" rel="noopener" class="text-indigo-600">marked</a> with GitHub-flavored Markdown enabled - tables (<code>| col | col |</code>), images (<code>![alt](url)</code>), raw HTML (including <code>&lt;div&gt;</code>, <code>&lt;span&gt;</code>, etc.), task lists, fenced code blocks, autolinks, and footnotes all render as expected.</p>
+  </section>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" crossorigin="anonymous" defer></script>
 <script>
-  function escapeHtml(s) {
-    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  }
+  (function () {
+    const input = document.getElementById("md-in");
+    const out = document.getElementById("md-out");
+    const initial = "# Welcome to Leviro Utils\n\nA full **Markdown** previewer with _everything_ you need.\n\n## Tables\n\n| Feature | Supported |\n|---------|:---------:|\n| Tables  | ✅ |\n| Images  | ✅ |\n| Raw HTML| ✅ |\n\n## Images\n\n![Logo](/icons/icon-192x192.png)\n\n## Inline HTML\n\n<div style=\"padding:8px;border-radius:8px;background:#eef2ff;color:#4338ca\">\n  This is a custom <strong>div</strong> with inline styling.\n</div>\n\n## Task list\n\n- [x] Tables\n- [x] Images\n- [x] Inline HTML / divs\n\n```js\nconst hello = 'world';\nconsole.log(hello);\n```";
 
-  function md(src) {
-    const lines = src.split("\n");
-    let html = "";
-    let inCode = false, inList = false, listType = "";
-    for (let i = 0; i < lines.length; i++) {
-      let line = lines[i];
-
-      // Fenced code blocks
-      const fence = line.match(/^```(\w*)$/);
-      if (fence) {
-        if (inCode) { html += "</code></pre>"; inCode = false; }
-        else { html += `<pre class="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto"><code>`; inCode = true; }
-        continue;
-      }
-      if (inCode) { html += escapeHtml(line) + "\n"; continue; }
-
-      // Headings
-      const h = line.match(/^(#{1,6})\s+(.*)$/);
-      if (h) { if (inList) { html += `</${listType}>`; inList = false; } html += `<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`; continue; }
-
-      // Lists
-      const ul = line.match(/^[-*]\s+(.*)$/);
-      const ol = line.match(/^\d+\.\s+(.*)$/);
-      if (ul || ol) {
-        const t = ul ? "ul" : "ol";
-        if (!inList || listType !== t) { if (inList) html += `</${listType}>`; html += `<${t}>`; inList = true; listType = t; }
-        html += `<li>${inline((ul||ol)[1])}</li>`;
-        continue;
-      }
-      if (inList) { html += `</${listType}>`; inList = false; }
-
-      // Horizontal rule
-      if (/^\s*---\s*$/.test(line)) { html += "<hr/>"; continue; }
-
-      // Blank line
-      if (line.trim() === "") continue;
-
-      // Paragraph
-      html += `<p>${inline(line)}</p>`;
+    function configure() {
+      if (typeof marked === "undefined") return false;
+      marked.setOptions({
+        gfm: true,
+        breaks: true,
+        headerIds: true,
+        mangle: false,
+      });
+      return true;
     }
-    if (inList) html += `</${listType}>`;
-    if (inCode) html += "</code></pre>";
-    return html;
-  }
 
-  function inline(s) {
-    return escapeHtml(s)
-      .replace(/`([^`]+)`/g, '<code class="bg-gray-200 px-1 rounded">$1</code>')
-      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a class="text-indigo-600 underline" href="$2" rel="noopener">$1</a>');
-  }
+    function render() {
+      if (!configure()) { setTimeout(render, 100); return; }
+      out.innerHTML = marked.parse(input.value || "");
+    }
 
-  const input = document.getElementById("md-in");
-  const out = document.getElementById("md-out");
-  input.value = "# Welcome to Leviro Utils\n\nType **Markdown** here and see the *preview* update live.\n\n- Lists work\n- Like this\n\n```\nconst hello = 'world';\n```";
-  function render() { out.innerHTML = md(input.value); }
-  input.addEventListener("input", render);
-  document.getElementById("md-copy").addEventListener("click", async () => {
-    await navigator.clipboard.writeText(out.innerHTML);
-  });
-  render();
+    input.addEventListener("input", render);
+    document.getElementById("md-copy").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(out.innerHTML);
+    });
+    document.getElementById("md-clear").addEventListener("click", () => {
+      input.value = "";
+      render();
+    });
+
+    input.value = initial;
+    window.addEventListener("load", render);
+    render();
+  })();
 </script>

@@ -1,20 +1,14 @@
 import express from "express";
 import path from "path";
 import cors from "cors";
-import rateLimit from "express-rate-limit";
 import expressLayouts from "express-ejs-layouts";
 import mainRoutes from "./src/routes/index.js";
+import { pageLimiter } from "./src/middleware/rateLimiters.js";
 import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
 const __dirname = path.resolve();
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000,
-  message: "Too many requests, please try again later",
-});
 
 // View Engine Setup
 app.use(expressLayouts);
@@ -62,9 +56,17 @@ app.use(
     methods: ["GET", "POST"],
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(limiter);
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+
+// Apply page navigation limit only to GET HTML requests so per-API
+// limits in the router can apply tighter rules independently.
+app.use((req, res, next) => {
+  if (req.method === "GET" && !req.path.startsWith("/api/")) {
+    return pageLimiter(req, res, next);
+  }
+  next();
+});
 
 // Routes
 app.use("/", mainRoutes);

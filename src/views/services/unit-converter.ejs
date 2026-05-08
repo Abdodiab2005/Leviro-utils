@@ -1,0 +1,177 @@
+<div class="max-w-3xl mx-auto">
+  <%- include('../partials/tool-header', {
+    heading: 'Unit Converter',
+    subtitle: 'Convert between common units of length, weight, temperature, volume, area, speed, and time. Live, two-way conversion.',
+    icon: 'fa-solid fa-ruler-combined',
+    color: 'bg-blue-100 text-blue-600'
+  }) %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 space-y-6">
+    <div>
+      <span class="text-sm font-medium text-gray-700 mb-2 block">Category</span>
+      <div id="uc-cats" class="flex flex-wrap gap-2"></div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4 items-end">
+      <div>
+        <label class="text-sm font-medium text-gray-700">From</label>
+        <input id="uc-a" type="number" step="any" value="1" class="w-full p-3 border border-gray-200 rounded-xl mt-1 text-lg font-mono">
+        <select id="uc-a-unit" class="w-full p-3 border border-gray-200 rounded-xl mt-2"></select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">To</label>
+        <input id="uc-b" type="number" step="any" value="0" class="w-full p-3 border border-gray-200 rounded-xl mt-1 text-lg font-mono">
+        <select id="uc-b-unit" class="w-full p-3 border border-gray-200 rounded-xl mt-2"></select>
+      </div>
+    </div>
+
+    <button id="uc-swap" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-xl hover:bg-blue-50 font-medium">
+      <i class="fa-solid fa-arrow-right-arrow-left mr-1"></i> Swap
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    // Each unit has a `to` (toBase) and `from` (fromBase) function for flexibility (so temperature works too).
+    const linear = (factor) => ({ to: (v) => v * factor, from: (v) => v / factor });
+    const categories = {
+      length: {
+        label: "Length",
+        units: {
+          meter: { ...linear(1), label: "Meter (m)" },
+          kilometer: { ...linear(1000), label: "Kilometer (km)" },
+          centimeter: { ...linear(0.01), label: "Centimeter (cm)" },
+          millimeter: { ...linear(0.001), label: "Millimeter (mm)" },
+          inch: { ...linear(0.0254), label: "Inch (in)" },
+          foot: { ...linear(0.3048), label: "Foot (ft)" },
+          yard: { ...linear(0.9144), label: "Yard (yd)" },
+          mile: { ...linear(1609.344), label: "Mile (mi)" },
+        },
+      },
+      weight: {
+        label: "Weight",
+        units: {
+          kilogram: { ...linear(1), label: "Kilogram (kg)" },
+          gram: { ...linear(0.001), label: "Gram (g)" },
+          milligram: { ...linear(1e-6), label: "Milligram (mg)" },
+          tonne: { ...linear(1000), label: "Tonne (t)" },
+          pound: { ...linear(0.45359237), label: "Pound (lb)" },
+          ounce: { ...linear(0.02834952), label: "Ounce (oz)" },
+        },
+      },
+      temperature: {
+        label: "Temperature",
+        units: {
+          celsius: { to: (v) => v, from: (v) => v, label: "Celsius (°C)" },
+          fahrenheit: { to: (v) => (v - 32) * 5 / 9, from: (v) => v * 9 / 5 + 32, label: "Fahrenheit (°F)" },
+          kelvin: { to: (v) => v - 273.15, from: (v) => v + 273.15, label: "Kelvin (K)" },
+        },
+      },
+      volume: {
+        label: "Volume",
+        units: {
+          liter: { ...linear(1), label: "Liter (L)" },
+          milliliter: { ...linear(0.001), label: "Milliliter (mL)" },
+          gallon: { ...linear(3.785411784), label: "US Gallon" },
+          quart: { ...linear(0.946352946), label: "US Quart" },
+          pint: { ...linear(0.473176473), label: "US Pint" },
+          cup: { ...linear(0.2365882365), label: "US Cup" },
+          floz: { ...linear(0.0295735296), label: "Fluid Ounce" },
+          tbsp: { ...linear(0.0147867648), label: "Tablespoon" },
+          tsp: { ...linear(0.00492892159), label: "Teaspoon" },
+        },
+      },
+      area: {
+        label: "Area",
+        units: {
+          sqmeter: { ...linear(1), label: "Square Meter" },
+          sqkm: { ...linear(1e6), label: "Square Kilometer" },
+          hectare: { ...linear(10000), label: "Hectare" },
+          sqft: { ...linear(0.09290304), label: "Square Foot" },
+          sqyard: { ...linear(0.83612736), label: "Square Yard" },
+          acre: { ...linear(4046.8564224), label: "Acre" },
+          sqmile: { ...linear(2589988.110336), label: "Square Mile" },
+        },
+      },
+      speed: {
+        label: "Speed",
+        units: {
+          mps: { ...linear(1), label: "Meters / sec" },
+          kmh: { ...linear(1 / 3.6), label: "Km / hour" },
+          mph: { ...linear(0.44704), label: "Miles / hour" },
+          knot: { ...linear(0.514444), label: "Knot" },
+          fps: { ...linear(0.3048), label: "Feet / sec" },
+        },
+      },
+      time: {
+        label: "Time",
+        units: {
+          second: { ...linear(1), label: "Second" },
+          minute: { ...linear(60), label: "Minute" },
+          hour: { ...linear(3600), label: "Hour" },
+          day: { ...linear(86400), label: "Day" },
+          week: { ...linear(604800), label: "Week" },
+          month: { ...linear(2629800), label: "Month (avg)" },
+          year: { ...linear(31557600), label: "Year (avg)" },
+        },
+      },
+    };
+
+    const cats = document.getElementById("uc-cats");
+    const a = document.getElementById("uc-a");
+    const b = document.getElementById("uc-b");
+    const aUnit = document.getElementById("uc-a-unit");
+    const bUnit = document.getElementById("uc-b-unit");
+    let category = "length";
+
+    function renderCats() {
+      cats.innerHTML = Object.entries(categories).map(([k, c]) => `
+        <button data-cat="${k}" class="uc-cat px-3 py-2 rounded-lg text-sm font-medium ${k === category ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}">${c.label}</button>
+      `).join("");
+      cats.querySelectorAll(".uc-cat").forEach((btn) => btn.addEventListener("click", () => {
+        category = btn.dataset.cat;
+        renderUnits();
+        renderCats();
+      }));
+    }
+
+    function renderUnits() {
+      const units = categories[category].units;
+      const opts = Object.entries(units).map(([k, u]) => `<option value="${k}">${u.label}</option>`).join("");
+      aUnit.innerHTML = opts;
+      bUnit.innerHTML = opts;
+      const keys = Object.keys(units);
+      aUnit.value = keys[0];
+      bUnit.value = keys[1] || keys[0];
+      compute("a");
+    }
+
+    function compute(source) {
+      const units = categories[category].units;
+      if (source === "a") {
+        const baseVal = units[aUnit.value].to(+a.value || 0);
+        b.value = +units[bUnit.value].from(baseVal).toFixed(8);
+      } else {
+        const baseVal = units[bUnit.value].to(+b.value || 0);
+        a.value = +units[aUnit.value].from(baseVal).toFixed(8);
+      }
+    }
+
+    a.addEventListener("input", () => compute("a"));
+    b.addEventListener("input", () => compute("b"));
+    aUnit.addEventListener("change", () => compute("a"));
+    bUnit.addEventListener("change", () => compute("a"));
+    document.getElementById("uc-swap").addEventListener("click", () => {
+      const tu = aUnit.value, tv = a.value;
+      aUnit.value = bUnit.value;
+      bUnit.value = tu;
+      a.value = b.value;
+      b.value = tv;
+      compute("a");
+    });
+
+    renderCats();
+    renderUnits();
+  })();
+</script>

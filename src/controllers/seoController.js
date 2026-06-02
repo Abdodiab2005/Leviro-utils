@@ -10,7 +10,7 @@ export const getSeoGenerator = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "SEO Meta Tags Generator",
-      url: "https://leviro.net/services/seo-generator",
+      url: "https://utils.leviro.net/services/seo-generator",
       description,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "All",

@@ -23,7 +23,7 @@ export const getPwaGenerator = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "PWA Asset Generator",
-      url: "https://leviro.net/services/pwa-generator",
+      url: "https://utils.leviro.net/services/pwa-generator",
       description,
       applicationCategory: "DeveloperApplication",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -65,14 +65,17 @@ export const generatePwa = (req, res) => {
 
       output.on("close", () => {
         // Auto-delete after 10 minutes
-        setTimeout(() => {
-          const filePath = path.join(downloadPath, zipName);
-          if (fs.existsSync(filePath)) {
-            fs.unlink(filePath, (err) => {
-              if (err) console.error(`Error deleting file ${zipName}:`, err);
-            });
-          }
-        }, 10 * 60 * 1000);
+        setTimeout(
+          () => {
+            const filePath = path.join(downloadPath, zipName);
+            if (fs.existsSync(filePath)) {
+              fs.unlink(filePath, (err) => {
+                if (err) console.error(`Error deleting file ${zipName}:`, err);
+              });
+            }
+          },
+          10 * 60 * 1000,
+        );
 
         res.json({ downloadUrl: `/api/download/${zipName}` });
       });

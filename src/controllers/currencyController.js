@@ -12,7 +12,7 @@ export const getCurrencyConverter = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Currency Converter",
-      url: "https://leviro.net/services/currency-converter",
+      url: "https://utils.leviro.net/services/currency-converter",
       description,
       applicationCategory: "Finance",
       operatingSystem: "All",

@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://leviro.net/</loc>
+    <loc>https://utils.leviro.net/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Category index + per-category pages -->
-  <url><loc>https://leviro.net/categories</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/categories/developer</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/categories/text</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/categories/generators</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/categories/files</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/categories/daily</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/categories</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/categories/developer</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/categories/text</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/categories/generators</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/categories/files</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/categories/daily</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
 
   <!-- Developer Tools -->
-  <url><loc>https://leviro.net/services/json-formatter</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/base64</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/url-encoder</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/hash-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/jwt-decoder</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/regex-tester</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/uuid-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/timestamp-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/css-minifier</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/html-viewer</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/json-formatter</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/base64</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/url-encoder</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/hash-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/jwt-decoder</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/regex-tester</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/uuid-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/timestamp-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/css-minifier</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/html-viewer</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
   <!-- Text & Writing -->
-  <url><loc>https://leviro.net/services/word-counter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/case-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/lorem-ipsum</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/markdown-preview</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/markdown-to-html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/html-to-markdown</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/markdown-to-whatsapp</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/word-counter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/case-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/lorem-ipsum</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/markdown-preview</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/markdown-to-html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/html-to-markdown</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/markdown-to-whatsapp</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
 
   <!-- Generators -->
-  <url><loc>https://leviro.net/services/password-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/secret-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/qr-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/pwa-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://leviro.net/services/seo-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://utils.leviro.net/services/password-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/secret-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/qr-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/pwa-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://utils.leviro.net/services/seo-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Files & Media -->
-  <url><loc>https://leviro.net/services/image-converter</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/pdf-splitter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/color-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/image-converter</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/pdf-splitter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/color-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
   <!-- Daily Life -->
-  <url><loc>https://leviro.net/services/age-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/duration-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/bmi-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/tip-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/unit-converter</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/loan-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/discount-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://leviro.net/services/currency-converter</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://leviro.net/services/world-info</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/age-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/duration-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/bmi-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/tip-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/unit-converter</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/loan-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/discount-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://utils.leviro.net/services/currency-converter</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://utils.leviro.net/services/world-info</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

@@ -13,4 +13,4 @@ Allow: /
 User-agent: DuckDuckBot
 Allow: /
 
-Sitemap: https://leviro.net/sitemap.xml
+Sitemap: https://utils.leviro.net/sitemap.xml

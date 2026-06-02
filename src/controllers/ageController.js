@@ -10,7 +10,7 @@ export const getAgeCalculator = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Age Calculator",
-      url: "https://leviro.net/services/age-calculator",
+      url: "https://utils.leviro.net/services/age-calculator",
       description,
       applicationCategory: "Utility",
       operatingSystem: "All",

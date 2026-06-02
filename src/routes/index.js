@@ -82,11 +82,11 @@ router.get("/", (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Leviro Utils",
-      url: "https://leviro.net/",
+      url: "https://utils.leviro.net/",
       description,
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://leviro.net/?q={search_term_string}",
+        target: "https://utils.leviro.net/?q={search_term_string}",
         "query-input": "required name=search_term_string",
       },
     }),
@@ -146,7 +146,7 @@ router.post(
   "/api/image/convert",
   imageLimiter,
   upload.single("image"),
-  convertImageAPI
+  convertImageAPI,
 );
 router.post("/api/pdf/split", pdfLimiter, splitPdf);
 router.get("/api/download/:filename", heavyApiLimiter, downloadPdf);

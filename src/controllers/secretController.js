@@ -10,7 +10,7 @@ export const getSecretGenerator = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Secret Generator",
-      url: "https://leviro.net/services/secret-generator",
+      url: "https://utils.leviro.net/services/secret-generator",
       description,
       applicationCategory: "Security",
       operatingSystem: "All",

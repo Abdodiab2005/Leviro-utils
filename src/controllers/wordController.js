@@ -10,7 +10,7 @@ export const getWordCounter = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Word Counter",
-      url: "https://leviro.net/services/word-counter",
+      url: "https://utils.leviro.net/services/word-counter",
       description,
       applicationCategory: "Productivity",
       operatingSystem: "All",

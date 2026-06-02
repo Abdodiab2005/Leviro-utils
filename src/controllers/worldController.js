@@ -16,7 +16,7 @@ export const getWorldInfo = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "World Info",
-      url: "https://leviro.net/services/world-info",
+      url: "https://utils.leviro.net/services/world-info",
       description,
       applicationCategory: "Reference",
       operatingSystem: "All",

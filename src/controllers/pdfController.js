@@ -22,7 +22,7 @@ export const getPdfSplitter = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "PDF Splitter",
-      url: "https://leviro.net/services/pdf-splitter",
+      url: "https://utils.leviro.net/services/pdf-splitter",
       description,
       applicationCategory: "BusinessApplication",
       operatingSystem: "All",
@@ -138,15 +138,18 @@ export const splitPdf = (req, res) => {
       fs.writeFileSync(path.join(downloadPath, fileName), pdfBytes);
 
       // Auto-delete after 10 minutes
-      setTimeout(() => {
-        const filePath = path.join(downloadPath, fileName);
-        if (fs.existsSync(filePath)) {
-          fs.unlink(filePath, (err) => {
-            if (err) console.error(`Error deleting file ${fileName}:`, err);
-            else console.log(`Auto-deleted file ${fileName}`);
-          });
-        }
-      }, 10 * 60 * 1000); // 10 minutes
+      setTimeout(
+        () => {
+          const filePath = path.join(downloadPath, fileName);
+          if (fs.existsSync(filePath)) {
+            fs.unlink(filePath, (err) => {
+              if (err) console.error(`Error deleting file ${fileName}:`, err);
+              else console.log(`Auto-deleted file ${fileName}`);
+            });
+          }
+        },
+        10 * 60 * 1000,
+      ); // 10 minutes
 
       if (socketId && io) {
         io.to(socketId).emit("progress", { message: "Done!", percent: 100 });

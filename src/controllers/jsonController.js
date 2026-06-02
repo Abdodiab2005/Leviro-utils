@@ -10,7 +10,7 @@ export const getJsonFormatter = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "JSON Formatter",
-      url: "https://leviro.net/services/json-formatter",
+      url: "https://utils.leviro.net/services/json-formatter",
       description,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "All",

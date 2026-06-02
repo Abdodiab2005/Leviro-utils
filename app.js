@@ -19,7 +19,7 @@ app.set("views", path.join(__dirname, "src/views"));
 app.set("trust proxy", 1);
 
 const corsOptions = process.env.CORS_OPTIONS?.split(",");
-const SITE_URL = process.env.SITE_URL || "https://leviro.net";
+const SITE_URL = process.env.SITE_URL || "https://utils.leviro.net";
 
 // Middleware
 app.use(
@@ -35,7 +35,7 @@ app.use(
         res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
       }
     },
-  })
+  }),
 );
 
 // SEO defaults: expose siteUrl + canonicalUrl to every view
@@ -54,7 +54,7 @@ app.use(
   cors({
     origin: corsOptions,
     methods: ["GET", "POST"],
-  })
+  }),
 );
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
@@ -95,5 +95,5 @@ app.use((req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
+  console.log(`Server running on http://localhost:${PORT}`),
 );

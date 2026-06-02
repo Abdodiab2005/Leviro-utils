@@ -10,7 +10,7 @@ export const getPasswordGenerator = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Password Generator",
-      url: "https://leviro.net/services/password-generator",
+      url: "https://utils.leviro.net/services/password-generator",
       description,
       applicationCategory: "Security",
       operatingSystem: "All",

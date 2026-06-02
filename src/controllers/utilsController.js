@@ -1,4 +1,4 @@
-const SITE_URL = process.env.SITE_URL || "https://leviro.net";
+const SITE_URL = process.env.SITE_URL || "https://utils.leviro.net";
 
 const buildSchema = (name, slug, description) =>
   JSON.stringify({
@@ -12,13 +12,15 @@ const buildSchema = (name, slug, description) =>
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   });
 
-const renderTool = (view, { title, description, slug, keywords }) => (req, res) =>
-  res.render(view, {
-    title,
-    description,
-    keywords,
-    schemaData: buildSchema(title, slug, description),
-  });
+const renderTool =
+  (view, { title, description, slug, keywords }) =>
+  (req, res) =>
+    res.render(view, {
+      title,
+      description,
+      keywords,
+      schemaData: buildSchema(title, slug, description),
+    });
 
 export const getBase64Tool = renderTool("services/base64", {
   title: "Base64 Encoder & Decoder",
@@ -92,14 +94,17 @@ export const getCaseConverter = renderTool("services/case-converter", {
     "case converter, uppercase lowercase converter, title case, camelcase, snake case, kebab case",
 });
 
-export const getTimestampConverter = renderTool("services/timestamp-converter", {
-  title: "Unix Timestamp Converter",
-  slug: "timestamp-converter",
-  description:
-    "Convert Unix epoch timestamps to human-readable dates and back. Supports seconds, milliseconds, ISO 8601, and timezones.",
-  keywords:
-    "unix timestamp converter, epoch converter, timestamp to date, date to timestamp, iso 8601 converter",
-});
+export const getTimestampConverter = renderTool(
+  "services/timestamp-converter",
+  {
+    title: "Unix Timestamp Converter",
+    slug: "timestamp-converter",
+    description:
+      "Convert Unix epoch timestamps to human-readable dates and back. Supports seconds, milliseconds, ISO 8601, and timezones.",
+    keywords:
+      "unix timestamp converter, epoch converter, timestamp to date, date to timestamp, iso 8601 converter",
+  },
+);
 
 export const getJwtDecoder = renderTool("services/jwt-decoder", {
   title: "JWT Decoder & Inspector",
@@ -156,14 +161,17 @@ export const getMarkdownToHtml = renderTool("services/markdown-to-html", {
     "markdown to html, md to html, convert markdown online, markdown converter, gfm to html",
 });
 
-export const getMarkdownToWhatsapp = renderTool("services/markdown-to-whatsapp", {
-  title: "Markdown to WhatsApp Formatter",
-  slug: "markdown-to-whatsapp",
-  description:
-    "Paste Markdown and get text formatted for WhatsApp: **bold** becomes *bold*, *italic* becomes _italic_, headings flatten, links collapse to bare URLs, tables and HTML are stripped.",
-  keywords:
-    "markdown to whatsapp, whatsapp formatter, convert markdown for whatsapp, whatsapp bold italic, md to whatsapp",
-});
+export const getMarkdownToWhatsapp = renderTool(
+  "services/markdown-to-whatsapp",
+  {
+    title: "Markdown to WhatsApp Formatter",
+    slug: "markdown-to-whatsapp",
+    description:
+      "Paste Markdown and get text formatted for WhatsApp: **bold** becomes *bold*, *italic* becomes _italic_, headings flatten, links collapse to bare URLs, tables and HTML are stripped.",
+    keywords:
+      "markdown to whatsapp, whatsapp formatter, convert markdown for whatsapp, whatsapp bold italic, md to whatsapp",
+  },
+);
 
 // Daily life calculators
 export const getBmiCalculator = renderTool("services/bmi-calculator", {
@@ -202,20 +210,26 @@ export const getLoanCalculator = renderTool("services/loan-calculator", {
     "loan calculator, emi calculator, mortgage calculator, monthly payment calculator, amortization, interest calculator",
 });
 
-export const getDiscountCalculator = renderTool("services/discount-calculator", {
-  title: "Discount & Sale Price Calculator",
-  slug: "discount-calculator",
-  description:
-    "Find the final price after a discount, calculate savings, and optionally add sales tax. Quick presets for 10/15/20/25/50% off.",
-  keywords:
-    "discount calculator, sale price calculator, percent off calculator, savings calculator, tax calculator",
-});
+export const getDiscountCalculator = renderTool(
+  "services/discount-calculator",
+  {
+    title: "Discount & Sale Price Calculator",
+    slug: "discount-calculator",
+    description:
+      "Find the final price after a discount, calculate savings, and optionally add sales tax. Quick presets for 10/15/20/25/50% off.",
+    keywords:
+      "discount calculator, sale price calculator, percent off calculator, savings calculator, tax calculator",
+  },
+);
 
-export const getDurationCalculator = renderTool("services/duration-calculator", {
-  title: "Date & Time Duration Calculator",
-  slug: "duration-calculator",
-  description:
-    "Calculate the time between two dates or two times: years, months, days, hours, and minutes. Type values directly or pick from a calendar.",
-  keywords:
-    "duration calculator, time between dates, hours between two times, date difference, time difference calculator, days between dates",
-});
+export const getDurationCalculator = renderTool(
+  "services/duration-calculator",
+  {
+    title: "Date & Time Duration Calculator",
+    slug: "duration-calculator",
+    description:
+      "Calculate the time between two dates or two times: years, months, days, hours, and minutes. Type values directly or pick from a calendar.",
+    keywords:
+      "duration calculator, time between dates, hours between two times, date difference, time difference calculator, days between dates",
+  },
+);

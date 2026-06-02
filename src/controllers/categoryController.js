@@ -1,6 +1,6 @@
 import { categories, findCategory } from "../data/categories.js";
 
-const SITE_URL = process.env.SITE_URL || "https://leviro.net";
+const SITE_URL = process.env.SITE_URL || "https://utils.leviro.net";
 
 export const listCategories = (req, res) => {
   res.locals.categoriesData = categories;

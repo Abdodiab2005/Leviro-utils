@@ -14,7 +14,7 @@ export const getImageConverter = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Image Converter",
-      url: "https://leviro.net/services/image-converter",
+      url: "https://utils.leviro.net/services/image-converter",
       description,
       applicationCategory: "Multimedia",
       operatingSystem: "All",
@@ -65,11 +65,14 @@ export const convertImageAPI = async (req, res) => {
     });
 
     // Schedule cleanup of converted file (e.g., after 10 mins)
-    setTimeout(() => {
-      if (fs.existsSync(outputPath)) {
-        fs.unlinkSync(outputPath);
-      }
-    }, 10 * 60 * 1000);
+    setTimeout(
+      () => {
+        if (fs.existsSync(outputPath)) {
+          fs.unlinkSync(outputPath);
+        }
+      },
+      10 * 60 * 1000,
+    );
   } catch (error) {
     console.error("Image conversion error:", error);
     // Try to clean up uploaded file if it exists

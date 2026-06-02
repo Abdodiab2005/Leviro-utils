@@ -10,7 +10,7 @@ export const getQrGenerator = (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "QR Code Generator",
-      url: "https://leviro.net/services/qr-generator",
+      url: "https://utils.leviro.net/services/qr-generator",
       description,
       applicationCategory: "Utility",
       operatingSystem: "All",

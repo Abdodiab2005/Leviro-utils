@@ -69,10 +69,11 @@ const upload = multer({
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  const description =
-    "Free online tools for developers and everyday tasks: password generator, JSON formatter, image converter, QR code maker, JWT decoder, regex tester, hash generator, Base64 encoder, color converter and more. No signup, all in your browser.";
+  const { t, locale, canonicalUrl } = res.locals;
+  const title = t("home.hero.title");
+  const description = t("home.hero.subtitle");
   res.render("index", {
-    title: "Free Online Tools",
+    title,
     description,
     keywords:
       "free online tools, developer tools, daily utility tools, json formatter, image converter, qr generator, password generator, age calculator, currency converter, base64, jwt decoder, regex tester, hash generator, uuid, lorem ipsum, color picker, markdown preview, css minifier, timestamp converter",
@@ -82,7 +83,8 @@ router.get("/", (req, res) => {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Leviro Utils",
-      url: "https://utils.leviro.net/",
+      url: canonicalUrl,
+      inLanguage: locale,
       description,
       potentialAction: {
         "@type": "SearchAction",

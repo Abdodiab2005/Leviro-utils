@@ -1,19 +1,24 @@
 import { getCurrencies } from "../services/dbService.js";
 
+const SITE_URL = process.env.SITE_URL || "https://utils.leviro.net";
+
 export const getCurrencyConverter = (req, res) => {
-  const description =
-    "Free online currency converter with up-to-date exchange rates for 150+ world currencies. Convert USD, EUR, GBP, JPY, EGP and more in real time.";
+  const { t, locale, canonicalUrl } = res.locals;
+  const title = t("tools.currencyConverter.title");
+  const description = t("tools.currencyConverter.description");
+  const keywords = t("tools.currencyConverter.keywords");
+
   res.render("services/currency-converter", {
-    title: "Currency Converter",
+    title,
     description,
-    keywords:
-      "currency converter, exchange rate calculator, usd to eur, gbp to usd, real-time currency, money converter, forex rates",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "Currency Converter",
-      url: "https://utils.leviro.net/services/currency-converter",
+      name: title,
+      url: canonicalUrl,
       description,
+      inLanguage: locale,
       applicationCategory: "Finance",
       operatingSystem: "All",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

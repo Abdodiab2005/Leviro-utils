@@ -5,18 +5,19 @@ import {
 } from "../services/worldService.js";
 
 export const getWorldInfo = (req, res) => {
-  const description =
-    "Browse detailed information about every country, state, and city in the world: capital, currency, calling code, time zone, region, languages, and more.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.worldInfo.title");
+  const description = t("tools.worldInfo.description");
+  const keywords = t("tools.worldInfo.keywords");
   res.render("services/world-info", {
-    title: "World Info - Countries, States & Cities",
+    title,
     description,
-    keywords:
-      "country information, world countries data, calling codes, country capital, currency by country, states list, cities list, country search",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "World Info",
-      url: "https://utils.leviro.net/services/world-info",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "Reference",
       operatingSystem: "All",

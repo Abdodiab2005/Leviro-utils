@@ -4,6 +4,7 @@ import cors from "cors";
 import expressLayouts from "express-ejs-layouts";
 import mainRoutes from "./src/routes/index.js";
 import { pageLimiter } from "./src/middleware/rateLimiters.js";
+import { i18nMiddleware } from "./src/middleware/i18n.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -45,6 +46,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// i18n: detect locale from URL prefix, expose t(), locale, dir, alternate URLs
+app.use(i18nMiddleware);
+
 // HTML responses should never be stale-cached by browsers
 app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-cache");
@@ -68,7 +72,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// Routes — same router mounted at /ar (Arabic) and / (English)
+app.use("/ar", mainRoutes);
 app.use("/", mainRoutes);
 
 // Error Handler

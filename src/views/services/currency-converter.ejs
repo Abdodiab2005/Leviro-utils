@@ -1,24 +1,31 @@
+<!-- Inline translations so client-side JS can use them without a separate fetch -->
+<script>
+  const CC_LOCALE = '<%- locale %>';
+  const CC_I18N = {
+    loading:         '<%- t("tools.currencyConverter.loading") %>',
+    noResults:       '<%- t("tools.currencyConverter.noResults") %>',
+    search:          '<%- t("tools.currencyConverter.search") %>',
+    rateUnavailable: '<%- t("tools.currencyConverter.rateUnavailable") %>',
+    errorLoading:    '<%- t("tools.currencyConverter.errorLoading") %>',
+    ratesBy:         '<%- t("tools.currencyConverter.ratesBy") %>',
+  };
+</script>
+
 <div class="max-w-2xl mx-auto">
-  <div
-    class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12"
-  >
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
     <div class="text-center mb-10">
-      <div
-        class="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6"
-      >
+      <div class="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
         <i class="fa-solid fa-money-bill-transfer text-3xl"></i>
       </div>
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">Currency Converter</h1>
-      <p class="text-gray-600">
-        Convert currencies with real-time exchange rates.
-      </p>
+      <h1 class="text-3xl font-bold text-gray-900 mb-4"><%= t('tools.currencyConverter.heading') %></h1>
+      <p class="text-gray-600"><%= t('tools.currencyConverter.subheading') %></p>
     </div>
 
     <div class="space-y-6">
       <div>
-        <label for="amount" class="block text-sm font-medium text-gray-700 mb-2"
-          >Amount</label
-        >
+        <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">
+          <%= t('tools.currencyConverter.amount') %>
+        </label>
         <input
           type="number"
           id="amount"
@@ -29,52 +36,40 @@
         />
       </div>
 
-      <div
-        class="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-4 items-center relative"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-4 items-center relative">
         <!-- From Currency -->
         <div class="relative" id="fromContainer">
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >From</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            <%= t('tools.currencyConverter.from') %>
+          </label>
           <button
             type="button"
             id="fromBtn"
             class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-left flex items-center justify-between focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
           >
-            <span id="fromSelected" class="flex items-center gap-2">
-              <span class="text-2xl">🇺🇸</span>
-              <span class="font-medium">USD</span>
-              <span class="text-gray-500 text-sm truncate max-w-[100px]"
-                >US Dollar</span
-              >
+            <span id="fromSelected" class="flex items-center gap-2 text-gray-400">
+              <i class="fa-solid fa-spinner animate-spin"></i>
+              <span><%= t('tools.currencyConverter.loading') %></span>
             </span>
             <i class="fa-solid fa-chevron-down text-gray-400 text-sm"></i>
           </button>
 
-          <!-- Dropdown -->
           <div
             id="fromDropdown"
             class="hidden absolute z-50 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 max-h-96 flex flex-col"
           >
-            <div
-              class="p-3 border-b border-gray-100 sticky top-0 bg-white rounded-t-xl"
-            >
+            <div class="p-3 border-b border-gray-100 sticky top-0 bg-white rounded-t-xl">
               <div class="relative">
-                <i
-                  class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                ></i>
+                <i class="fa-solid fa-search absolute start-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                   type="text"
                   id="fromSearch"
-                  placeholder="Search currency..."
-                  class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 text-sm"
+                  placeholder="<%= t('tools.currencyConverter.search') %>"
+                  class="w-full ps-10 pe-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 text-sm"
                 />
               </div>
             </div>
-            <div id="fromList" class="overflow-y-auto flex-1 p-1 space-y-1">
-              <!-- Items populated by JS -->
-            </div>
+            <div id="fromList" class="overflow-y-auto flex-1 p-1 space-y-1"></div>
           </div>
         </div>
 
@@ -82,59 +77,49 @@
           id="swapBtn"
           class="p-3 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors md:mt-6 mx-auto z-10"
         >
-          <i
-            class="fa-solid fa-arrow-right-arrow-left transform rotate-90 md:rotate-0 text-lg"
-          ></i>
+          <i class="fa-solid fa-arrow-right-arrow-left transform rotate-90 md:rotate-0 text-lg"></i>
         </button>
 
         <!-- To Currency -->
         <div class="relative" id="toContainer">
-          <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            <%= t('tools.currencyConverter.to') %>
+          </label>
           <button
             type="button"
             id="toBtn"
             class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-left flex items-center justify-between focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
           >
-            <span id="toSelected" class="flex items-center gap-2">
-              <span class="text-2xl">🇪🇺</span>
-              <span class="font-medium">EUR</span>
-              <span class="text-gray-500 text-sm truncate max-w-[100px]"
-                >Euro</span
-              >
+            <span id="toSelected" class="flex items-center gap-2 text-gray-400">
+              <i class="fa-solid fa-spinner animate-spin"></i>
+              <span><%= t('tools.currencyConverter.loading') %></span>
             </span>
             <i class="fa-solid fa-chevron-down text-gray-400 text-sm"></i>
           </button>
 
-          <!-- Dropdown -->
           <div
             id="toDropdown"
             class="hidden absolute z-50 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 max-h-96 flex flex-col"
           >
-            <div
-              class="p-3 border-b border-gray-100 sticky top-0 bg-white rounded-t-xl"
-            >
+            <div class="p-3 border-b border-gray-100 sticky top-0 bg-white rounded-t-xl">
               <div class="relative">
-                <i
-                  class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                ></i>
+                <i class="fa-solid fa-search absolute start-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                   type="text"
                   id="toSearch"
-                  placeholder="Search currency..."
-                  class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 text-sm"
+                  placeholder="<%= t('tools.currencyConverter.search') %>"
+                  class="w-full ps-10 pe-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 text-sm"
                 />
               </div>
             </div>
-            <div id="toList" class="overflow-y-auto flex-1 p-1 space-y-1">
-              <!-- Items populated by JS -->
-            </div>
+            <div id="toList" class="overflow-y-auto flex-1 p-1 space-y-1"></div>
           </div>
         </div>
       </div>
 
       <div class="bg-green-50 p-6 rounded-xl text-center mt-8">
-        <p class="text-sm text-green-600 font-medium mb-2">Converted Amount</p>
-        <p id="result" class="text-4xl font-bold text-green-700">Loading...</p>
+        <p class="text-sm text-green-600 font-medium mb-2"><%= t('tools.currencyConverter.convertedAmount') %></p>
+        <p id="result" class="text-4xl font-bold text-green-700"><%= t('tools.currencyConverter.loading') %></p>
         <p id="rate" class="text-sm text-green-600 mt-2"></p>
       </div>
     </div>
@@ -143,65 +128,128 @@
     href="https://www.exchangerate-api.com"
     target="_blank"
     class="text-sm text-green-600 mt-2 block text-center opacity-70 hover:opacity-100 transition-opacity"
-    >Rates By Exchange Rate API</a
-  >
+    id="ratesByLink"
+  ><%= t('tools.currencyConverter.ratesBy') %></a>
 </div>
 
 <script>
-  // State
+  // ── State ────────────────────────────────────────────────────────────────
   let currencies = [];
   let rates = {};
   let fromCurrency = { code: "USD", flag: "🇺🇸", name: "US Dollar" };
-  let toCurrency = { code: "EUR", flag: "🇪🇺", name: "Euro" };
+  let toCurrency   = { code: "EUR", flag: "🇪🇺", name: "Euro" };
 
-  // Elements
+  // ── Element refs ─────────────────────────────────────────────────────────
   const els = {
     amount: document.getElementById("amount"),
     result: document.getElementById("result"),
-    rate: document.getElementById("rate"),
-    swap: document.getElementById("swapBtn"),
+    rate:   document.getElementById("rate"),
+    swap:   document.getElementById("swapBtn"),
     from: {
-      btn: document.getElementById("fromBtn"),
-      selected: document.getElementById("fromSelected"),
-      dropdown: document.getElementById("fromDropdown"),
-      search: document.getElementById("fromSearch"),
-      list: document.getElementById("fromList"),
+      btn:       document.getElementById("fromBtn"),
+      selected:  document.getElementById("fromSelected"),
+      dropdown:  document.getElementById("fromDropdown"),
+      search:    document.getElementById("fromSearch"),
+      list:      document.getElementById("fromList"),
       container: document.getElementById("fromContainer"),
     },
     to: {
-      btn: document.getElementById("toBtn"),
-      selected: document.getElementById("toSelected"),
-      dropdown: document.getElementById("toDropdown"),
-      search: document.getElementById("toSearch"),
-      list: document.getElementById("toList"),
+      btn:       document.getElementById("toBtn"),
+      selected:  document.getElementById("toSelected"),
+      dropdown:  document.getElementById("toDropdown"),
+      search:    document.getElementById("toSearch"),
+      list:      document.getElementById("toList"),
       container: document.getElementById("toContainer"),
     },
   };
 
-  // Initialize
+  // ── Persistence ──────────────────────────────────────────────────────────
+  const LS_FROM = "leviro_fromCurrency";
+  const LS_TO   = "leviro_toCurrency";
+
+  function savePrefs() {
+    try {
+      localStorage.setItem(LS_FROM, fromCurrency.code);
+      localStorage.setItem(LS_TO,   toCurrency.code);
+    } catch (_) {}
+  }
+
+  function loadPrefs() {
+    try {
+      return {
+        from: localStorage.getItem(LS_FROM),
+        to:   localStorage.getItem(LS_TO),
+      };
+    } catch (_) {
+      return { from: null, to: null };
+    }
+  }
+
+  // ── IP-based currency detection ──────────────────────────────────────────
+  async function detectLocalCurrency() {
+    try {
+      const ctrl = new AbortController();
+      const tid  = setTimeout(() => ctrl.abort(), 3000);
+      const res  = await fetch("https://api.country.is/", { signal: ctrl.signal });
+      clearTimeout(tid);
+      const { country } = await res.json();
+      if (!country) return null;
+      // Find a currency whose iso2 matches the detected country code
+      const match = currencies.find(
+        (c) => c.iso2 && c.iso2.toUpperCase() === country.toUpperCase()
+      );
+      return match ? { code: match.currency, flag: match.emoji, name: match.currency_name } : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // ── Currency lookup helpers ───────────────────────────────────────────────
+  function currencyByCode(code) {
+    const c = currencies.find((x) => x.currency === code);
+    return c ? { code: c.currency, flag: c.emoji, name: c.currency_name } : null;
+  }
+
+  // ── Initialization ────────────────────────────────────────────────────────
   async function init() {
     try {
-      // Fetch data in parallel
       const [currenciesRes, ratesRes] = await Promise.all([
         fetch("/api/currencies"),
         fetch("https://open.er-api.com/v6/latest/USD"),
       ]);
 
       currencies = await currenciesRes.json();
-      const ratesData = await ratesRes.json();
-      rates = ratesData.rates;
+      rates      = (await ratesRes.json()).rates;
 
-      // Initial render
+      // Priority 1: last user selection from localStorage
+      const saved = loadPrefs();
+      if (saved.from && saved.to) {
+        fromCurrency = currencyByCode(saved.from) ?? fromCurrency;
+        toCurrency   = currencyByCode(saved.to)   ?? toCurrency;
+      } else {
+        // Priority 2: USD from, local currency to (detected by IP)
+        fromCurrency = currencyByCode("USD") ?? fromCurrency;
+        const local  = await detectLocalCurrency();
+        if (local && local.code !== "USD") {
+          toCurrency = local;
+        }
+        // Priority 3 (implicit default): EUR — already set at top
+      }
+
+      updateButton(els.from.selected, fromCurrency);
+      updateButton(els.to.selected,   toCurrency);
+
       renderList(els.from.list, "from");
-      renderList(els.to.list, "to");
+      renderList(els.to.list,   "to");
       calculate();
+      savePrefs();
     } catch (err) {
       console.error("Initialization error:", err);
-      els.result.textContent = "Error loading data";
+      els.result.textContent = CC_I18N.errorLoading;
     }
   }
 
-  // Render Dropdown List
+  // ── Render dropdown list ──────────────────────────────────────────────────
   function renderList(container, type, filter = "") {
     container.innerHTML = "";
     const search = filter.toLowerCase();
@@ -215,9 +263,7 @@
         c.iso3.toLowerCase().includes(search)
     );
 
-    // Use a Set to avoid duplicates based on currency code
     const seen = new Set();
-
     filtered.forEach((c) => {
       if (seen.has(c.currency)) return;
       seen.add(c.currency);
@@ -226,33 +272,27 @@
       btn.className =
         "w-full px-3 py-2 text-left hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-colors";
       btn.innerHTML = `
-                <span class="text-2xl">${c.emoji}</span>
-                <div>
-                    <div class="font-medium text-gray-900 flex items-center gap-2">
-                        ${c.currency}
-                        <span class="text-xs text-gray-400 font-normal">${c.iso3}</span>
-                    </div>
-                    <div class="text-xs text-gray-500">${c.currency_name}</div>
-                </div>
-            `;
-
+        <span class="text-2xl">${c.emoji}</span>
+        <div>
+          <div class="font-medium text-gray-900 flex items-center gap-2">
+            ${c.currency}
+            <span class="text-xs text-gray-400 font-normal">${c.iso3}</span>
+          </div>
+          <div class="text-xs text-gray-500">${c.currency_name}</div>
+        </div>
+      `;
       btn.onclick = () => selectCurrency(type, c);
       container.appendChild(btn);
     });
 
     if (filtered.length === 0) {
-      container.innerHTML =
-        '<div class="p-4 text-center text-gray-500 text-sm">No currencies found</div>';
+      container.innerHTML = `<div class="p-4 text-center text-gray-500 text-sm">${CC_I18N.noResults}</div>`;
     }
   }
 
-  // Select Currency
+  // ── Select currency ───────────────────────────────────────────────────────
   function selectCurrency(type, currency) {
-    const data = {
-      code: currency.currency,
-      flag: currency.emoji,
-      name: currency.currency_name,
-    };
+    const data = { code: currency.currency, flag: currency.emoji, name: currency.currency_name };
 
     if (type === "from") {
       fromCurrency = data;
@@ -265,44 +305,41 @@
     }
 
     calculate();
+    savePrefs();
   }
 
   function updateButton(el, data) {
     el.innerHTML = `
-            <span class="text-2xl">${data.flag}</span>
-            <span class="font-medium">${data.code}</span>
-            <span class="text-gray-500 text-sm truncate max-w-[100px]">${data.name}</span>
-        `;
+      <span class="text-2xl">${data.flag}</span>
+      <span class="font-medium">${data.code}</span>
+      <span class="text-gray-500 text-sm truncate max-w-[100px]">${data.name}</span>
+    `;
   }
 
-  // Calculation Logic
+  // ── Conversion ────────────────────────────────────────────────────────────
   function calculate() {
     const amount = parseFloat(els.amount.value) || 0;
 
     if (!rates[fromCurrency.code] || !rates[toCurrency.code]) {
-      els.result.textContent = "Rate unavailable";
+      els.result.textContent = CC_I18N.rateUnavailable;
       return;
     }
 
-    const rate = (1 / rates[fromCurrency.code]) * rates[toCurrency.code];
+    const rate   = (1 / rates[fromCurrency.code]) * rates[toCurrency.code];
     const result = (amount * rate).toFixed(2);
 
     els.result.textContent = `${result} ${toCurrency.code}`;
-    els.rate.textContent = `1 ${fromCurrency.code} = ${rate.toFixed(4)} ${
-      toCurrency.code
-    }`;
+    els.rate.textContent   = `1 ${fromCurrency.code} = ${rate.toFixed(4)} ${toCurrency.code}`;
   }
 
-  // Event Listeners
+  // ── Event listeners ───────────────────────────────────────────────────────
   els.amount.addEventListener("input", calculate);
 
-  // Dropdown Toggles
   els.from.btn.addEventListener("click", (e) => {
     e.stopPropagation();
     closeAllDropdowns("from");
     els.from.dropdown.classList.toggle("hidden");
-    if (!els.from.dropdown.classList.contains("hidden"))
-      els.from.search.focus();
+    if (!els.from.dropdown.classList.contains("hidden")) els.from.search.focus();
   });
 
   els.to.btn.addEventListener("click", (e) => {
@@ -312,37 +349,27 @@
     if (!els.to.dropdown.classList.contains("hidden")) els.to.search.focus();
   });
 
-  // Search
-  els.from.search.addEventListener("input", (e) =>
-    renderList(els.from.list, "from", e.target.value)
-  );
-  els.to.search.addEventListener("input", (e) =>
-    renderList(els.to.list, "to", e.target.value)
-  );
+  els.from.search.addEventListener("input", (e) => renderList(els.from.list, "from", e.target.value));
+  els.to.search.addEventListener("input",   (e) => renderList(els.to.list,   "to",   e.target.value));
 
-  // Swap
   els.swap.addEventListener("click", () => {
-    const temp = { ...fromCurrency };
-    fromCurrency = { ...toCurrency };
-    toCurrency = temp;
-
+    [fromCurrency, toCurrency] = [toCurrency, fromCurrency];
     updateButton(els.from.selected, fromCurrency);
-    updateButton(els.to.selected, toCurrency);
+    updateButton(els.to.selected,   toCurrency);
     calculate();
+    savePrefs();
   });
 
-  // Close dropdowns when clicking outside
   document.addEventListener("click", () => closeAllDropdowns());
 
   function closeAllDropdowns(except = null) {
     if (except !== "from") els.from.dropdown.classList.add("hidden");
-    if (except !== "to") els.to.dropdown.classList.add("hidden");
+    if (except !== "to")   els.to.dropdown.classList.add("hidden");
   }
 
-  // Prevent closing when clicking inside dropdown
   els.from.dropdown.addEventListener("click", (e) => e.stopPropagation());
-  els.to.dropdown.addEventListener("click", (e) => e.stopPropagation());
+  els.to.dropdown.addEventListener("click",   (e) => e.stopPropagation());
 
-  // Start
+  // ── Start ─────────────────────────────────────────────────────────────────
   init();
 </script>

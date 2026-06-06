@@ -76,6 +76,27 @@ app.use((req, res, next) => {
 app.use("/ar", mainRoutes);
 app.use("/", mainRoutes);
 
+// Unknown-locale redirect: /fr/... → /...  (any 2-letter prefix that isn't "ar")
+app.use((req, res, next) => {
+  const match = req.path.match(/^\/([a-z]{2})(\/.*)?$/i);
+  if (match && match[1].toLowerCase() !== "ar") {
+    return res.redirect(301, match[2] || "/");
+  }
+  next();
+});
+
+// 404 handler
+app.use((req, res) => {
+  const locale = res.locals.locale ?? "en";
+  res.status(404).render("404", {
+    title: locale === "ar" ? "404 — الصفحة غير موجودة" : "404 — Page Not Found",
+    description:
+      locale === "ar"
+        ? "الصفحة التي تبحث عنها غير موجودة."
+        : "The page you are looking for does not exist.",
+  });
+});
+
 // Error Handler
 app.use((err, req, res, next) => {
   console.log(err);

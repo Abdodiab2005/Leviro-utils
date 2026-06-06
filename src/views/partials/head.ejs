@@ -70,7 +70,9 @@
   body {
     font-family: "Inter", sans-serif;
   }
-  :lang(ar) {
+  /* Scope to body so Font Awesome's explicit .fa-* font-family declarations
+     still win (explicit beats inherited, regardless of specificity). */
+  html[lang="ar"] body {
     font-family: "Cairo", "Segoe UI", "Tahoma", "Arial", sans-serif;
   }
 </style>

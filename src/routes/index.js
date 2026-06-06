@@ -59,6 +59,7 @@ import {
   listCategories,
   showCategory,
 } from "../controllers/categoryController.js";
+import { getSitemapXml } from "../controllers/sitemapController.js";
 import { categories, totalToolCount } from "../data/categories.js";
 import multer from "multer";
 
@@ -67,6 +68,9 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 const router = express.Router();
+
+// Dynamic sitemap — must be served before static middleware intercepts it
+router.get("/sitemap.xml", getSitemapXml);
 
 router.get("/", (req, res) => {
   const { t, locale, canonicalUrl } = res.locals;

@@ -1,16 +1,17 @@
 export const getSeoGenerator = (req, res) => {
-  const description =
-    "Build complete SEO meta tag sets - title, description, Open Graph, Twitter Card, canonical, and structured data - to boost search rankings and social previews.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.seoGenerator.title");
+  const description = t("tools.seoGenerator.description");
+  const keywords = t("tools.seoGenerator.keywords");
   res.render("seo-generator", {
-    title: "SEO Meta Tags Generator",
+    title,
     description,
-    keywords:
-      "seo meta tag generator, open graph generator, twitter card generator, meta description tool, structured data generator, schema.org generator",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "SEO Meta Tags Generator",
-      url: "https://utils.leviro.net/services/seo-generator",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "All",

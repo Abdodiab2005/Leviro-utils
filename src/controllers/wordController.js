@@ -1,16 +1,17 @@
 export const getWordCounter = (req, res) => {
-  const description =
-    "Free online word counter and text analyzer: count words, characters (with and without spaces), sentences, paragraphs, and estimate reading time.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.wordCounter.title");
+  const description = t("tools.wordCounter.description");
+  const keywords = t("tools.wordCounter.keywords");
   res.render("word-counter", {
-    title: "Word Counter & Text Analyzer",
+    title,
     description,
-    keywords:
-      "word counter, character counter, text analyzer, count words online, reading time calculator, sentence counter, paragraph counter",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "Word Counter",
-      url: "https://utils.leviro.net/services/word-counter",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "Productivity",
       operatingSystem: "All",

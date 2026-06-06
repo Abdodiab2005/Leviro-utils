@@ -6,9 +6,7 @@
           <i class="fa-solid fa-layer-group text-indigo-400"></i> Leviro Utils
         </h3>
         <p class="text-gray-400 text-sm leading-relaxed mb-4">
-          A growing collection of free, fast, and privacy-first online tools for
-          developers and daily use. Built with performance in mind, works offline,
-          and never tracks you.
+          <%= t('footer.description') %>
         </p>
         <div class="flex gap-4">
           <a href="https://whatsapp.com/channel/0029Vb5TAXQ17EmrK30p5h1g" aria-label="WhatsApp" class="text-gray-400 hover:text-white"><i class="fa-brands fa-whatsapp text-xl"></i></a>
@@ -18,71 +16,71 @@
       </div>
 
       <div>
-        <h4 class="text-sm font-bold text-white mb-3">Developer</h4>
+        <h4 class="text-sm font-bold text-white mb-3"><%= t('footer.sections.developer') %></h4>
         <ul class="space-y-2 text-sm text-gray-400">
-          <li><a href="/services/json-formatter" class="hover:text-white">JSON Formatter</a></li>
-          <li><a href="/services/base64" class="hover:text-white">Base64 Encoder</a></li>
-          <li><a href="/services/url-encoder" class="hover:text-white">URL Encoder</a></li>
-          <li><a href="/services/hash-generator" class="hover:text-white">Hash Generator</a></li>
-          <li><a href="/services/jwt-decoder" class="hover:text-white">JWT Decoder</a></li>
-          <li><a href="/services/regex-tester" class="hover:text-white">Regex Tester</a></li>
-          <li><a href="/services/uuid-generator" class="hover:text-white">UUID Generator</a></li>
-          <li><a href="/services/timestamp-converter" class="hover:text-white">Timestamp Converter</a></li>
-          <li><a href="/services/css-minifier" class="hover:text-white">CSS Minifier</a></li>
-          <li><a href="/services/html-viewer" class="hover:text-white">HTML Viewer</a></li>
+          <li><a href="<%= localePrefix %>/services/json-formatter" class="hover:text-white"><%= t('tools.jsonFormatter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/base64" class="hover:text-white"><%= t('tools.base64.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/url-encoder" class="hover:text-white"><%= t('tools.urlEncoder.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/hash-generator" class="hover:text-white"><%= t('tools.hashGenerator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/jwt-decoder" class="hover:text-white"><%= t('tools.jwtDecoder.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/regex-tester" class="hover:text-white"><%= t('tools.regexTester.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/uuid-generator" class="hover:text-white"><%= t('tools.uuidGenerator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/timestamp-converter" class="hover:text-white"><%= t('tools.timestampConverter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/css-minifier" class="hover:text-white"><%= t('tools.cssMinifier.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/html-viewer" class="hover:text-white"><%= t('tools.htmlViewer.title') %></a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-sm font-bold text-white mb-3">Text & Writing</h4>
+        <h4 class="text-sm font-bold text-white mb-3"><%= t('footer.sections.textWriting') %></h4>
         <ul class="space-y-2 text-sm text-gray-400">
-          <li><a href="/services/word-counter" class="hover:text-white">Word Counter</a></li>
-          <li><a href="/services/case-converter" class="hover:text-white">Case Converter</a></li>
-          <li><a href="/services/lorem-ipsum" class="hover:text-white">Lorem Ipsum</a></li>
-          <li><a href="/services/markdown-preview" class="hover:text-white">Markdown Preview</a></li>
-          <li><a href="/services/markdown-to-html" class="hover:text-white">Markdown to HTML</a></li>
-          <li><a href="/services/html-to-markdown" class="hover:text-white">HTML to Markdown</a></li>
-          <li><a href="/services/markdown-to-whatsapp" class="hover:text-white">MD to WhatsApp</a></li>
+          <li><a href="<%= localePrefix %>/services/word-counter" class="hover:text-white"><%= t('tools.wordCounter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/case-converter" class="hover:text-white"><%= t('tools.caseConverter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/lorem-ipsum" class="hover:text-white"><%= t('tools.loremIpsum.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/markdown-preview" class="hover:text-white"><%= t('tools.markdownPreview.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/markdown-to-html" class="hover:text-white"><%= t('tools.markdownToHtml.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/html-to-markdown" class="hover:text-white"><%= t('tools.htmlToMarkdown.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/markdown-to-whatsapp" class="hover:text-white"><%= t('tools.markdownToWhatsapp.title') %></a></li>
         </ul>
-        <h4 class="text-sm font-bold text-white mt-6 mb-3">Files & Media</h4>
+        <h4 class="text-sm font-bold text-white mt-6 mb-3"><%= t('footer.sections.filesMedia') %></h4>
         <ul class="space-y-2 text-sm text-gray-400">
-          <li><a href="/services/image-converter" class="hover:text-white">Image Converter</a></li>
-          <li><a href="/services/pdf-splitter" class="hover:text-white">PDF Splitter</a></li>
-          <li><a href="/services/color-converter" class="hover:text-white">Color Converter</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="text-sm font-bold text-white mb-3">Generators</h4>
-        <ul class="space-y-2 text-sm text-gray-400">
-          <li><a href="/services/password-generator" class="hover:text-white">Password Generator</a></li>
-          <li><a href="/services/secret-generator" class="hover:text-white">Secret Generator</a></li>
-          <li><a href="/services/qr-generator" class="hover:text-white">QR Generator</a></li>
-          <li><a href="/services/pwa-generator" class="hover:text-white">PWA Generator</a></li>
-          <li><a href="/services/seo-generator" class="hover:text-white">SEO Generator</a></li>
+          <li><a href="<%= localePrefix %>/services/image-converter" class="hover:text-white"><%= t('tools.imageConverter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/pdf-splitter" class="hover:text-white"><%= t('tools.pdfSplitter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/color-converter" class="hover:text-white"><%= t('tools.colorConverter.title') %></a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-sm font-bold text-white mb-3">Daily Life</h4>
+        <h4 class="text-sm font-bold text-white mb-3"><%= t('footer.sections.generators') %></h4>
         <ul class="space-y-2 text-sm text-gray-400">
-          <li><a href="/services/age-calculator" class="hover:text-white">Age Calculator</a></li>
-          <li><a href="/services/duration-calculator" class="hover:text-white">Duration Calculator</a></li>
-          <li><a href="/services/bmi-calculator" class="hover:text-white">BMI Calculator</a></li>
-          <li><a href="/services/tip-calculator" class="hover:text-white">Tip Calculator</a></li>
-          <li><a href="/services/unit-converter" class="hover:text-white">Unit Converter</a></li>
-          <li><a href="/services/loan-calculator" class="hover:text-white">Loan / EMI Calculator</a></li>
-          <li><a href="/services/discount-calculator" class="hover:text-white">Discount Calculator</a></li>
-          <li><a href="/services/currency-converter" class="hover:text-white">Currency Converter</a></li>
-          <li><a href="/services/world-info" class="hover:text-white">World Info</a></li>
+          <li><a href="<%= localePrefix %>/services/password-generator" class="hover:text-white"><%= t('tools.passwordGenerator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/secret-generator" class="hover:text-white"><%= t('tools.secretGenerator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/qr-generator" class="hover:text-white"><%= t('tools.qrGenerator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/pwa-generator" class="hover:text-white"><%= t('tools.pwaGenerator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/seo-generator" class="hover:text-white"><%= t('tools.seoGenerator.title') %></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-bold text-white mb-3"><%= t('footer.sections.dailyLife') %></h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="<%= localePrefix %>/services/age-calculator" class="hover:text-white"><%= t('tools.ageCalculator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/duration-calculator" class="hover:text-white"><%= t('tools.durationCalculator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/bmi-calculator" class="hover:text-white"><%= t('tools.bmiCalculator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/tip-calculator" class="hover:text-white"><%= t('tools.tipCalculator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/unit-converter" class="hover:text-white"><%= t('tools.unitConverter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/loan-calculator" class="hover:text-white"><%= t('tools.loanCalculator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/discount-calculator" class="hover:text-white"><%= t('tools.discountCalculator.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/currency-converter" class="hover:text-white"><%= t('tools.currencyConverter.title') %></a></li>
+          <li><a href="<%= localePrefix %>/services/world-info" class="hover:text-white"><%= t('tools.worldInfo.title') %></a></li>
         </ul>
       </div>
     </div>
 
     <div class="text-center pt-6">
       <p class="text-gray-500 text-sm">
-        &copy; <%= new Date().getFullYear() %> Leviro Utils. All rights reserved.
-        Made with <i class="fa-solid fa-heart text-red-500"></i> for developers.
+        &copy; <%= new Date().getFullYear() %> Leviro Utils. <%= t('footer.copyright') %>
+        <%= t('footer.madeWith') %> <i class="fa-solid fa-heart text-red-500"></i> <%= t('footer.forDevelopers') %>
       </p>
     </div>
   </div>

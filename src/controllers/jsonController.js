@@ -1,16 +1,17 @@
 export const getJsonFormatter = (req, res) => {
-  const description =
-    "Format, validate, and minify JSON online with a clean, color-coded view. Pretty print, compact, and instantly catch syntax errors before shipping.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.jsonFormatter.title");
+  const description = t("tools.jsonFormatter.description");
+  const keywords = t("tools.jsonFormatter.keywords");
   res.render("services/json-formatter", {
-    title: "JSON Formatter & Validator",
+    title,
     description,
-    keywords:
-      "json formatter, json validator, json beautifier, json minifier, online json viewer, pretty print json, json parser",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "JSON Formatter",
-      url: "https://utils.leviro.net/services/json-formatter",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "DeveloperApplication",
       operatingSystem: "All",

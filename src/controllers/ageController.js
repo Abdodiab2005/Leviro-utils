@@ -1,16 +1,17 @@
 export const getAgeCalculator = (req, res) => {
-  const description =
-    "Free online age calculator: find your exact age in years, months, weeks, days, hours, and minutes from any date of birth. Quick, accurate, mobile-friendly.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.ageCalculator.title");
+  const description = t("tools.ageCalculator.description");
+  const keywords = t("tools.ageCalculator.keywords");
   res.render("services/age-calculator", {
-    title: "Age Calculator",
+    title,
     description,
-    keywords:
-      "age calculator, calculate age, age in years months days, date of birth calculator, how old am i, age difference calculator",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "Age Calculator",
-      url: "https://utils.leviro.net/services/age-calculator",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "Utility",
       operatingSystem: "All",

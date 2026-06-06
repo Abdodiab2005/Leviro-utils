@@ -11,18 +11,19 @@ const upload = multer({
 }).single("pdfFile");
 
 export const getPdfSplitter = (req, res) => {
-  const description =
-    "Split a PDF file into multiple smaller PDFs by selecting custom page ranges. Free, fast, and secure - your file is processed and removed automatically.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.pdfSplitter.title");
+  const description = t("tools.pdfSplitter.description");
+  const keywords = t("tools.pdfSplitter.keywords");
   res.render("pdf-splitter", {
-    title: "PDF Splitter - Split PDF by Page Range",
+    title,
     description,
-    keywords:
-      "pdf splitter, split pdf online, extract pages from pdf, pdf page extractor, divide pdf, split pdf by range",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "PDF Splitter",
-      url: "https://utils.leviro.net/services/pdf-splitter",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "BusinessApplication",
       operatingSystem: "All",

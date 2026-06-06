@@ -3,18 +3,19 @@ import path from "path";
 import fs from "fs";
 
 export const getImageConverter = (req, res) => {
-  const description =
-    "Convert images between JPG, PNG, WebP, and AVIF formats with adjustable quality and resizing. Fast, free, and private - your images are removed after conversion.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.imageConverter.title");
+  const description = t("tools.imageConverter.description");
+  const keywords = t("tools.imageConverter.keywords");
   res.render("services/image-converter", {
-    title: "Image Converter (JPG, PNG, WebP, AVIF)",
+    title,
     description,
-    keywords:
-      "image converter, jpg to png, png to webp, image format converter, convert image online, webp converter, avif converter, compress image",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "Image Converter",
-      url: "https://utils.leviro.net/services/image-converter",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "Multimedia",
       operatingSystem: "All",

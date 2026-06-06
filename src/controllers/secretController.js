@@ -1,16 +1,17 @@
 export const getSecretGenerator = (req, res) => {
-  const description =
-    "Generate cryptographically secure random secrets, API keys, and tokens with custom length. Perfect for JWT secrets, session keys, and environment variables.";
+  const { t, canonicalUrl } = res.locals;
+  const title = t("tools.secretGenerator.title");
+  const description = t("tools.secretGenerator.description");
+  const keywords = t("tools.secretGenerator.keywords");
   res.render("services/secret-generator", {
-    title: "Secret Key Generator",
+    title,
     description,
-    keywords:
-      "secret generator, api key generator, random token, jwt secret generator, secure key generator, session secret",
+    keywords,
     schemaData: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "Secret Generator",
-      url: "https://utils.leviro.net/services/secret-generator",
+      name: title,
+      url: canonicalUrl,
       description,
       applicationCategory: "Security",
       operatingSystem: "All",

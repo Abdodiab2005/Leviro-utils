@@ -2,7 +2,7 @@
   <nav class="container mx-auto px-4 py-4">
     <div class="flex justify-between items-center">
       <a
-        href="/"
+        href="<%= localePrefix || '/' %>"
         class="text-2xl font-bold text-indigo-600 flex items-center gap-2"
         aria-label="Leviro Utils home"
       >
@@ -11,25 +11,34 @@
       </a>
 
       <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
-        <a href="/categories" class="hover:text-indigo-600 transition">All Tools</a>
-        <a href="/categories/developer" class="hover:text-indigo-600 transition">Developer</a>
-        <a href="/categories/text" class="hover:text-indigo-600 transition">Text</a>
-        <a href="/categories/generators" class="hover:text-indigo-600 transition">Generators</a>
-        <a href="/categories/files" class="hover:text-indigo-600 transition">Files</a>
-        <a href="/categories/daily" class="hover:text-indigo-600 transition">Daily</a>
+        <a href="<%= localePrefix %>/categories" class="hover:text-indigo-600 transition"><%= t('nav.allTools') %></a>
+        <a href="<%= localePrefix %>/categories/developer" class="hover:text-indigo-600 transition"><%= t('nav.developer') %></a>
+        <a href="<%= localePrefix %>/categories/text" class="hover:text-indigo-600 transition"><%= t('nav.text') %></a>
+        <a href="<%= localePrefix %>/categories/generators" class="hover:text-indigo-600 transition"><%= t('nav.generators') %></a>
+        <a href="<%= localePrefix %>/categories/files" class="hover:text-indigo-600 transition"><%= t('nav.files') %></a>
+        <a href="<%= localePrefix %>/categories/daily" class="hover:text-indigo-600 transition"><%= t('nav.daily') %></a>
+
+        <!-- Language switcher -->
+        <a
+          href="<%= langSwitchUrl %>"
+          class="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:border-indigo-400 hover:text-indigo-600 transition text-sm font-medium"
+          aria-label="Switch language"
+          title="<%= locale === 'ar' ? t('nav.switchToEn') : t('nav.switchToAr') %>"
+        ><%= locale === 'ar' ? 'EN' : 'ع' %></a>
+
         <a
           href="https://github.com/Abdodiab2005/leviro-utils"
           target="_blank"
           rel="noopener"
           class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
         >
-          <i class="fa-brands fa-github mr-1"></i> GitHub
+          <i class="fa-brands fa-github me-1"></i> <%= t('nav.github') %>
         </a>
       </div>
 
       <button
         id="mobile-menu-btn"
-        aria-label="Toggle menu"
+        aria-label="<%= t('nav.toggleMenu') %>"
         class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
       >
         <i class="fa-solid fa-bars text-2xl"></i>
@@ -45,65 +54,74 @@
   >
     <div class="flex flex-col p-6 space-y-6 overflow-y-auto h-full pb-20">
 
+      <!-- Language switcher (mobile) -->
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+        <span class="text-xs font-bold text-gray-500 uppercase tracking-wide"><%= t('nav.language') %></span>
+        <a
+          href="<%= langSwitchUrl %>"
+          class="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:border-indigo-400 hover:text-indigo-600 transition text-sm font-semibold"
+        ><%= locale === 'ar' ? '🇬🇧 English' : '🇸🇦 العربية' %></a>
+      </div>
+
       <%
         const navGroups = [
           {
-            label: "Developer Tools",
+            labelKey: "nav.developer",
             items: [
-              { href: "/services/json-formatter", icon: "fa-solid fa-code", color: "bg-yellow-100 text-yellow-600", name: "JSON Formatter" },
-              { href: "/services/base64", icon: "fa-solid fa-file-code", color: "bg-emerald-100 text-emerald-600", name: "Base64 Encoder" },
-              { href: "/services/url-encoder", icon: "fa-solid fa-link", color: "bg-cyan-100 text-cyan-600", name: "URL Encoder" },
-              { href: "/services/hash-generator", icon: "fa-solid fa-fingerprint", color: "bg-rose-100 text-rose-600", name: "Hash Generator" },
-              { href: "/services/jwt-decoder", icon: "fa-solid fa-shield-halved", color: "bg-sky-100 text-sky-600", name: "JWT Decoder" },
-              { href: "/services/regex-tester", icon: "fa-solid fa-asterisk", color: "bg-lime-100 text-lime-700", name: "Regex Tester" },
-              { href: "/services/uuid-generator", icon: "fa-solid fa-id-badge", color: "bg-violet-100 text-violet-600", name: "UUID Generator" },
-              { href: "/services/timestamp-converter", icon: "fa-solid fa-clock", color: "bg-orange-100 text-orange-600", name: "Timestamp Converter" },
-              { href: "/services/css-minifier", icon: "fa-brands fa-css3-alt", color: "bg-blue-100 text-blue-600", name: "CSS Minifier" },
-              { href: "/services/html-viewer", icon: "fa-brands fa-html5", color: "bg-orange-100 text-orange-600", name: "HTML Viewer" },
+              { href: "/services/json-formatter", icon: "fa-solid fa-code", color: "bg-yellow-100 text-yellow-600", nameKey: "tools.jsonFormatter.title" },
+              { href: "/services/base64", icon: "fa-solid fa-file-code", color: "bg-emerald-100 text-emerald-600", nameKey: "tools.base64.title" },
+              { href: "/services/url-encoder", icon: "fa-solid fa-link", color: "bg-cyan-100 text-cyan-600", nameKey: "tools.urlEncoder.title" },
+              { href: "/services/hash-generator", icon: "fa-solid fa-fingerprint", color: "bg-rose-100 text-rose-600", nameKey: "tools.hashGenerator.title" },
+              { href: "/services/jwt-decoder", icon: "fa-solid fa-shield-halved", color: "bg-sky-100 text-sky-600", nameKey: "tools.jwtDecoder.title" },
+              { href: "/services/regex-tester", icon: "fa-solid fa-asterisk", color: "bg-lime-100 text-lime-700", nameKey: "tools.regexTester.title" },
+              { href: "/services/uuid-generator", icon: "fa-solid fa-id-badge", color: "bg-violet-100 text-violet-600", nameKey: "tools.uuidGenerator.title" },
+              { href: "/services/timestamp-converter", icon: "fa-solid fa-clock", color: "bg-orange-100 text-orange-600", nameKey: "tools.timestampConverter.title" },
+              { href: "/services/css-minifier", icon: "fa-brands fa-css3-alt", color: "bg-blue-100 text-blue-600", nameKey: "tools.cssMinifier.title" },
+              { href: "/services/html-viewer", icon: "fa-brands fa-html5", color: "bg-orange-100 text-orange-600", nameKey: "tools.htmlViewer.title" },
             ],
           },
           {
-            label: "Text & Writing",
+            labelKey: "nav.text",
             items: [
-              { href: "/services/word-counter", icon: "fa-solid fa-file-word", color: "bg-blue-100 text-blue-600", name: "Word Counter" },
-              { href: "/services/case-converter", icon: "fa-solid fa-text-height", color: "bg-teal-100 text-teal-600", name: "Case Converter" },
-              { href: "/services/lorem-ipsum", icon: "fa-solid fa-align-left", color: "bg-amber-100 text-amber-600", name: "Lorem Ipsum" },
-              { href: "/services/markdown-preview", icon: "fa-brands fa-markdown", color: "bg-slate-100 text-slate-700", name: "Markdown Preview" },
-              { href: "/services/markdown-to-html", icon: "fa-solid fa-code", color: "bg-rose-100 text-rose-600", name: "Markdown to HTML" },
-              { href: "/services/html-to-markdown", icon: "fa-solid fa-arrow-right-arrow-left", color: "bg-emerald-100 text-emerald-600", name: "HTML to Markdown" },
-              { href: "/services/markdown-to-whatsapp", icon: "fa-brands fa-whatsapp", color: "bg-green-100 text-green-600", name: "MD to WhatsApp" },
+              { href: "/services/word-counter", icon: "fa-solid fa-file-word", color: "bg-blue-100 text-blue-600", nameKey: "tools.wordCounter.title" },
+              { href: "/services/case-converter", icon: "fa-solid fa-text-height", color: "bg-teal-100 text-teal-600", nameKey: "tools.caseConverter.title" },
+              { href: "/services/lorem-ipsum", icon: "fa-solid fa-align-left", color: "bg-amber-100 text-amber-600", nameKey: "tools.loremIpsum.title" },
+              { href: "/services/markdown-preview", icon: "fa-brands fa-markdown", color: "bg-slate-100 text-slate-700", nameKey: "tools.markdownPreview.title" },
+              { href: "/services/markdown-to-html", icon: "fa-solid fa-code", color: "bg-rose-100 text-rose-600", nameKey: "tools.markdownToHtml.title" },
+              { href: "/services/html-to-markdown", icon: "fa-solid fa-arrow-right-arrow-left", color: "bg-emerald-100 text-emerald-600", nameKey: "tools.htmlToMarkdown.title" },
+              { href: "/services/markdown-to-whatsapp", icon: "fa-brands fa-whatsapp", color: "bg-green-100 text-green-600", nameKey: "tools.markdownToWhatsapp.title" },
             ],
           },
           {
-            label: "Generators",
+            labelKey: "nav.generators",
             items: [
-              { href: "/services/password-generator", icon: "fa-solid fa-key", color: "bg-indigo-100 text-indigo-600", name: "Password Generator" },
-              { href: "/services/secret-generator", icon: "fa-solid fa-user-secret", color: "bg-purple-100 text-purple-600", name: "Secret Generator" },
-              { href: "/services/qr-generator", icon: "fa-solid fa-qrcode", color: "bg-blue-100 text-blue-600", name: "QR Generator" },
-              { href: "/services/pwa-generator", icon: "fa-solid fa-mobile-screen", color: "bg-yellow-100 text-yellow-600", name: "PWA Generator" },
-              { href: "/services/seo-generator", icon: "fa-solid fa-magnifying-glass-chart", color: "bg-pink-100 text-pink-600", name: "SEO Generator" },
+              { href: "/services/password-generator", icon: "fa-solid fa-key", color: "bg-indigo-100 text-indigo-600", nameKey: "tools.passwordGenerator.title" },
+              { href: "/services/secret-generator", icon: "fa-solid fa-user-secret", color: "bg-purple-100 text-purple-600", nameKey: "tools.secretGenerator.title" },
+              { href: "/services/qr-generator", icon: "fa-solid fa-qrcode", color: "bg-blue-100 text-blue-600", nameKey: "tools.qrGenerator.title" },
+              { href: "/services/pwa-generator", icon: "fa-solid fa-mobile-screen", color: "bg-yellow-100 text-yellow-600", nameKey: "tools.pwaGenerator.title" },
+              { href: "/services/seo-generator", icon: "fa-solid fa-magnifying-glass-chart", color: "bg-pink-100 text-pink-600", nameKey: "tools.seoGenerator.title" },
             ],
           },
           {
-            label: "Files & Media",
+            labelKey: "nav.files",
             items: [
-              { href: "/services/image-converter", icon: "fa-solid fa-image", color: "bg-pink-100 text-pink-600", name: "Image Converter" },
-              { href: "/services/pdf-splitter", icon: "fa-solid fa-file-pdf", color: "bg-red-100 text-red-600", name: "PDF Splitter" },
-              { href: "/services/color-converter", icon: "fa-solid fa-palette", color: "bg-fuchsia-100 text-fuchsia-600", name: "Color Converter" },
+              { href: "/services/image-converter", icon: "fa-solid fa-image", color: "bg-pink-100 text-pink-600", nameKey: "tools.imageConverter.title" },
+              { href: "/services/pdf-splitter", icon: "fa-solid fa-file-pdf", color: "bg-red-100 text-red-600", nameKey: "tools.pdfSplitter.title" },
+              { href: "/services/color-converter", icon: "fa-solid fa-palette", color: "bg-fuchsia-100 text-fuchsia-600", nameKey: "tools.colorConverter.title" },
             ],
           },
           {
-            label: "Daily Life",
+            labelKey: "nav.daily",
             items: [
-              { href: "/services/age-calculator", icon: "fa-solid fa-cake-candles", color: "bg-blue-100 text-blue-600", name: "Age Calculator" },
-              { href: "/services/duration-calculator", icon: "fa-solid fa-stopwatch", color: "bg-indigo-100 text-indigo-600", name: "Duration Calculator" },
-              { href: "/services/bmi-calculator", icon: "fa-solid fa-weight-scale", color: "bg-pink-100 text-pink-600", name: "BMI Calculator" },
-              { href: "/services/tip-calculator", icon: "fa-solid fa-hand-holding-dollar", color: "bg-emerald-100 text-emerald-600", name: "Tip Calculator" },
-              { href: "/services/unit-converter", icon: "fa-solid fa-ruler-combined", color: "bg-blue-100 text-blue-600", name: "Unit Converter" },
-              { href: "/services/loan-calculator", icon: "fa-solid fa-sack-dollar", color: "bg-yellow-100 text-yellow-700", name: "Loan / EMI Calculator" },
-              { href: "/services/discount-calculator", icon: "fa-solid fa-tags", color: "bg-red-100 text-red-600", name: "Discount Calculator" },
-              { href: "/services/currency-converter", icon: "fa-solid fa-money-bill-transfer", color: "bg-green-100 text-green-600", name: "Currency Converter" },
-              { href: "/services/world-info", icon: "fa-solid fa-earth-americas", color: "bg-indigo-100 text-indigo-600", name: "World Info" },
+              { href: "/services/age-calculator", icon: "fa-solid fa-cake-candles", color: "bg-blue-100 text-blue-600", nameKey: "tools.ageCalculator.title" },
+              { href: "/services/duration-calculator", icon: "fa-solid fa-stopwatch", color: "bg-indigo-100 text-indigo-600", nameKey: "tools.durationCalculator.title" },
+              { href: "/services/bmi-calculator", icon: "fa-solid fa-weight-scale", color: "bg-pink-100 text-pink-600", nameKey: "tools.bmiCalculator.title" },
+              { href: "/services/tip-calculator", icon: "fa-solid fa-hand-holding-dollar", color: "bg-emerald-100 text-emerald-600", nameKey: "tools.tipCalculator.title" },
+              { href: "/services/unit-converter", icon: "fa-solid fa-ruler-combined", color: "bg-blue-100 text-blue-600", nameKey: "tools.unitConverter.title" },
+              { href: "/services/loan-calculator", icon: "fa-solid fa-sack-dollar", color: "bg-yellow-100 text-yellow-700", nameKey: "tools.loanCalculator.title" },
+              { href: "/services/discount-calculator", icon: "fa-solid fa-tags", color: "bg-red-100 text-red-600", nameKey: "tools.discountCalculator.title" },
+              { href: "/services/currency-converter", icon: "fa-solid fa-money-bill-transfer", color: "bg-green-100 text-green-600", nameKey: "tools.currencyConverter.title" },
+              { href: "/services/world-info", icon: "fa-solid fa-earth-americas", color: "bg-indigo-100 text-indigo-600", nameKey: "tools.worldInfo.title" },
             ],
           },
         ];
@@ -111,13 +129,13 @@
 
       <% navGroups.forEach((g) => { %>
         <div>
-          <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 px-3"><%= g.label %></h4>
+          <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2 px-3"><%= t(g.labelKey) %></h4>
           <% g.items.forEach((it) => { %>
-            <a href="<%= it.href %>" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors">
+            <a href="<%= localePrefix %><%= it.href %>" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 text-gray-700 font-medium transition-colors">
               <div class="w-10 h-10 rounded-lg <%= it.color %> flex items-center justify-center">
                 <i class="<%= it.icon %>"></i>
               </div>
-              <%= it.name %>
+              <%= t(it.nameKey) %>
             </a>
           <% }); %>
         </div>
